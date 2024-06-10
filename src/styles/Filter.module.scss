@@ -1,0 +1,61 @@
+.filterTag {
+  margin: 100px;
+  display: flex;
+
+  .tag {
+    background: #e6e6e6;
+    border: #b3b3b3 1px solid;
+    color: #8b8b8b;
+    border-radius: 15%;
+    padding: 0.5rem;
+    margin-right: 1rem;
+    font-size: 14px;
+  }
+
+  .keywordTagContainer {
+    display: flex;
+
+    .keywordTag {
+      background: rgb(210, 210, 255);
+      color: rgb(42, 42, 255);
+      border-radius: 10%;
+      padding: 0.4rem;
+      margin-right: 13px;
+    }
+
+    span {
+      padding: 0.4rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #222222;
+    }
+  }
+}
+
+.filter {
+  margin-top: 60px;
+  display: flex;
+}
+
+.selection {
+  margin: 20rem;
+}
+
+.inputWrapper {
+  margin-top: 50px;
+  font-weight: 900;
+  display: flex;
+  justify-content: space-between;
+
+  strong {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-right: 1rem;
+  }
+
+  .input {
+    width: 330px;
+  }
+}
