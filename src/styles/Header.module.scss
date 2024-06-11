@@ -4,11 +4,12 @@
     width: 100%;
     height: 15vh;
     margin: 0 auto;
-    background-color: $header;
+    background-color: $main;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     
+    
 
-    .header-container {
+    .headerContainer {
         width: 70%;
         margin: 0 auto;
         background-image: '../../../assets/img/grey.jpg';
@@ -22,7 +23,7 @@
         
     }
 
-    .header-item {
+    .headerItem {
         display: flex;
         width: 30%;
         margin-left: 120px;
@@ -41,7 +42,7 @@
     }
 
     
-    .btn-group {
+    .btnGroup {
         display: flex;
         position: absolute;
         top: 75px;

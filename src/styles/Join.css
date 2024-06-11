@@ -1,0 +1,84 @@
+@import '../App.css';
+
+.sns-container,
+.hr-container,
+.form-container,
+.login-container {
+  display: flex;
+}
+.sns-container > div,
+.hr-container > div,
+.form-container > div,
+.login-container > div {
+  width: 50%;
+  flex: 1;
+}
+
+/* * 표시는 필수 작성입니다. */
+
+.hr-sect {
+  display: flex;
+  flex-basis: 100%;
+  align-items: center;
+  color: black;
+  font-size: 12px;
+  margin: 8px 0px;
+}
+.hr-sect::before,
+.hr-sect::after {
+  content: '';
+  flex-grow: 1;
+  background: rgba(0, 0, 0, 0.35);
+  height: 1px;
+  font-size: 0px;
+  line-height: 0px;
+  margin: 0px 5px;
+}
+
+/*** 회원 가입 폼 ***/
+
+/* 사진 올리기 */
+.image_container {
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+img {
+  width: 30%;
+}
+
+/* 사용자가 입력하는 */
+.user-input-form {
+  padding-left: 5px;
+}
+.user-input-form > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.user-input-form > div > input {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #94989b;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.add-list ul {
+  margin-top: 15px;
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.add-list ul li {
+  margin: 0 0 15px 10px;
+  border: 1px solid rgba(0, 0, 0, 0.35);
+  padding: 5px;
+  width: 22%;
+  text-align: center;
+}
