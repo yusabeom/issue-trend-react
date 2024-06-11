@@ -1,15 +1,12 @@
 import { Reset } from 'styled-reset';
 import './App.css';
-import Footer from './common/layout/Footer';
-import Header from './common/layout/Header';
+import NewsList from './components/board/NewsList';
 
 function App() {
   return (
-    <div>
+    <div className='content-wrapper'>
       <Reset />
-      <Header />
-
-      <Footer />
+      <NewsList />
     </div>
   );
 }

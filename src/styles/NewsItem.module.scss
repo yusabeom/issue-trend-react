@@ -1,0 +1,27 @@
+.sArticle {
+  margin-top: 4rem;
+  display: flex;
+
+  //   border: #000 1px solid;
+  border-radius: 5%;
+
+  overflow: hidden;
+  position: relative;
+  box-shadow: 3px 4px 5px 5px rgb(207, 207, 207);
+
+  .sImgContainer {
+  }
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 2rem;
+
+    .sTitle {
+    }
+
+    .sDatetime {
+    }
+  }
+}
