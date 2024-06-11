@@ -29,6 +29,7 @@ const NewsTemplate = () => {
 
   // 더미데이터
   const news1 = {
+    id: 1,
     title: "'2025 英QS 세계 대학순위' 서울대 31위·카이스트 53위",
     datetime: '11분전',
     imgUrl:
@@ -36,6 +37,7 @@ const NewsTemplate = () => {
   };
 
   const news2 = {
+    id: 2,
     title: "'감 따다 추락사'…수확 지시한 서울시 관계자 1심 유죄",
     datetime: '24분전',
     imgUrl:
@@ -43,6 +45,7 @@ const NewsTemplate = () => {
   };
 
   const news3 = {
+    id: 3,
     title: '쓰레기 분리수거장에 신생아 버린 30대母…봉지 입구',
     datetime: '25분전',
     imgUrl:
@@ -50,6 +53,7 @@ const NewsTemplate = () => {
   };
 
   const news4 = {
+    id: 4,
     title: '여자 문제로 다투던 자신 말리는 친구에 야구방망...',
     datetime: '51분전',
     imgUrl:

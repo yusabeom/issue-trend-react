@@ -3,6 +3,10 @@ import NewsItem from './NewsItem';
 
 import { Button, Pagination } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
+import CircleButton from '../../common/ui/CircleButton';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronUp } from '@fortawesome/free-solid-svg-icons';
+import styles from '../../styles/NewsList.module.scss';
 
 // 전국 실시간 뉴스 목록 컴포넌트
 
@@ -77,8 +81,13 @@ const NewsList = ({ newsList }) => {
     }, 1000);
   };
 
+  const ScrollToTopHandler = () => {
+    console.log('스크롤바!');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
-    <>
+    <div className={styles.newsListWrapper}>
       <ul className='newsLists'>{state.components}</ul>
 
       <div className='btn'>
@@ -94,9 +103,20 @@ const NewsList = ({ newsList }) => {
           ))}
       </div>
 
+      {state.curPage > 1 && (
+        <div className={styles.scrollToTop}>
+          <CircleButton
+            text={<FontAwesomeIcon icon={faChevronUp} />}
+            onClickEvent={ScrollToTopHandler}
+          ></CircleButton>
+        </div>
+      )}
+
       {!state.hasMore && <Pagination count={10} color='secondary' />}
-    </>
+    </div>
   );
 };
 
 export default NewsList;
+
+const scrollToTop = {};
