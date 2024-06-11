@@ -10,6 +10,12 @@
   box-shadow: 3px 4px 5px 5px rgb(207, 207, 207);
 
   .sImgContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem;
+    width: 40rem;
+    height: 20rem;
   }
 
   ul {

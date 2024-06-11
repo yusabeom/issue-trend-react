@@ -3,6 +3,7 @@ import Filter from './Filter';
 import NewsList from './NewsList';
 import '../../styles/NewsTemplate.css';
 import NewsItem from './NewsItem';
+import { Reset } from 'styled-reset';
 
 const NewsTemplate = () => {
   const [newsList, setNewsList] = useState([]);
@@ -62,6 +63,7 @@ const NewsTemplate = () => {
 
   return (
     <div className='news-wrapper'>
+      <Reset />
       <Filter />
       <NewsList newsList={newsList} />
     </div>
