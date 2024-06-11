@@ -12,3 +12,10 @@ a {
   color: inherit; /*'부모로 부터 상속 받겠다'는 의미*/
   text-decoration: none;
 }
+
+/* 콘텐츠의 너비를 70%, 가운데로 배치 */
+.aspect-ratio {
+  width: 70%;
+  margin: 0 auto;
+  margin-top: 2%;
+}
