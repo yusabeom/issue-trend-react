@@ -1,12 +1,12 @@
 import { Reset } from 'styled-reset';
 import './App.css';
-import Filter from './components/board/Filter';
+import NewsList from './components/board/NewsList';
 
 function App() {
   return (
     <div className='content-wrapper'>
       <Reset />
-      <Filter />
+      <NewsList />
     </div>
   );
 }

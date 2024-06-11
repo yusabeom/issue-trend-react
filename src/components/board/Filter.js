@@ -93,7 +93,7 @@ const Filter = () => {
     console.log('tags: ', tags);
   };
 
-  // 요소 제거
+  // 태그에 있는 요소 제거
   const removeTag = (e) => {
     const content = e.target.parentElement.dataset.key;
     console.log('이벤트 발생: ', content);
@@ -115,6 +115,7 @@ const Filter = () => {
     if (e.key === 'Enter') {
       console.log('enter!!');
       setSearchValue(inputValue);
+      setInputValue('');
     }
   };
 
@@ -125,7 +126,12 @@ const Filter = () => {
           <div key={tag} className={styles.tag} data-key={tag}>
             {optionsRegion[tag] || optionsUploadTime[tag] || optionsSort[tag]}
             &nbsp;
-            <FontAwesomeIcon icon={faX} size='xs' onClick={removeTag} />
+            <FontAwesomeIcon
+              className={styles.icon}
+              icon={faX}
+              size='xs'
+              onClick={removeTag}
+            />
           </div>
         ))}
 
@@ -133,7 +139,14 @@ const Filter = () => {
           <div className={styles.keywordTagContainer}>
             <div className={styles.keywordTag}>키워드</div>
             <span>{searchValue}</span>
-            <FontAwesomeIcon icon={faX} size='2lg' onClick={removeTag} />
+            <FontAwesomeIcon
+              className={styles.icon}
+              icon={faX}
+              size='2lg'
+              onClick={() => {
+                setSearchValue('');
+              }}
+            />
           </div>
         )}
       </div>

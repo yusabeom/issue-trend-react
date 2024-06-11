@@ -13,14 +13,21 @@
   }
 
   .keywordTagContainer {
+    margin-left: 1.5rem;
     display: flex;
+    height: 85%;
+    align-items: center;
 
     .keywordTag {
       background: rgb(210, 210, 255);
       color: rgb(42, 42, 255);
       border-radius: 10%;
-      padding: 0.4rem;
+      padding: 0.5rem;
       margin-right: 13px;
+      font-size: 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     span {
@@ -58,4 +65,8 @@
   .input {
     width: 330px;
   }
+}
+
+.icon {
+  cursor: pointer;
 }
