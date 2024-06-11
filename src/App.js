@@ -1,9 +1,15 @@
+import { Reset } from 'styled-reset';
 import './App.css';
+import Footer from './common/layout/Footer';
+import Header from './common/layout/Header';
 
 function App() {
   return (
     <div>
-      <h1>안녕하세요</h1>
+      <Reset />
+      <Header />
+
+      <Footer />
     </div>
   );
 }
