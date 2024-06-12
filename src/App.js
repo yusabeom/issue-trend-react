@@ -9,7 +9,7 @@ import { Reset } from 'styled-reset';
 
 function App() {
   return (
-    <BrowserRouter>
+    <>
       <Reset />
       <Routes>
         <Route path='/' element={<Intro />} />
@@ -17,7 +17,7 @@ function App() {
         <Route path='/newsList' element={<NewsTemplate />} />
         <Route path='/join' element={<Join />} />
       </Routes>
-    </BrowserRouter>
+    </>
   );
 }
 
