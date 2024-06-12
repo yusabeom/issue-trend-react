@@ -38,27 +38,36 @@
     }
 }
 
-.time {
-    width: 60%;
-    margin: 0 auto 15px;
-    text-align: end;
-    font-size: 13px;
-    font-weight: bold;
-    color: $buttonPupple;
-    padding-right: 5px;
-}
+.boxContainer {
+
+    margin-top: 80px;
 
 
-.cloudContainer {
-    width: 70%;
-    height: 500px;
-    background: white;
-    margin: 0 auto;
-    box-shadow: 4px 4px 7px rgba(0, 0, 0, 0.1);
-
-
+    .time {
+        width: 60%;
+        margin: 0 auto 15px;
+        text-align: end;
+        font-size: 13px;
+        font-weight: bold;
+        color: $buttonPupple;
+        padding-right: 5px;
+    }
     
+    
+    .cloudContainer {
+        width: 70%;
+        height: 500px;
+        background: white;
+        margin: 0px auto;
+        box-shadow: 4px 4px 7px rgba(0, 0, 0, 0.1);
+    
+    
+        
+    }
+    
+
 }
+
 
 
 
