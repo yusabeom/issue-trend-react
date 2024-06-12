@@ -4,6 +4,9 @@ import NewsList from './NewsList';
 import '../../styles/NewsTemplate.css';
 import NewsItem from './NewsItem';
 import { Reset } from 'styled-reset';
+import Header from '../../common/layout/Header';
+
+import Footer from '../../common/layout/Footer';
 
 const NewsTemplate = () => {
   const [newsList, setNewsList] = useState([]);
@@ -62,11 +65,17 @@ const NewsTemplate = () => {
   };
 
   return (
-    <div className='news-wrapper'>
-      <Reset />
-      <Filter />
-      <NewsList newsList={newsList} />
-    </div>
+    <>
+      <Header />
+
+      <div className='news-wrapper aspect-ratio'>
+        <Reset />
+        <Filter />
+        <NewsList newsList={newsList} />
+      </div>
+
+      <Footer />
+    </>
   );
 };
 

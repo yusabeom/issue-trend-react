@@ -1,0 +1,19 @@
+$buttonPupple: #807aa0;
+
+.headerStyle {
+  background: $buttonPupple;
+  color: #fff;
+  padding: 0.8rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .icon {
+    cursor: pointer;
+    float: right;
+  }
+}
+
+.chatContents {
+  display: flex;
+}

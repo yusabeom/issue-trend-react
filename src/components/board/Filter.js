@@ -115,6 +115,7 @@ const Filter = () => {
       console.log('enter!!');
       setSearchValue(inputValue);
       setInputValue('');
+      setKeywordMsg('0');
     }
   };
 

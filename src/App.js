@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from './components/main/Home';
 import Join from './components/user/Join';
 import { Reset } from 'styled-reset';
+import ChatModal from './components/chat/ChatModal';
 
 function App() {
   return (
@@ -14,8 +15,9 @@ function App() {
       <Routes>
         <Route path='/' element={<Intro />} />
         <Route path='/home' element={<Home />} />
-        <Route path='/newsList' element={<NewsTemplate />} />
+        <Route path='/news' element={<NewsTemplate />} />
         <Route path='/join' element={<Join />} />
+        <Route path='/chat' element={<ChatModal />} />
       </Routes>
     </>
   );
