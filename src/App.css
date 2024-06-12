@@ -13,6 +13,10 @@ a {
   text-decoration: none;
 }
 
+input {
+  outline-style: none;
+}
+
 /* 콘텐츠의 너비를 70%, 가운데로 배치 */
 .aspect-ratio {
   width: 70%;
