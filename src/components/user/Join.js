@@ -53,21 +53,21 @@ const Join = () => {
               </div>
 
               <div>
-                <label htmlFor='pwCheck'>비밀번호 확인*</label>
-                <span className='warn'></span>
-                <input id='pwCheck' />
-              </div>
-
-              <div>
                 <label htmlFor='mb'>핸드폰 번호*</label>
                 <span className='warn'></span>
-                <input id='mb' />
+                <div className='btn-input'>
+                  <input id='mb' />
+                  <Button>전송</Button>
+                </div>
               </div>
 
               <div>
                 <label htmlFor='mbCheck'>인증번호*</label>
                 <span className='warn'></span>
-                <input id='mbCheck' />
+                <div className='btn-input'>
+                  <input id='mbCheck' />
+                  <Button>확인</Button>
+                </div>
               </div>
 
               <div>
@@ -88,7 +88,10 @@ const Join = () => {
                   관심주제로 설정한 키워드는 개인 맞춤 이슈를 제공하기 위해
                   사용됩니다.
                 </p>
-                <input />
+                <div className='btn-input'>
+                  <input />
+                  <button>추가</button>
+                </div>
                 <div className='add-list'>
                   <ul>
                     <li>기획</li>
