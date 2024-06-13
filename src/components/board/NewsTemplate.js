@@ -7,13 +7,20 @@ import { Reset } from 'styled-reset';
 import Header from '../../common/layout/Header';
 
 import Footer from '../../common/layout/Footer';
+import { useSearchParams } from 'react-router-dom';
 
 const NewsTemplate = () => {
+  const [searchParams] = useSearchParams();
+  const page = searchParams.get('page') || 1; // 현재 페이지
+  const size = searchParams.get('size') || 20; // amound (페이지 당 게시물 개수)
+
   const [newsList, setNewsList] = useState([]);
   useEffect(() => {
     // 서버로부터 뉴스 목록 데이터 가져오기
     // (title, datetime, imgUrl)
     // fetch가 정상적으로 이루어지면 loading을 false로
+
+    console.log('page: ', page);
 
     setNewsList([
       news1,
@@ -69,9 +76,8 @@ const NewsTemplate = () => {
       <Header />
 
       <div className='news-wrapper aspect-ratio'>
-        <Reset />
         <Filter />
-        <NewsList newsList={newsList} />
+        <NewsList newsList={newsList} page={page} size={size} />
       </div>
 
       <Footer />

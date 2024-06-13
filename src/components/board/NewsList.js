@@ -7,6 +7,7 @@ import CircleButton from '../../common/ui/CircleButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import styles from '../../styles/NewsList.module.scss';
+import Paging from '../../common/ui/Paging';
 
 // 전국 실시간 뉴스 목록 컴포넌트
 
@@ -54,14 +55,14 @@ const reducer = (state, action) => {
   }
 };
 
-const NewsList = ({ newsList }) => {
+const NewsList = ({ newsList, page, size }) => {
   const [state, dispatch] = useReducer(reducer, {
     newsList, // 한 페이지의 뉴스 목록
     loading: false, // load more 상태값 관리
     restPage: 0, // 로드할 게시물 개수
     hasMore: true, // 아직 로드할 게시물이 있는지 여부
     components: [], // 렌더링 할 컴포넌트
-    curPage: 1, // 현재 페이지
+    curPage: 1, // 현재 페이지 (소페이지, 1~4)
   });
 
   useEffect(() => {
@@ -72,6 +73,7 @@ const NewsList = ({ newsList }) => {
     });
   }, [newsList]);
 
+  // 기사 더보기 클릭 이벤트 핸들러
   const loadMoreOnClick = () => {
     if (state.loading) return;
     dispatch({ type: 'LOAD_MORE' });
@@ -81,6 +83,7 @@ const NewsList = ({ newsList }) => {
     }, 1000);
   };
 
+  // 맨 위로 버튼 클릭 이벤트 핸들러
   const ScrollToTopHandler = () => {
     console.log('스크롤바!');
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -112,7 +115,7 @@ const NewsList = ({ newsList }) => {
         </div>
       )}
 
-      {!state.hasMore && <Pagination count={10} color='secondary' />}
+      {!state.hasMore && <Paging size={size} />}
     </div>
   );
 };
