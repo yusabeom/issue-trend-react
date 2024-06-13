@@ -38,13 +38,27 @@ const Header = () => {
     };
   }, []);
 
+  const goHome = () => {
+    navigate('/home');
+  };
+
+  const goNews = () => {
+    navigate('/newsList');
+  };
+
   return (
     <header
       className={scrollPosition < 10 ? header : `${header} ${changeHeader}`}
     >
       <div className={headerContainer}>
         {scrollPosition < 10 ? (
-          <img src={logo} height='100' alt='로고이미지' />
+          <img
+            src={logo}
+            height='100'
+            alt='로고이미지'
+            onClick={goHome}
+            style={{ cursor: 'pointer' }}
+          />
         ) : (
           ''
         )}
@@ -53,7 +67,9 @@ const Header = () => {
             scrollPosition < 10 ? headerItem : `${headerItem} ${changeItem}`
           }
         >
-          <div className={items}>뉴스 </div>
+          <div className={items} onClick={goNews}>
+            뉴스{' '}
+          </div>
           <div>|</div>
           <div className={items}>게시판 </div>
           <div>|</div>
