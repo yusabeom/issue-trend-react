@@ -74,11 +74,7 @@ const ChatModal = () => {
                 <Profile clickName={getUserName} />
               </div>
             </div>
-            <div
-              className={
-                clickedUserName ? styles.infoWrapper : styles.noWrapper
-              }
-            >
+            <div className={styles.infoWrapper}>
               {isUserInfoVisible && <UserInfo userName={clickedUserName} />}
             </div>
           </Box>
