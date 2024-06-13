@@ -2,10 +2,10 @@
 
 
 .wordCloudContainer {
-    width: 92vw;
-    height: 120vh;
+    width: 60%;
+    height: 100vh;
 
-    margin: 50px auto;
+    margin: 200px auto;
     
     background-image: url(../assets/img/grey.jpg);
     background-position: center;
@@ -18,7 +18,7 @@
     .titleContainer {
         // background-color: wheat;
         width: 75%;
-        height: 30%;
+        height: 20%;
         padding: 70px;
         text-align: center;
         font-weight: bold;
@@ -27,34 +27,47 @@
 
 
         .mainTitle {
-            font-size: 80px;
+            font-size: 60px;
         }
         
         
     }
+
+    .subheading {
+        font-size: 15px;
+    }
 }
 
-.time {
-    width: 60%;
-    margin: 0 auto 15px;
-    text-align: end;
-    font-size: 15px;
-    font-weight: bold;
-    color: $buttonPupple;
-    padding-right: 5px;
-}
+.boxContainer {
+
+    margin-top: 80px;
 
 
-.cloudContainer {
-    width: 60%;
-    height: 550px;
-    background: white;
-    margin: 0 auto;
-    box-shadow: 4px 4px 7px rgba(0, 0, 0, 0.1);
-
-
+    .time {
+        width: 60%;
+        margin: 0 auto 15px;
+        text-align: end;
+        font-size: 13px;
+        font-weight: bold;
+        color: $buttonPupple;
+        padding-right: 5px;
+    }
     
+    
+    .cloudContainer {
+        width: 70%;
+        height: 500px;
+        background: white;
+        margin: 0px auto;
+        box-shadow: 4px 4px 7px rgba(0, 0, 0, 0.1);
+    
+    
+        
+    }
+    
+
 }
+
 
 
 
