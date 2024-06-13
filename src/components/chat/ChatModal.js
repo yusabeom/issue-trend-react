@@ -10,15 +10,15 @@ import Profile from './Profile';
 const boxStyle = {
   position: 'absolute',
   top: '10%',
-  left: '40%',
+  left: '30%',
   transform: 'translate(-50%, -50%)',
-  width: 400,
+  width: 550,
   bgcolor: 'background.paper',
   boxShadow: 24,
 };
 
 const ModalComponent = () => {
-  const { headerStyle, chatContents } = styles;
+  const { headerStyle, chatContents, profile } = styles;
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);

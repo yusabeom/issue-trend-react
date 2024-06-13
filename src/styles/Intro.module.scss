@@ -1,52 +1,47 @@
 .background {
-    width: 100vw;
-    height: 100vh;
-    background-image: url('../assets/img/intro.jpg');
-    background-size: cover;
-    background-position: center;
-    padding-top: 100px;
-    position: relative;
+  width: 100vw;
+  height: 100vh;
+  background-image: url('../assets/img/intro.jpg');
+  background-size: cover;
+  background-position: center;
+  padding-top: 100px;
+  position: relative;
 
-    .backContainer {
-        // background: red;
-        
-        
-    }
+  .backContainer {
+    // background: red;
+  }
 
+  .introContent {
+    color: white;
+    font-size: 85px;
+    font-weight: bold;
+    line-height: 1.3;
+  }
 
-    .introContent {
-        color: white;
-        font-size: 85px;
-        font-weight: bold;
-        line-height: 1.3;
-    }
+  .shadow {
+    color: #bcbcbc;
+    position: absolute;
+    top: 80px;
+    opacity: 0.5;
+  }
 
-    .shadow {
-        color: #BCBCBC;
-        position: absolute;
-        top: 80px;
-        opacity: 0.5;
-    }
+  .homeBtn {
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    margin: 200px;
+    border: solid 2px;
+    border-radius: 10px;
+    width: fit-content;
+    padding: 13px;
+    position: absolute;
+    top: 40%;
+    left: 35%;
+  }
 
-    .homeBtn {
-        color: white;
-        font-size: 16px;
-        font-weight: bold;
-        text-align: center;
-        margin: 200px;
-        border: solid 2px;
-        border-radius: 10px;
-        width: fit-content;
-        padding: 13px;
-        position: absolute;
-        top: 40%;
-        left: 35%;
-
-    }
-
-    .homeBtn:hover {
-        opacity: 0.7;
-        cursor: pointer;
-    }
-    
+  .homeBtn:hover {
+    opacity: 0.7;
+    cursor: pointer;
+  }
 }

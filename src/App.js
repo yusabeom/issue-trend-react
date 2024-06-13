@@ -15,6 +15,7 @@ function App() {
         <Route path='/' element={<Intro />} />
         <Route path='/home' element={<Home />} />
         <Route path='/news' element={<NewsTemplate />} />
+        <Route path='/news/:id' element={<NewsTemplate />} />
         <Route path='/join' element={<Join />} />
         <Route path='/chat' element={<ChatModal />} />
       </Routes>

@@ -1,8 +1,10 @@
-import './Chat.css';
+import './Chat.scss';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import logo from '../../assets/img/iologo.png';
 import { io } from 'socket.io-client';
 import AuthContext from '../../utils/AuthContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 
 const webSocket = io('http://localhost:5000');
 
@@ -61,7 +63,7 @@ function Chat() {
       setMsgList((prev) => [
         ...prev,
         {
-          msg: `${id} joins the chat`,
+          msg: `${id} 님이 입장하셨습니다`,
           type: 'welcome',
           id: '',
         },
@@ -132,7 +134,7 @@ function Chat() {
       <div className='wrap'>
         {isLogin ? (
           <div className='chat-box'>
-            <h3>Login as a {userId}</h3>
+            {/* <h3>Login as a {userId}</h3> */}
 
             <ul className='chat'>
               {/* 서버로부터 받은 메세지들 */}
@@ -159,15 +161,17 @@ function Chat() {
                     data-id={v.id}
                     onClick={onSetPrivateTarget}
                   >
-                    <div
-                      className={
-                        v.id === privateTarget ? 'private-user' : 'userId'
-                      }
-                      data-id={v.id}
-                      name={v.id}
-                    >
-                      {v.id}
-                    </div>
+                    {v.type !== 'me' && (
+                      <div
+                        className={
+                          v.id === privateTarget ? 'private-user' : 'userId'
+                        }
+                        data-id={v.id}
+                        name={v.id}
+                      >
+                        {v.id}
+                      </div>
+                    )}
                     <div className={v.type} data-id={v.id} name={v.id}>
                       {v.msg}
                     </div>
@@ -183,11 +187,13 @@ function Chat() {
                 <div className='private-target'>{privateTarget}</div>
               )}
               <input
-                placeholder='Enter your message'
+                placeholder='메세지를 입력하세요'
                 onChange={onChangeMsgHandler}
                 value={msg}
               />
-              <button type='submit'>send</button>
+              <button type='submit' className='msgSendButton'>
+                <FontAwesomeIcon icon={faPaperPlane} />
+              </button>
             </form>
           </div>
         ) : (
