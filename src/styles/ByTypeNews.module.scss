@@ -3,12 +3,12 @@
 .newsTitle {
     font-size: 18px;
     text-align: left;
-    margin: 60px 190px 20px; 
+    margin: 60px 220px 20px; 
 }
 
 .itemContainer {
-    width: 780px;
-    height: 600px;
+    width: 700px;
+    height: 570px;
     margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
@@ -18,8 +18,8 @@
     background-color: $darkBackground;
 
     li {
-        width: 240px;
-        height: 180px;
+        width: 220px;
+        height: 175px;
         background-color: white;
         border: solid 1px;
         color: black;

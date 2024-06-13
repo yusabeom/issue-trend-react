@@ -4,16 +4,16 @@ import Header from '../../common/layout/Header';
 import Footer from '../../common/layout/Footer';
 import WordCloud from './WordCloud';
 import CategoryNews from './CategoryNews';
+import SearchAndGraph from './SearchAndGraph';
 
 const Home = () => {
   const { home } = styles;
 
   return (
     <>
-      <Header />
       <WordCloud />
       <CategoryNews />
-      <Footer />
+      <SearchAndGraph />
     </>
   );
 };
