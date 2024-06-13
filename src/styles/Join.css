@@ -37,6 +37,18 @@
 
 /*** 회원 가입 폼 ***/
 
+/* sns 회원가입 텍스트,
+회원가입 폼 내부의 소제목(ex. 아이디) */
+.user-input-form label,
+div h6,
+div p {
+  font-weight: 400;
+  font-size: small;
+  color: rgba(0, 0, 0);
+
+  margin-top: 10px;
+}
+
 /* 사진 올리기 */
 .image_container {
   flex-direction: column;
@@ -45,11 +57,12 @@
   align-items: center;
 }
 
-img {
-  width: 30%;
+/* 사용자가 입력하는 */
+label,
+h6 {
+  font-weight: 700;
 }
 
-/* 사용자가 입력하는 */
 .user-input-form {
   padding-left: 5px;
 }
@@ -81,4 +94,24 @@ img {
   padding: 5px;
   width: 22%;
   text-align: center;
+}
+
+/* input창과 버튼 */
+.user-input-form .btn-input {
+  width: 100%;
+}
+
+.user-input-form .btn-input input {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #94989b;
+  width: 75%;
+  margin: 10px 5% 0px 0px;
+}
+
+.user-input-form .btn-input button {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #94989b;
+  width: 20%;
 }
