@@ -18,6 +18,7 @@ function Chat() {
   const [isLogin, setIsLogin] = useState(false); // 로그인 여부
   const [msg, setMsg] = useState(''); // 유저가 보낼 메세지
   const [msgList, setMsgList] = useState([]); // 서버로부터 받은 메세지들
+  const [newMessages, setNewMessages] = useState([]); // 새 메세지
 
   const [privateTarget, setPrivateTarget] = useState(''); // 1:1 대화 상대 아이디
 
@@ -76,10 +77,22 @@ function Chat() {
     };
   }, []);
 
-  // 채팅창의 대화 목록 스크롤 다운
+  // 새 메세지가 올 때마다
   useEffect(() => {
+    // 1. 채팅창의 대화 목록 스크롤 다운
     scrollToBottom();
-  }, [msgList]); // 메세지가 올 때마다 아래로 내리기
+
+    // 2. 최신 메세지를 애니메이션 클래스와 함께 추가
+    if (msgList.length > 0) {
+      const latestMessage = msgList[msgList.length - 1]; // 마지막 메세지
+      setNewMessages((prev) => [...prev, latestMessage]);
+
+      // 애니메이션 클래스를 제거
+      setTimeout(() => {
+        setNewMessages((prev) => prev.filter((msg) => msg !== latestMessage));
+      }, 500); // 애니메이션 지속 시간과 일치
+    }
+  }, [msgList]);
 
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
@@ -147,7 +160,7 @@ function Chat() {
 
                 v.type === 'welcome' ? (
                   // 입장 메세지
-                  <li className='welcome'>
+                  <li className='welcome' key={i}>
                     <div className='line' />
                     <div>{v.msg}</div>
                     <div className='line' />
@@ -155,7 +168,7 @@ function Chat() {
                 ) : (
                   // 일반 메세지, className : me or other / private
                   <li
-                    className={v.type}
+                    className={`${v.type} ${newMessages.includes(v) ? 'new-message' : ''}`}
                     key={`${i}_li`}
                     name={v.id}
                     data-id={v.id}
@@ -192,7 +205,7 @@ function Chat() {
                 value={msg}
               />
               <button type='submit' className='msgSendButton'>
-                <FontAwesomeIcon icon={faPaperPlane} />
+                <FontAwesomeIcon icon={faPaperPlane} size='2x' />
               </button>
             </form>
           </div>

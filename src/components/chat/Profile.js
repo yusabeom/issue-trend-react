@@ -1,7 +1,12 @@
 import React from 'react';
 import styles from './Profile.module.scss';
 
-const Profile = () => {
+const Profile = ({ clickName }) => {
+  const clickNameHandler = (e) => {
+    const clickedUserName = e.target.getAttribute('data-name');
+    // console.log(clickedUserName);
+    clickName(clickedUserName);
+  };
   return (
     <div className={styles.profile}>
       <ul className='userList'>
@@ -12,7 +17,13 @@ const Profile = () => {
               alt='프로필사진'
             />
           </div>
-          <div className={styles.profileName}>춘식이</div>
+          <div
+            className={styles.profileName}
+            onClick={clickNameHandler}
+            data-name={'cs'}
+          >
+            춘식이
+          </div>
         </li>
         <li>
           <div className={styles.profileImgContainer}>
@@ -21,7 +32,13 @@ const Profile = () => {
               alt='프로필사진'
             />
           </div>
-          <div className={styles.profileName}>user2</div>
+          <div
+            className={styles.profileName}
+            onClick={clickNameHandler}
+            data-name={'madongsuk'}
+          >
+            user2
+          </div>
         </li>
         <li>
           <div className={styles.profileImgContainer}>
@@ -30,7 +47,14 @@ const Profile = () => {
               alt='프로필사진'
             />
           </div>
-          <div className={styles.profileName}> user3</div>
+          <div
+            className={styles.profileName}
+            onClick={clickNameHandler}
+            data-name={'caocao'}
+          >
+            {' '}
+            user3
+          </div>
         </li>
         <li>
           <div className={styles.profileImgContainer}>
@@ -39,7 +63,13 @@ const Profile = () => {
               alt='프로필사진'
             />
           </div>
-          <div className={styles.profileName}>user4</div>
+          <div
+            className={styles.profileName}
+            onClick={clickNameHandler}
+            data-name={'jjang'}
+          >
+            user4
+          </div>
         </li>
       </ul>
     </div>
