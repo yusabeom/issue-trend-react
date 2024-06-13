@@ -24,6 +24,7 @@ const ChatModal = () => {
   const [open, setOpen] = useState(false); // 채팅 모달창을 열었는지 여부
   const [isUserInfoVisible, setIsUserInfoVisible] = useState(false); // 유저 정보창 렌더링 여부
   const [clickedUserName, setClickedUserName] = useState(''); // 클릭한 유저 이름
+  const [animate, setAnimate] = useState(false); // 유저 정보창 애니메이션
 
   // Profile.js의 특정 user의 이름을 onClick하면 그 user의 이름 정보를 부모 컴포넌트인 ChatModal로 전달
   // 이름과 함께 UserInfo.js를 display 하면서 그 자식 컴포넌트에게 이름을 전달
@@ -38,7 +39,13 @@ const ChatModal = () => {
   };
 
   // 유저 이름을 클릭할 때마다, 유저 창 애니메이션 부여
-  useEffect(() => {}, [clickedUserName]);
+  useEffect(() => {
+    if (clickedUserName) {
+      setAnimate(true);
+      const timer = setTimeout(() => setAnimate(false), 500); // 애니메이션 지속 시간 (0.5초 후 클래스 제거)
+      return () => clearTimeout(timer);
+    }
+  }, [clickedUserName]);
 
   return (
     <div>
