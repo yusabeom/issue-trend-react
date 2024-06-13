@@ -2,7 +2,6 @@ import './Chat.css';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import logo from '../../assets/img/iologo.png';
 import { io } from 'socket.io-client';
-import AuthContext from '../../utils/AuthContext';
 
 const webSocket = io('http://localhost:5000');
 

@@ -1,5 +1,4 @@
 import React, { useRef, useState } from 'react';
-import { useDaumPostcodePopup } from 'react-daum-postcode';
 import { Button, Container, Grid, TextField, Typography } from '@mui/material';
 
 const Join = () => {
