@@ -1,0 +1,18 @@
+@import 'styles.scss';
+
+
+
+.graphContainer {
+    width: 55%;
+    background-color: $main;
+
+    .title {
+        width: 60%;
+        margin: 0 auto;
+        padding: 200px 0 20px;
+        color: $puppleBackground;
+        text-align: center;
+        font-size: 23px;
+        border-bottom: solid 1px;
+    }
+}

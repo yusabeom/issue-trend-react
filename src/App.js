@@ -1,9 +1,10 @@
 import NewsTemplate from './components/board/NewsTemplate';
 import Intro from './components/main/Intro';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Router, Routes } from 'react-router-dom';
 import Home from './components/main/Home';
 import Join from './components/user/Join';
 import './App.css';
+import Layout from './common/layout/Layout';
 import ChatModal from './components/chat/ChatModal';
 
 function App() {
