@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../styles/Join.css';
+import styles from '../../styles/Join.module.css';
 import anonymous from '../../assets/img/anonymous.jpg';
 import { Button } from '@mui/material';
 import Header from '../../common/layout/Header';
