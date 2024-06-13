@@ -1,4 +1,3 @@
-
 import NewsTemplate from './components/board/NewsTemplate';
 import Intro from './components/main/Intro';
 import { Route, Routes } from 'react-router-dom';
