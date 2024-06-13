@@ -50,7 +50,6 @@ const Filter = () => {
   // 태그가 바뀔 때마다 태그에 관련된 필터링을 서버에 요청
   useEffect(() => {
     // fetch() or axios()
-    console.log(tags);
   }, [tags]);
 
   // 태그에 요소 추가
@@ -116,6 +115,7 @@ const Filter = () => {
       console.log('enter!!');
       setSearchValue(inputValue);
       setInputValue('');
+      setKeywordMsg('0');
     }
   };
 
