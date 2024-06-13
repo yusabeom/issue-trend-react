@@ -8,7 +8,7 @@ const CategoryNews = () => {
   const navigate = useNavigate();
 
   const goNewsList = () => {
-    navigate('/newsList');
+    navigate('/news');
   };
 
   return (
