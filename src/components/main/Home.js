@@ -11,11 +11,9 @@ const Home = () => {
 
   return (
     <>
-      <Header />
       <WordCloud />
       <CategoryNews />
       <SearchAndGraph />
-      <Footer />
     </>
   );
 };
