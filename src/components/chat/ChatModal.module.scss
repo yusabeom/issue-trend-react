@@ -1,0 +1,46 @@
+$buttonPupple: #807aa0;
+.chatWrapper {
+  width: 700px;
+  .headerStyle {
+    background: $buttonPupple;
+    color: #fff;
+    padding: 0.8rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .icon {
+      cursor: pointer;
+      float: right;
+    }
+  }
+
+  .chatContents {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.infoWrapper {
+  width: 400px;
+  // border: 1px tomato dashed;
+}
+.noWrapper {
+  width: 0;
+}
+
+.fadeIn {
+  animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    // transform: translateX(-50px);
+    width: 0;
+  }
+  to {
+    opacity: 1;
+    // transform: translateY(0);
+    width: 400px;
+  }
+}

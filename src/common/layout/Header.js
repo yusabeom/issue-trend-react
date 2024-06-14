@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import logo from '../../assets/img/logo.png';
 import styles from '../../styles/Header.module.scss';
-import useNavigation from '../func/useNavigation';
+import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
   const { goLogin, goJoin, goHome, goNews, goBoard } = useNavigation();

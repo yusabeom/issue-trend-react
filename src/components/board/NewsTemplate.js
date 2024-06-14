@@ -79,8 +79,6 @@ const NewsTemplate = () => {
         <Filter />
         <NewsList newsList={newsList} page={page} size={size} />
       </div>
-
-      <Footer />
     </>
   );
 };
