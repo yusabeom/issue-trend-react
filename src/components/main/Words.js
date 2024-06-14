@@ -73,6 +73,7 @@ const Words = () => {
         weightFactor: function (size) {
           return Math.sqrt(size) * 6;
         },
+        fontWeight: 'bold',
         color: function () {
           return (
             'rgb(' +

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import logo from '../../assets/img/logo.png';
 import styles from '../../styles/Header.module.scss';
-import { useNavigate } from 'react-router-dom';
+import useNavigation from '../func/useNavigation';
 
 const Header = () => {
+  const { goLogin, goJoin, goHome, goNews, goBoard, goChat } = useNavigation();
+
   const {
     header,
     headerContainer,
@@ -19,11 +21,6 @@ const Header = () => {
     changeBtnGroup,
   } = styles;
 
-  const navigate = useNavigate();
-  const joinClickHandler = () => {
-    navigate('/join');
-  };
-
   // 스크롤시 헤더 색상 변경
   const [scrollPosition, setScrollPosition] = useState(0);
 
@@ -37,14 +34,6 @@ const Header = () => {
       window.removeEventListener('scroll', updateScroll);
     };
   }, []);
-
-  const goHome = () => {
-    navigate('/home');
-  };
-
-  const goNews = () => {
-    navigate('/newsList');
-  };
 
   return (
     <header
@@ -71,9 +60,13 @@ const Header = () => {
             뉴스{' '}
           </div>
           <div>|</div>
-          <div className={items}>게시판 </div>
+          <div className={items} onClick={goBoard}>
+            게시판{' '}
+          </div>
           <div>|</div>
-          <div className={items}>실시간</div>
+          <div className={items} onClick={goChat}>
+            실시간
+          </div>
         </div>
 
         <div
@@ -81,8 +74,10 @@ const Header = () => {
             scrollPosition < 10 ? btnGroup : `${btnGroup} ${changeBtnGroup}`
           }
         >
-          <div className={`${btn} ${btn1}`}>로그인</div>
-          <div className={`${btn} ${btn2}`} onClick={joinClickHandler}>
+          <div className={`${btn} ${btn1}`} onClick={goLogin}>
+            로그인
+          </div>
+          <div className={`${btn} ${btn2}`} onClick={goJoin}>
             회원가입
           </div>
         </div>
