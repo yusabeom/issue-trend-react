@@ -18,6 +18,7 @@ function App() {
           <Route path='/news/:id' element={<NewsTemplate />} />
           <Route path='/join' element={<Join />} />
           <Route path='/report' element={<ReportTemplate />} />
+          <Route path='/report/:id' element={<ReportTemplate />} />
         </Route>
       </Routes>
     </>
