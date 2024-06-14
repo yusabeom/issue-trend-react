@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import logo from '../../assets/img/logo.png';
 import styles from '../../styles/Header.module.scss';
 import useNavigation from '../func/useNavigation';
 
 const Header = () => {
-  const { goLogin, goJoin, goHome, goNews, goBoard, goChat } = useNavigation();
+  const { goLogin, goJoin, goHome, goNews, goBoard } = useNavigation();
 
   const {
     header,
@@ -26,6 +26,14 @@ const Header = () => {
 
   const updateScroll = () => {
     setScrollPosition(window.scrollY || document.documentElement.scrollTop);
+  };
+
+  const childButtonRef = useRef(null);
+
+  // '실시간' 메뉴 클릭 이벤트 핸들러
+  const openChatModal = () => {
+    console.log('click chat Button!');
+    childButtonRef.current.handleOpen();
   };
 
   useEffect(() => {
@@ -64,8 +72,11 @@ const Header = () => {
             게시판{' '}
           </div>
           <div>|</div>
-          <div className={items} onClick={goChat}>
+          <div className={items} onClick={openChatModal}>
             실시간
+          </div>
+          <div style={{ display: 'none' }}>
+            <ChatModal ref={childButtonRef} />
           </div>
         </div>
 

@@ -13,7 +13,6 @@ const useNavigation = () => {
     goHome: goPage('/home'),
     goNews: goPage('/news'),
     goBoard: goPage('/board'),
-    goChat: goPage('/chat'),
   };
 };
 
