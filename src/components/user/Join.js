@@ -29,6 +29,7 @@ const Join = () => {
     open({ top: 50, left: 50, oncomplete: handleComplete });
   };
   */
+  const [userValue, setUserValue] = useState({ email: '', password: '' });
 
   // 검증 메세지에 대한 상태변수 관리
   // 입력값과 메세지는 따로 상태관리(메세지는 백엔드로 보낼 필요 없다.)
@@ -36,7 +37,6 @@ const Join = () => {
   const [message, setMessage] = useState({
     email: '',
     password: '',
-    passwordCheck: '',
   });
 
   // 검증 완료 체크에 대한 상태변수 관리
@@ -47,6 +47,24 @@ const Join = () => {
     password: false,
     passwordCheck: false,
   });
+
+  const saveInputState = ({ key, inputValue, msg, flag }) => {
+    setUserValue((oldVal) => {
+      return { ...oldVal, [key]: inputValue };
+    });
+
+    setMessage((oldMsg) => {
+      return { ...oldMsg, [key]: msg };
+    });
+
+    setCorrect((oldCorrect) => {
+      return { ...oldCorrect, [key]: flag };
+    });
+  };
+
+  const fetchDuplicateCheck = (email) => {
+    // fetch();
+  };
 
   const emailHandler = (e) => {
     const emailRegex = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
@@ -60,8 +78,15 @@ const Join = () => {
     } else if (!emailRegex.test(inputValue)) {
       msg = '이메일 형식이 올바르지 않습니다.';
     } else {
-      // fetchDuplicateCheck(inputValue);
+      fetchDuplicateCheck(inputValue);
     }
+
+    saveInputState({
+      key: 'email',
+      inputValue,
+      msg,
+      flag,
+    });
   };
 
   // 검증된 데이터를 각각의 상태변수에 저장해주는 함수
@@ -119,9 +144,11 @@ const Join = () => {
             />
 
             <span
-            /* style={correct.userName ? { color: 'green' } : { color: red }}
-             */
-            ></span>
+              id='check-span'
+              style={correct.email ? { color: 'green' } : { color: 'red' }}
+            >
+              {message.email}
+            </span>
           </Grid>
 
           <Grid item xs={12}>
@@ -133,7 +160,7 @@ const Join = () => {
               label='영어/특수문자/숫자를 조합해 8자 이상 입력해주세요'
               autoComplete='current-password'
             />
-            <span></span>
+            <span id='check-span'></span>
           </Grid>
           <Grid item xs={12}>
             <TextField
