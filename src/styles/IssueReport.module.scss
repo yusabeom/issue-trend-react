@@ -1,0 +1,42 @@
+.background {
+  margin-top: 15vh;
+  width: 100vw;
+  height: 30vh;
+
+  background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.6)),
+    url('../assets/img/newspapers.jpg');
+
+  background-position: 50% 40%;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  .content {
+    z-index: 1;
+    color: #fff;
+    padding: 3.4rem 10rem;
+    h2 {
+      font-weight: 700;
+      font-size: 30px;
+      margin-bottom: 3.5rem;
+    }
+    h3 {
+      font-size: 18px;
+      margin-bottom: 0.7rem;
+    }
+  }
+}
+
+.btn {
+  margin: 1rem;
+  &-pulse {
+    &:hover {
+      box-shadow: 0 0 0 18px transparent;
+      animation: pulse 1s;
+    }
+  }
+}
+@keyframes pulse {
+  from {
+    box-shadow: 0 0 0 0 var(--btn-bg);
+  }
+}

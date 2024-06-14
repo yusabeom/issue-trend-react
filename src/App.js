@@ -6,6 +6,7 @@ import Join from './components/user/Join';
 import './App.css';
 import Layout from './common/layout/Layout';
 import ChatModal from './components/chat/ChatModal';
+import ReportTemplate from './components/board/ReportTemplate';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path='/news/:id' element={<NewsTemplate />} />
           <Route path='/join' element={<Join />} />
           <Route path='/chat' element={<ChatModal />} />
+          <Route path='/report' element={<ReportTemplate />} />
         </Route>
       </Routes>
     </>
