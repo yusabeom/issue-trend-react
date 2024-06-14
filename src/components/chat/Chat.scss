@@ -1,12 +1,15 @@
 .app-container {
-  height: 60vh;
+  height: 70vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  width: 60%;
 }
 .app-container > .wrap {
   /* margin-top: 10vh; */
+  height: 100%;
+  width: 100%;
 }
 .app-container > .wrap > .login-box > .login-title {
   display: flex;
@@ -41,15 +44,25 @@
   color: #fff;
 }
 
+.app-container > .wrap > .chat-box {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 .app-container > .wrap > .chat-box .chat {
   list-style: none;
-  padding: 10px;
+
   margin: 0;
-  border: 1px solid #cecece;
-  border-radius: 10px;
-  width: 300px;
-  height: 300px;
+
+  border-bottom: 1px #dddddd solid;
+  width: 100%;
+  height: 90%;
   overflow: auto;
+}
+.app-container > .wrap > .chat-box .chat li {
+  padding: 1.1rem;
 }
 .app-container > .wrap > .chat-box .chat li.other {
   text-align: left;
@@ -77,24 +90,25 @@
   background-color: #cecece;
 }
 .app-container > .wrap > .chat-box .chat div.other {
-  padding: 5px;
+  padding: 6px 17px;
   display: inline-block;
   border-top-right-radius: 20px;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
-  background-color: #cecece;
+  background-color: #f2f0f0;
+  color: #585858;
 }
 .app-container > .wrap > .chat-box .chat div.me {
-  padding: 5px;
+  padding: 6px 17px;
   display: inline-block;
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
-  background-color: #000;
+  background-color: #9cb4e3;
   color: #fff;
 }
 .app-container > .wrap > .chat-box .chat div.private {
-  padding: 5px;
+  padding: 6px 17px;
   display: inline-block;
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
@@ -113,28 +127,73 @@
   font-weight: bold;
   color: red;
 }
+
+/* 채팅 입력창 */
 .app-container > .wrap > .chat-box .send-form {
   margin-top: 10px;
   display: flex;
   flex-direction: row;
-  gap: 10px;
+  height: 10%;
+  justify-content: center;
 }
 .app-container > .wrap > .chat-box .send-form input {
   width: 100%;
   border: 0;
   padding: 10px;
   border-radius: 5px;
-  background-color: #f6f6f6;
+  font-size: 20px;
 }
-.app-container > .wrap > .chat-box .send-form button {
+
+/* send 버튼 */
+.msgSendButton {
+  width: 60px;
+  height: 60px;
   border: 0;
   padding: 10px;
-  border-radius: 5px;
+  border-radius: 50%;
   background-color: #00d8ff;
+  color: #fff;
+  cursor: pointer;
+
+  // float: right;
+  top: 10%;
+  left: 0%;
+  transform: translate(-50%, -50%);
+
+  position: relative; /* 아이콘 이동을 위한 상대 위치 설정 */
+  overflow: hidden; /* 아이콘이 날아가는 애니메이션이 버튼 밖으로 나오지 않도록 설정 */
+
+  .fa-paper-plane {
+    transition:
+      transform 0.5s ease,
+      opacity 0.5s ease;
+  }
 }
+
+.msgSendButton:hover .fa-paper-plane {
+  transform: translate(50px, -50px); /* 아이콘을 오른쪽 위로 이동 */
+  opacity: 0; /* 아이콘 투명도 설정 */
+}
+
 .app-container > .wrap > .chat-box .send-form .private-target {
   border: 0;
   padding: 5px;
   color: green;
   font-weight: bold;
+}
+
+// 새 메세지 애니메이션
+.new-message {
+  animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

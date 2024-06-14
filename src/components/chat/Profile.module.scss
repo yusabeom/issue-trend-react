@@ -1,0 +1,46 @@
+$buttonPupple: rgb(128, 122, 160);
+
+.profile {
+  width: 40%;
+  background-color: rgba(128, 122, 160, 0.27);
+
+  li {
+    // border: 1px skyblue solid;
+    display: flex;
+    justify-content: space-evenly;
+    padding: 1.2rem;
+
+    // 프로필 이미지 컨테이너
+    .profileImgContainer {
+      width: 3rem;
+      height: 3rem;
+      overflow: hidden;
+      border-radius: 50%;
+      position: relative;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        cursor: pointer;
+      }
+    }
+
+    .profileName {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .profileName:hover {
+      color: $buttonPupple;
+    }
+
+    // 프로필 사진에 hover했을 때 프로필 이름의 색깔이 바뀜
+    .profileImgContainer:hover + .profileName {
+      color: $buttonPupple;
+    }
+  }
+}
