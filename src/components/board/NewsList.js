@@ -35,7 +35,7 @@ const reducer = (state, action) => {
           state.newsList
             .slice(
               state.curPage * 5,
-              Math.min(state.curPage * 5 + 5, state.newsList.length),
+              Math.min(state.curPage * 5 + 5, state.newsList.length || 0),
             )
             .map((news) => <NewsItem key={news.id} article={news} />),
         ],
@@ -46,10 +46,10 @@ const reducer = (state, action) => {
       return {
         ...state,
         newsList: action.newsList,
-        restPage: action.newsList.length - 5,
-        hasMore: action.newsList.length - 5 > 0,
+        restPage: action.newsList.length || 0 - 5,
+        hasMore: action.newsList.length || 0 - 5 > 0,
         components: action.newsList
-          .slice(0, Math.min(5, action.newsList.length))
+          .slice(0, Math.min(5, action.newsList.length || 0))
           .map((news) => <NewsItem key={news.id} article={news} />),
       };
   }

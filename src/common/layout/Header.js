@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import logo from '../../assets/img/logo.png';
 import styles from '../../styles/Header.module.scss';
 import { useNavigate } from 'react-router-dom';
+import ChatModal from '../../components/chat/ChatModal';
 
 const Header = () => {
   const {
