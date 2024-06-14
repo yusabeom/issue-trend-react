@@ -7,6 +7,7 @@ const Profile = ({ clickName }) => {
     // console.log(clickedUserName);
     clickName(clickedUserName);
   };
+
   return (
     <div className={styles.profile}>
       <ul className='userList'>

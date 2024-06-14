@@ -1,8 +1,8 @@
-import React, { useRef } from 'react';
-import { useDaumPostcodePopup } from 'react-daum-postcode';
+import React, { useRef, useState } from 'react';
 import { Button, Container, Grid, TextField, Typography } from '@mui/material';
 
 const Join = () => {
+  /*
   const open = useDaumPostcodePopup(
     '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js',
   );
@@ -28,6 +28,43 @@ const Join = () => {
   const addressClickHandler = () => {
     open({ top: 50, left: 50, oncomplete: handleComplete });
   };
+  */
+
+  // 검증 메세지에 대한 상태변수 관리
+  // 입력값과 메세지는 따로 상태관리(메세지는 백엔드로 보낼 필요 없다.)
+  // 메세지 영역은 각 입력창마다 존재 (이름, 이메일, 비밀번호 ...)하기 때문에 객체 형태로 한 번에 관리
+  const [message, setMessage] = useState({
+    email: '',
+    password: '',
+    passwordCheck: '',
+  });
+
+  // 검증 완료 체크에 대한 상태변수 관리
+  // 각각의 입력창마다 유효성 검증 상태를 관리해야 하기 때문에 객체로 선언
+  // 상태를 유지하려는 이유 --> 스타일, 마지막에 회원가입 버튼 누를 때 까지 검증상태를 유지해야 하기 때문
+  const [correct, setCorrect] = useState({
+    email: false,
+    password: false,
+    passwordCheck: false,
+  });
+
+  const emailHandler = (e) => {
+    const emailRegex = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
+    const inputValue = e.target.value;
+
+    let msg;
+    let flag = false;
+
+    if (!inputValue) {
+      msg = '이메일은 필수값 입니다.';
+    } else if (!emailRegex.test(inputValue)) {
+      msg = '이메일 형식이 올바르지 않습니다.';
+    } else {
+      // fetchDuplicateCheck(inputValue);
+    }
+  };
+
+  // 검증된 데이터를 각각의 상태변수에 저장해주는 함수
 
   const $fileTag = useRef();
   return (
@@ -71,14 +108,14 @@ const Join = () => {
           <Grid item xs={12}>
             <TextField
               autoComplete='fname'
-              name='username'
+              name='email'
               variant='outlined'
               required
               fullWidth
-              id='username'
+              id='email'
               label='이메일을 입력하세요'
               autoFocus
-              // onChange = {nameHandler}
+              onChange={emailHandler}
             />
 
             <span
@@ -209,7 +246,7 @@ const Join = () => {
               style={{ background: '#38d9a9' }}
               fullWidth
               variant='contained'
-              onClick={addressClickHandler}
+              // onClick={addressClickHandler}
             >
               우편번호 찾기
             </Button>

@@ -2,7 +2,6 @@ import './Chat.scss';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import logo from '../../assets/img/iologo.png';
 import { io } from 'socket.io-client';
-import AuthContext from '../../utils/AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 
@@ -18,9 +17,9 @@ function Chat() {
   const [isLogin, setIsLogin] = useState(false); // 로그인 여부
   const [msg, setMsg] = useState(''); // 유저가 보낼 메세지
   const [msgList, setMsgList] = useState([]); // 서버로부터 받은 메세지들
-  const [newMessages, setNewMessages] = useState([]); // 새 메세지
 
   const [privateTarget, setPrivateTarget] = useState(''); // 1:1 대화 상대 아이디
+  const [newMessages, setNewMessages] = useState([]); // 새 메세지
 
   /* ================ 1. useEffect : 최초 렌더링 시 발생하는 이벤트 (서버로부터 리시브) ================ */
   // 이벤트 리스너 (from server) : sMessage - 서버로부터 받은 메세지
@@ -64,7 +63,7 @@ function Chat() {
       setMsgList((prev) => [
         ...prev,
         {
-          msg: `${id} 님이 입장하셨습니다`,
+          msg: `${id} joins the chat`,
           type: 'welcome',
           id: '',
         },
@@ -92,7 +91,7 @@ function Chat() {
         setNewMessages((prev) => prev.filter((msg) => msg !== latestMessage));
       }, 500); // 애니메이션 지속 시간과 일치
     }
-  }, [msgList]);
+  }, [msgList]); // 메세지가 올 때마다 아래로 내리기
 
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
@@ -147,13 +146,11 @@ function Chat() {
       <div className='wrap'>
         {isLogin ? (
           <div className='chat-box'>
-            {/* <h3>Login as a {userId}</h3> */}
-
             <ul className='chat'>
               {/* 서버로부터 받은 메세지들 */}
               {msgList.map((v, i) =>
                 // 입장 메세지
-                /* 
+                /*
                 v = { msg: data, type: 'other', id }
                 i =
                 */
@@ -174,17 +171,15 @@ function Chat() {
                     data-id={v.id}
                     onClick={onSetPrivateTarget}
                   >
-                    {v.type !== 'me' && (
-                      <div
-                        className={
-                          v.id === privateTarget ? 'private-user' : 'userId'
-                        }
-                        data-id={v.id}
-                        name={v.id}
-                      >
-                        {v.id}
-                      </div>
-                    )}
+                    <div
+                      className={
+                        v.id === privateTarget ? 'private-user' : 'userId'
+                      }
+                      data-id={v.id}
+                      name={v.id}
+                    >
+                      {v.id}
+                    </div>
                     <div className={v.type} data-id={v.id} name={v.id}>
                       {v.msg}
                     </div>
@@ -200,7 +195,7 @@ function Chat() {
                 <div className='private-target'>{privateTarget}</div>
               )}
               <input
-                placeholder='메세지를 입력하세요'
+                placeholder='메세지를 입력해주세요'
                 onChange={onChangeMsgHandler}
                 value={msg}
               />

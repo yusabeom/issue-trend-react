@@ -1,5 +1,4 @@
 $buttonPupple: #807aa0;
-
 .chatWrapper {
   width: 700px;
   .headerStyle {
@@ -9,7 +8,6 @@ $buttonPupple: #807aa0;
     display: flex;
     justify-content: space-between;
     align-items: center;
-
     .icon {
       cursor: pointer;
       float: right;
@@ -25,7 +23,6 @@ $buttonPupple: #807aa0;
 .infoWrapper {
   width: 200px;
 }
-
 .noWrapper {
   width: 0;
 }
