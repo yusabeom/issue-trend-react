@@ -5,7 +5,8 @@ import { io } from 'socket.io-client';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 
-const webSocket = io('http://localhost:5000');
+// const webSocket = io('http://localhost:5000');
+const roomSocket = io('http://localhost:5000/room');
 
 // 화면에는 유저 이름(userName)을 보여주고, 서버에서는 socket.id로 식별한다.
 function Chat() {
@@ -20,11 +21,12 @@ function Chat() {
 
   const [privateTarget, setPrivateTarget] = useState(''); // 1:1 대화 상대 아이디
   const [newMessages, setNewMessages] = useState([]); // 새 메세지
+  const [roomNumber, setRoomNumber] = useState('1'); // 선택한 방 번호
 
   /* ================ 1. useEffect : 최초 렌더링 시 발생하는 이벤트 (서버로부터 리시브) ================ */
   // 이벤트 리스너 (from server) : sMessage - 서버로부터 받은 메세지
   useEffect(() => {
-    if (!webSocket) return;
+    if (!roomSocket) return;
 
     console.log('첫번째 useEffect 실행!', userId);
 
@@ -43,36 +45,36 @@ function Chat() {
     }
 
     // 메세지 수신
-    webSocket.on('sMessage', sMessageCallback);
+    roomSocket.on('sMessage', sMessageCallback);
     return () => {
       // useEffect 이벤트 리스너 해제
-      webSocket.off('sMessage', sMessageCallback);
+      roomSocket.off('sMessage', sMessageCallback);
     };
   }, []);
 
   // 로그인을 할 때 아이디를 받기 : sLogin - 아이디
   useEffect(() => {
     // console.log('두번째 useEffect 실행!');
-    if (!webSocket) return;
+    if (!roomSocket) return;
 
     function sLoginCallback(id) {
       // console.log('sLoginCallback 실행!', id);
-      setUserId(id);
+
       // console.log(userId);
       // setTimeout(() => {
       setMsgList((prev) => [
         ...prev,
         {
-          msg: `${id} joins the chat`,
+          msg: `${id} 님이 입장하셨습니다.`,
           type: 'welcome',
           id: '',
         },
       ]);
       // }, 500);
     }
-    webSocket.on('sLogin', sLoginCallback);
+    roomSocket.on('sLogin', sLoginCallback);
     return () => {
-      webSocket.off('sLogin', sLoginCallback);
+      roomSocket.off('sLogin', sLoginCallback);
     };
   }, []);
 
@@ -105,11 +107,11 @@ function Chat() {
   // 로그인을 할 때(submit) 아이디를 서버에 전송
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    webSocket.emit('login', userId); // 서버로 아이디 전송 (처음에는 이름으로 전달)
+    roomSocket.emit('login', { userId, roomNumber }); // 서버로 아이디 전송 (처음에는 이름으로 전달)
     setIsLogin(true);
   };
 
-  // input태그(입력창)의 내용이 바뀔 때 발생하는 이벤트 핸들러
+  // 유저 이름 input태그(입력창)의 내용이 바뀔 때 발생하는 이벤트 핸들러
   const onChangeUserIdHandler = (e) => {
     setUserId(e.target.value); // 값을 상태값에 저장
   };
@@ -125,7 +127,7 @@ function Chat() {
       id: userId,
       target: privateTarget, // 1:1 채팅 상대방 이메일도 같이 전송
     };
-    webSocket.emit('message', sendData); // 서버에 메세지(아이디, 메세지) 전송
+    roomSocket.emit('message', sendData); // 서버에 메세지(아이디, 메세지) 전송
     setMsgList((prev) => [...prev, { msg, type: 'me', id: userId }]); // 내가 보낸 메세지
     setMsg('');
   };
@@ -139,6 +141,11 @@ function Chat() {
   const onSetPrivateTarget = (e) => {
     const { id } = e.target.dataset;
     setPrivateTarget((prev) => (prev === id ? '' : id)); // toggle 방식
+  };
+
+  // 방번호를 선택하는 핸들러
+  const onRoomChangeHandler = (e) => {
+    setRoomNumber(e.target.value);
   };
 
   return (
@@ -212,9 +219,14 @@ function Chat() {
               <div>IOChat</div>
             </div>
             <form className='login-form' onSubmit={onSubmitHandler}>
+              {/* 방번호 선택 */}
+              <select onChange={onRoomChangeHandler}>
+                <option value='1'>Room 1</option>
+                <option value='2'>Room 2</option>
+              </select>
               <input
                 // style={{ display: 'none' }}
-                placeholder={userId}
+                // placeholder={userId}
                 onChange={onChangeUserIdHandler}
                 value={userId}
                 // readOnly

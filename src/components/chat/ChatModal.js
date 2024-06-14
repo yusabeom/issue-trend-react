@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Modal, Box, Button, Slide, Backdrop } from '@mui/material';
 import Chat from './Chat';
 import styles from './ChatModal.module.scss';
@@ -25,27 +25,42 @@ const ChatModal = () => {
   const [isUserInfoVisible, setIsUserInfoVisible] = useState(false); // 유저 정보창 렌더링 여부
   const [clickedUserName, setClickedUserName] = useState(''); // 클릭한 유저 이름
   const [animate, setAnimate] = useState(false); // 유저 정보창 애니메이션
+  const infoWrapperRef = useRef(null);
 
   // Profile.js의 특정 user의 이름을 onClick하면 그 user의 이름 정보를 부모 컴포넌트인 ChatModal로 전달
   // 이름과 함께 UserInfo.js를 display 하면서 그 자식 컴포넌트에게 이름을 전달
 
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
 
-  const getUserName = (name) => {
-    console.log(name);
-    setIsUserInfoVisible(true);
-    setClickedUserName(name);
+  // 모달 닫기
+  const handleClose = () => {
+    setOpen(false);
+    setIsUserInfoVisible(false); // 유저 정보창도 닫기
+    setClickedUserName('');
   };
 
-  // 유저 이름을 클릭할 때마다, 유저 창 애니메이션 부여
-  useEffect(() => {
-    if (clickedUserName) {
-      setAnimate(true);
-      const timer = setTimeout(() => setAnimate(false), 500); // 애니메이션 지속 시간 (0.5초 후 클래스 제거)
-      return () => clearTimeout(timer);
+  // 유저 정보창 닫기
+  const handleOutsideClick = (e) => {
+    if (infoWrapperRef.current && !infoWrapperRef.current.contains(e.target)) {
+      setIsUserInfoVisible(false);
     }
-  }, [clickedUserName]);
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleOutsideClick);
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+    };
+  }, []);
+
+  // 유저 이름 클릭 시
+  const getUserName = (name) => {
+    console.log(name);
+    setIsUserInfoVisible(true); // 유저 정보창 열기
+    setClickedUserName(name);
+    setAnimate(true);
+    setTimeout(() => setAnimate(false), 500);
+  };
 
   return (
     <div>
@@ -81,9 +96,14 @@ const ChatModal = () => {
                 <Profile clickName={getUserName} />
               </div>
             </div>
-            <div className={styles.infoWrapper}>
-              {isUserInfoVisible && <UserInfo userName={clickedUserName} />}
-            </div>
+
+            {isUserInfoVisible && (
+              <div
+                className={`${styles.infoWrapper} ${animate ? styles.fadeIn : ''}`}
+              >
+                <UserInfo userName={clickedUserName} openAnimate={animate} />
+              </div>
+            )}
           </Box>
         </Slide>
       </Modal>

@@ -21,8 +21,26 @@ $buttonPupple: #807aa0;
 }
 
 .infoWrapper {
-  width: 200px;
+  width: 400px;
+  // border: 1px tomato dashed;
 }
 .noWrapper {
   width: 0;
+}
+
+.fadeIn {
+  animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    // transform: translateX(-50px);
+    width: 0;
+  }
+  to {
+    opacity: 1;
+    // transform: translateY(0);
+    width: 400px;
+  }
 }
