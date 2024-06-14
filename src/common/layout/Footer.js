@@ -1,8 +1,16 @@
 import React from 'react';
 import styles from '../../styles/Footer.module.scss';
 import { Reset } from 'styled-reset';
+import CircleButton from '../ui/CircleButton';
+import { SlArrowUp } from 'react-icons/sl';
 
 const Footer = () => {
+  // 맨 위로 버튼 클릭 이벤트 핸들러
+  const ScrollToTopHandler = () => {
+    console.log('스크롤바!');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <>
       <footer className={styles.footer}>
@@ -31,6 +39,13 @@ const Footer = () => {
             <li>발행인 : 이슈트랜드</li>
             <li>등록일자 : 2024년 6월 10일</li>
           </ul>
+        </div>
+
+        <div className={styles.goUpButton}>
+          <CircleButton
+            text={<SlArrowUp />}
+            onClickEvent={ScrollToTopHandler}
+          />
         </div>
       </footer>
     </>

@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 
 // const webSocket = io('http://localhost:5000');
-const roomSocket = io('http://localhost:5000/room');
+const roomSocket = io('http://192.168.0.27:5000/room');
 
 // 화면에는 유저 이름(userName)을 보여주고, 서버에서는 socket.id로 식별한다.
 function Chat() {

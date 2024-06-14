@@ -8,6 +8,7 @@
     margin-top: 150px;
     
     align-content: center;
+    position: relative;
     
 
 
@@ -32,6 +33,12 @@
 
     .none li {
         cursor: default;
+    }
+
+    .goUpButton {
+        position: absolute;
+        bottom: 40px;
+        right: 40px;
     }
 
 }

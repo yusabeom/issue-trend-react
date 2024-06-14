@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from '../../styles/WordCloud.module.scss';
+import Words from './Words';
 
 const WordCloud = () => {
   const {
@@ -20,7 +21,9 @@ const WordCloud = () => {
         </div>
         <div className={boxContainer}>
           <div className={time}>2024년 06월 11일 18시 기준</div>
-          <div className={cloudContainer}>워드 클라우드</div>
+          <div className={cloudContainer}>
+            <Words />
+          </div>
         </div>
       </div>
     </>
