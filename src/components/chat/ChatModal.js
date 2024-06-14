@@ -1,4 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react';
 import { Modal, Box, Button, Slide, Backdrop } from '@mui/material';
 import Chat from './Chat';
 import styles from './ChatModal.module.scss';
@@ -18,7 +24,7 @@ const boxStyle = {
   display: 'flex',
 };
 
-const ChatModal = () => {
+const ChatModal = forwardRef((props, ref) => {
   const { headerStyle, chatContents, profile } = styles;
 
   const [open, setOpen] = useState(false); // 채팅 모달창을 열었는지 여부
@@ -61,6 +67,10 @@ const ChatModal = () => {
     setAnimate(true);
     setTimeout(() => setAnimate(false), 500);
   };
+
+  useImperativeHandle(ref, () => ({
+    handleOpen,
+  }));
 
   return (
     <div>
@@ -109,6 +119,7 @@ const ChatModal = () => {
       </Modal>
     </div>
   );
-};
+});
 
+ChatModal.displayName = 'ChatModal';
 export default ChatModal;
