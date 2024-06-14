@@ -20,8 +20,10 @@
     li {
         width: 220px;
         height: 175px;
-        background-color: white;
         border: solid 1px;
         color: black;
+        background-repeat: no-repeat;
+        background-size: cover;
+        border-color: transparent;
     }
 }

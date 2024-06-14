@@ -1,9 +1,57 @@
 import React from 'react';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import styles from '../../styles/ByTypeNews.module.scss';
+import news1 from '../../assets/img/news1.jpg';
+import news2 from '../../assets/img/news2.jpg';
+import news3 from '../../assets/img/news3.jpg';
+import news4 from '../../assets/img/news4.jpg';
+import news5 from '../../assets/img/news5.jpg';
+import news6 from '../../assets/img/news6.jpg';
+import news7 from '../../assets/img/news7.jpg';
+import news8 from '../../assets/img/news8.jpg';
+import news9 from '../../assets/img/news9.jpg';
 
 const ByTypeNews = () => {
   const { newsContainer, newsTitle, itemContainer } = styles;
+
+  const articles = [
+    {
+      articleCode: 123334,
+      img: news1,
+    },
+    {
+      articleCode: 123334,
+      img: news2,
+    },
+    {
+      articleCode: 123334,
+      img: news3,
+    },
+    {
+      articleCode: 123334,
+      img: news4,
+    },
+    {
+      articleCode: 123334,
+      img: news5,
+    },
+    {
+      articleCode: 123334,
+      img: news6,
+    },
+    {
+      articleCode: 123334,
+      img: news7,
+    },
+    {
+      articleCode: 123334,
+      img: news8,
+    },
+    {
+      articleCode: 123334,
+      img: news9,
+    },
+  ];
+
   return (
     <div>
       <select className={newsTitle}>
@@ -28,15 +76,12 @@ const ByTypeNews = () => {
       </select>
 
       <ul className={itemContainer}>
-        <li>1</li>
-        <li>2</li>
-        <li>3</li>
-        <li>4</li>
-        <li>5</li>
-        <li>6</li>
-        <li>7</li>
-        <li>8</li>
-        <li>9</li>
+        {articles.map((news) => (
+          <li
+            key={news.articleCode}
+            style={{ backgroundImage: `url(${news.img})` }}
+          ></li>
+        ))}
       </ul>
     </div>
   );
