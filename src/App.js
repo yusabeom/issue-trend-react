@@ -12,11 +12,13 @@ function App() {
     <>
       <Routes>
         <Route path='/' element={<Intro />} />
-        <Route path='/home' element={<Home />} />
-        <Route path='/news' element={<NewsTemplate />} />
-        <Route path='/news/:id' element={<NewsTemplate />} />
-        <Route path='/join' element={<Join />} />
-        <Route path='/chat' element={<ChatModal />} />
+        <Route path='/' element={<Layout />}>
+          <Route path='/home' element={<Home />} />
+          <Route path='/news' element={<NewsTemplate />} />
+          <Route path='/news/:id' element={<NewsTemplate />} />
+          <Route path='/join' element={<Join />} />
+          <Route path='/chat' element={<ChatModal />} />
+        </Route>
       </Routes>
     </>
   );
