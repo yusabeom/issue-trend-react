@@ -13,6 +13,12 @@
         color: $puppleBackground;
         text-align: center;
         font-size: 23px;
-        border-bottom: solid 1px;
+        font-weight: bold;
+        border-bottom: solid 2px;
+    }
+
+    .graph {
+        width: 70%;
+        margin: 50px auto;
     }
 }

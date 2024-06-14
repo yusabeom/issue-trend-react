@@ -1,10 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import logo from '../../assets/img/logo.png';
 import styles from '../../styles/Header.module.scss';
-import { useNavigate } from 'react-router-dom';
 import ChatModal from '../../components/chat/ChatModal';
+import useNavigation from '../func/useNavigation';
 
 const Header = () => {
+  const { goLogin, goJoin, goHome, goNews, goBoard } = useNavigation();
+
   const {
     header,
     headerContainer,
@@ -20,16 +22,19 @@ const Header = () => {
     changeBtnGroup,
   } = styles;
 
-  const navigate = useNavigate();
-  const joinClickHandler = () => {
-    navigate('/join');
-  };
-
   // 스크롤시 헤더 색상 변경
   const [scrollPosition, setScrollPosition] = useState(0);
 
   const updateScroll = () => {
     setScrollPosition(window.scrollY || document.documentElement.scrollTop);
+  };
+
+  const childButtonRef = useRef(null);
+
+  // '실시간' 메뉴 클릭 이벤트 핸들러
+  const openChatModal = () => {
+    console.log('click chat Button!');
+    childButtonRef.current.handleOpen();
   };
 
   useEffect(() => {
@@ -38,14 +43,6 @@ const Header = () => {
       window.removeEventListener('scroll', updateScroll);
     };
   }, []);
-
-  const goHome = () => {
-    navigate('/home');
-  };
-
-  const goNews = () => {
-    navigate('/newsList');
-  };
 
   return (
     <header
@@ -72,9 +69,16 @@ const Header = () => {
             뉴스{' '}
           </div>
           <div>|</div>
-          <div className={items}>게시판 </div>
+          <div className={items} onClick={goBoard}>
+            게시판{' '}
+          </div>
           <div>|</div>
-          <div className={items}>실시간</div>
+          <div className={items} onClick={openChatModal}>
+            실시간
+          </div>
+          <div style={{ display: 'none' }}>
+            <ChatModal ref={childButtonRef} />
+          </div>
         </div>
 
         <div
@@ -82,8 +86,10 @@ const Header = () => {
             scrollPosition < 10 ? btnGroup : `${btnGroup} ${changeBtnGroup}`
           }
         >
-          <div className={`${btn} ${btn1}`}>로그인</div>
-          <div className={`${btn} ${btn2}`} onClick={joinClickHandler}>
+          <div className={`${btn} ${btn1}`} onClick={goLogin}>
+            로그인
+          </div>
+          <div className={`${btn} ${btn2}`} onClick={goJoin}>
             회원가입
           </div>
         </div>
