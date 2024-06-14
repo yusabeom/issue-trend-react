@@ -20,6 +20,9 @@ $ npm install axios // 비동기 통신 라이브러리 (fetch보다 더 많은 
 $ npm i @fortawesome/fontawesome-svg-core
 $ npm i @fortawesome/free-solid-svg-icons @fortawesome/free-regular-svg-icons @fortawesome/free-brands-svg-icons
 $ npm i @fortawesome/react-fontawesome
+
+// Words.js 파일에서 필요한 라이브러리
+npm install wordcloud
 ```
 
 #### 3. commit 규칙

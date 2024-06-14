@@ -19,35 +19,35 @@ const ByTypeNews = () => {
       img: news1,
     },
     {
-      articleCode: 123334,
+      articleCode: 12343534,
       img: news2,
     },
     {
-      articleCode: 123334,
+      articleCode: 12334235334,
       img: news3,
     },
     {
-      articleCode: 123334,
+      articleCode: 12321323334,
       img: news4,
     },
     {
-      articleCode: 123334,
+      articleCode: 11235523334,
       img: news5,
     },
     {
-      articleCode: 123334,
+      articleCode: 12333234234,
       img: news6,
     },
     {
-      articleCode: 123334,
+      articleCode: 1231234656334,
       img: news7,
     },
     {
-      articleCode: 123334,
+      articleCode: 12396754334,
       img: news8,
     },
     {
-      articleCode: 123334,
+      articleCode: 12334326734,
       img: news9,
     },
   ];
