@@ -1,8 +1,9 @@
 import React from 'react';
+import styles from '../../styles/ReportItem.module.scss';
 
 const ReportItem = ({ board }) => {
   return (
-    <li>
+    <li className={styles.oneItem}>
       <p>{board.id}</p>
       <p>{board.region}</p>
       <p>{board.title}</p>
