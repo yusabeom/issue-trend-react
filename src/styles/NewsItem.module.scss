@@ -9,6 +9,12 @@
   position: relative;
   box-shadow: 3px 4px 5px 5px rgb(207, 207, 207);
 
+  cursor: pointer;
+
+  &:hover {
+    background: #000;
+  }
+
   .sImgContainer {
     display: flex;
     justify-content: center;

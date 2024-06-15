@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // curPage: 현재 페이지, size: 페이지 당 게시물 개수, count : 전체 페이지 수
-const Paging = ({ size, count, curPage }) => {
+const Paging = ({ size, count, curPage, type }) => {
   // const [page, setPage] = useState(1);
   // const [data, setData] = useState([]);
   // const [totalPages, setTotalPages] = useState(10); // 총 페이지 수
@@ -38,7 +38,7 @@ const Paging = ({ size, count, curPage }) => {
   // 페이지 버튼 클릭 이벤트 핸들러
   const handlePageChange = (e, value) => {
     // setPage(value); // 해당 버튼 페이지로 이동
-    navigate(`/report?page=${value}`);
+    navigate(`/${type}?page=${value}`);
   };
 
   return (

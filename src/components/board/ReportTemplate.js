@@ -7,7 +7,7 @@ import { useSearchParams } from 'react-router-dom';
 const ReportTemplate = () => {
   const [boardList, setBoardList] = useState([]); // 전체 게시물 수
   const [totalPages, setTotalPages] = useState(0); // 전체 페이지 수
-  const [pageBoardList, setPageBoardList] = useState([]); // 페이징 데이터
+  const [pageBoardList, setPageBoardList] = useState([]); // 페이징 데이터 (현재 페이지의 게시물)
 
   const [searchParams] = useSearchParams();
   const page = +searchParams.get('page') || 1; // 현재 페이지

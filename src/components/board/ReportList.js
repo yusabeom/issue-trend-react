@@ -15,7 +15,9 @@ const ReportList = ({ boardList, size, count, page }) => {
         ))}
       </ul>
       <div className={styles.pagination}>
-        {count > 1 && <Paging size={size} count={count} curPage={page} />}
+        {count > 1 && (
+          <Paging size={size} count={count} curPage={page} type={'report'} />
+        )}
       </div>
     </div>
   );
