@@ -1,4 +1,4 @@
-import { Pagination } from '@mui/material';
+import { Pagination, TablePagination } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -48,6 +48,14 @@ const Paging = ({ size, count, curPage, type }) => {
       onChange={handlePageChange}
       color='secondary'
     />
+    // <TablePagination
+    //   component='div'
+    //   count={count}
+    //   page={curPage}
+    //   onPageChange={handlePageChange}
+    //   rowsPerPage={size}
+    //   // onRowsPerPageChange={handleChangeRowsPerPage}
+    // />
   );
 };
 

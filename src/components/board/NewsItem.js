@@ -3,8 +3,8 @@ import styles from '../../styles/NewsItem.module.scss';
 
 // 뉴스 목록에서 한 뉴스를 나타내는 컴포넌트
 const NewsItem = ({ article }) => {
-  const { title, datetime, imgUrl } = article;
-  const { sArticle, sImgContainer, sDatetime, sTitle } = styles;
+  const { title, datetime, imgUrl, content } = article;
+  const { sArticle, sImgContainer, sDatetime, sTitle, sContent } = styles;
 
   return (
     <li className={sArticle}>
@@ -14,6 +14,7 @@ const NewsItem = ({ article }) => {
       <ul>
         <li className={sTitle}>{title}</li>
         <li className={sDatetime}>{datetime}</li>
+        <li className={sContent}>{content}</li>
       </ul>
     </li>
   );

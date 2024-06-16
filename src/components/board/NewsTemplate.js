@@ -8,7 +8,6 @@ import Header from '../../common/layout/Header';
 
 import Footer from '../../common/layout/Footer';
 import { useSearchParams } from 'react-router-dom';
-import handleRequest from '../../utils/handleRequest';
 import { API_BASE_URL } from '../../config/host-config';
 import axios from 'axios';
 
