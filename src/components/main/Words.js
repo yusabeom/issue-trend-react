@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import WordCloud from 'wordcloud';
 import heart from '../../assets/svg/cloud.svg';
 import { useNavigate } from 'react-router-dom';
-import '../../styles/Words.module.scss';
 
 const Words = ({ words }) => {
   const canvasRef = useRef(null);
