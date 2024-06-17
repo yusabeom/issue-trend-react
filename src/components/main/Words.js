@@ -3,7 +3,6 @@ import WordCloud from 'wordcloud';
 import heart from '../../assets/svg/cloud.svg';
 
 const Words = ({ words }) => {
-  console.log(words);
   const canvasRef = useRef(null);
 
   useEffect(() => {
