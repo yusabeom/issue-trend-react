@@ -49,7 +49,7 @@ const reducer = (state, action) => {
         hasMore: action.newsList.length || 0 - 5 > 0,
         components: action.newsList
           .slice(0, Math.min(5, action.newsList.length || 0))
-          .map((news) => <NewsItem key={news.id} article={news} />),
+          .map((news) => <NewsItem key={news.articleCode} article={news} />),
       };
   }
 };
@@ -65,6 +65,7 @@ const NewsList = ({ newsList, page, size, count }) => {
   });
 
   useEffect(() => {
+    console.log('In NewsList, newsList: ', newsList);
     // newsList 업데이트
     dispatch({
       type: 'FETCH',

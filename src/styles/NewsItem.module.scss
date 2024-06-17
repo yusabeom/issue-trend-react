@@ -46,8 +46,8 @@
     position: relative;
     width: 185px;
     padding: 20px;
-    -webkit-transition: height 0.5s;
-    transition: height 0.5s;
+    -webkit-transition: width 0.5s;
+    transition: width 0.5s;
 
     .sTitle {
       font-weight: 700;
@@ -60,7 +60,7 @@
       position: absolute;
       left: 20px;
       right: 20px;
-      bottom: 56px;
+
       margin: 0;
       padding: 0;
       color: #666c74;
@@ -88,16 +88,11 @@
 
   &:hover {
     .sImgContainer {
-      height: 130px;
-
       img {
         opacity: 0.6;
         -webkit-transform: scale(1.2);
         transform: scale(1.2);
       }
-    }
-    ul {
-      width: 300px;
     }
     .sContent {
       opacity: 1;
@@ -105,6 +100,10 @@
       transform: translateX(0px);
       -webkit-transition-delay: 0.2s;
       transition-delay: 0.2s;
+    }
+
+    ul {
+      width: 300px;
     }
   }
 }

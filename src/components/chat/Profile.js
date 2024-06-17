@@ -1,7 +1,28 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './Profile.module.scss';
+import { io } from 'socket.io-client';
+
+const roomSocket = io('http://192.168.0.27:5000/room');
 
 const Profile = ({ clickName }) => {
+  const [userList, setUserList] = useState([]); // 서버로부터 받은 채팅방 유저 목록
+
+  // 로그인을 할 때 아이디를 받기 : sLogin - 아이디
+  useEffect(() => {
+    // console.log('두번째 useEffect 실행!');
+    if (!roomSocket) return;
+
+    function sListCallback(users) {
+      setUserList(users);
+      console.log('Profile userId: ', users.userId);
+      console.log('Profile roomNumber: ', users.roomNumber);
+    }
+    roomSocket.on('sList', sListCallback);
+    return () => {
+      roomSocket.off('sList', sListCallback);
+    };
+  }, []);
+
   const clickNameHandler = (e) => {
     const clickedUserName = e.target.getAttribute('data-name');
     // console.log(clickedUserName);

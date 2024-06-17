@@ -18,9 +18,9 @@ function App() {
           <Route path='/news' element={<NewsTemplate />} />
           <Route path='/news/:id' element={<NewsTemplate />} />
           <Route path='/join' element={<Join />} />
-          <Route path='/report' element={<ReportTemplate />} />
-          <Route path='/report/:id' element={<ReportTemplate />} />
-          <Route path='/report/detail/:id' element={<ReportDetail />} />
+          <Route path='/board' element={<ReportTemplate />} />
+          <Route path='/board/:id' element={<ReportTemplate />} />
+          <Route path='/board/detail/:id' element={<ReportDetail />} />
         </Route>
       </Routes>
     </>

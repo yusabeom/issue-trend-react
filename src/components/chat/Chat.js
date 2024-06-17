@@ -104,7 +104,7 @@ function Chat() {
 
   /* ================ 2. Handler : 이벤트가 발생할 때 서버로 전송 ================ */
 
-  // 로그인을 할 때(submit) 아이디를 서버에 전송
+  // 로그인을 할 때(submit) 아이디(와 프로필 사진)를 서버에 전송
   const onSubmitHandler = (e) => {
     e.preventDefault();
     roomSocket.emit('login', { userId, roomNumber }); // 서버로 아이디 전송 (처음에는 이름으로 전달)
