@@ -4,6 +4,7 @@ import heart from '../../assets/svg/cloud.svg';
 
 const Words = ({ words }) => {
   const canvasRef = useRef(null);
+  console.log(words);
 
   useEffect(() => {
     if (canvasRef.current) {
