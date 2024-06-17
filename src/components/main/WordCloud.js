@@ -33,7 +33,7 @@ const WordCloud = () => {
         setLoading(false);
         const transformedData = data.map((element) => [
           element.keyword,
-          element.frequency * 20,
+          element.frequency * 10,
         ]);
         setWords(transformedData);
       } catch (error) {
@@ -56,7 +56,7 @@ const WordCloud = () => {
         <div className={boxContainer}>
           <div className={time}>2024년 06월 11일 18시 기준</div>
           {loading ? (
-            <div>Loading...</div>
+            <div className={cloudContainer}>Loading...</div>
           ) : (
             <div className={cloudContainer}>
               <Words words={words} />
