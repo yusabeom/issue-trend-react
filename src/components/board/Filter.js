@@ -4,8 +4,9 @@ import Select from '../../common/ui/Select';
 import styles from '../../styles/Filter.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faX } from '@fortawesome/free-solid-svg-icons';
+import { SearchRounded } from '@mui/icons-material';
 
-const Filter = () => {
+const Filter = ({ onTags }) => {
   const [inputValue, setInputValue] = useState(''); // 키워드 검색창에다 입력한 값
   const [searchValue, setSearchValue] = useState(''); // 검색한 키워드
   const [keywordMsg, setKeywordMsg] = useState('0'); // 키워드 검색창에 입력한 값의 길이
@@ -45,12 +46,10 @@ const Filter = () => {
   const [tags, setTags] = useState([]);
   // tags = ['in', 'se', 'today'];
 
-  useEffect(() => {});
-
-  // 태그가 바뀔 때마다 태그에 관련된 필터링을 서버에 요청
+  // 태그가 바뀔 때마다 부모에게 전달
   useEffect(() => {
-    // fetch() or axios()
-  }, [tags]);
+    onTags(tags, searchValue);
+  }, [tags, searchValue]);
 
   // 태그에 요소 추가
   const addNewTag = (key) => {
@@ -142,7 +141,7 @@ const Filter = () => {
             <FontAwesomeIcon
               className={styles.icon}
               icon={faX}
-              size='2lg'
+              size='lg'
               onClick={() => {
                 setSearchValue('');
               }}

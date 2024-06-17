@@ -1,0 +1,56 @@
+$buttonPupple: #807aa0;
+
+.background {
+  margin-top: 15vh;
+  width: 100vw;
+  height: 30vh;
+
+  background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.6)),
+    url('../assets/img/newspapers.jpg');
+
+  background-position: 50% 40%;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  .content {
+    z-index: 1;
+    color: #fff;
+    padding: 3.4rem 10rem;
+    h2 {
+      font-weight: 700;
+      font-size: 30px;
+      margin-bottom: 3.5rem;
+    }
+    h3 {
+      font-size: 18px;
+      margin-bottom: 0.7rem;
+    }
+
+    position: relative;
+
+    .btn {
+      padding: 0.7rem 4rem;
+      border-radius: 50px;
+      font-weight: 700;
+
+      position: absolute; /* 부모를 기준으로 움직인다 */
+      top: 75%;
+      left: 80%;
+      transform: translate(-50%, -50%);
+      margin: 1rem;
+      font-size: 22px;
+      background-color: $buttonPupple;
+      cursor: pointer;
+
+      &:hover {
+        box-shadow: 0 0 0 18px transparent;
+        animation: pulse 1s;
+      }
+      @keyframes pulse {
+        from {
+          box-shadow: 0 0 0 0 $buttonPupple;
+        }
+      }
+    }
+  }
+}
