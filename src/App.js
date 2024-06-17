@@ -5,6 +5,7 @@ import Home from './components/main/Home';
 import Join from './components/user/Join';
 import './App.css';
 import Layout from './common/layout/Layout';
+import Login from './components/user/Login';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path='/home' element={<Home />} />
           <Route path='/news' element={<NewsTemplate />} />
           <Route path='/news/:id' element={<NewsTemplate />} />
+          <Route path='/login' element={<Login />} />
           <Route path='/join' element={<Join />} />
         </Route>
       </Routes>
