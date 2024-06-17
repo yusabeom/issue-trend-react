@@ -8,6 +8,8 @@ import Layout from './common/layout/Layout';
 import ReportTemplate from './components/board/ReportTemplate';
 import ReportDetail from './components/board/ReportDetail';
 
+import Login from './components/user/Login';
+
 function App() {
   return (
     <>
@@ -17,6 +19,7 @@ function App() {
           <Route path='/home' element={<Home />} />
           <Route path='/news' element={<NewsTemplate />} />
           <Route path='/news/:id' element={<NewsTemplate />} />
+          <Route path='/login' element={<Login />} />
           <Route path='/join' element={<Join />} />
           <Route path='/board' element={<ReportTemplate />} />
           <Route path='/board/:id' element={<ReportTemplate />} />

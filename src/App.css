@@ -15,7 +15,7 @@ input {
   outline-style: none;
 }
 
-/* 콘텐츠의 너비를 70%, 가운데로 배치 */
+/* 콘텐츠의 너비를 60%, 가운데로 배치 */
 .aspect-ratio {
   width: 60%;
   margin: 0 auto;
