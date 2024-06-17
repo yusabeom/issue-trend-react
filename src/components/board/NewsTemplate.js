@@ -23,6 +23,8 @@ const NewsTemplate = () => {
   const [pageNewsList, setPageNewsList] = useState([]); // 현재 페이지의 뉴스 기사
   const [tags, setTags] = useState([]);
   const [keyword, setKeyword] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const [searchParams] = useSearchParams();
 
@@ -40,6 +42,7 @@ const NewsTemplate = () => {
       if (tags.length || keyword) return;
       try {
         console.log('GET 요청 url: ', NEWS_URL);
+        setLoading(true);
         const res = await axios.get(NEWS_URL);
         const getNewsList = await res.data; // 페이징이 된 데이터
 
@@ -51,7 +54,10 @@ const NewsTemplate = () => {
 
         setNewsList(getNewsList);
       } catch (error) {
-        console.error('Error fetching data: ', error);
+        // console.error('Error fetching data: ', error);
+        setError(error.message);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -73,16 +79,12 @@ const NewsTemplate = () => {
 
     setNewsList(newNewsList);
     */
-    console.log('From Server, (1st useEffect) newsList: ', newsList);
   }, []);
 
   useEffect(() => {
-    console.log('From Server, (2nd useEffect) newsList: ', newsList);
-
     // 전체 페이지 수 = 전체 게시물 수 / 페이지 당 게시물 수
     const totalPageCount = Math.ceil(newsList.length / size);
     setTotalPages(totalPageCount);
-    // console.log('totalPageCount: ', totalPageCount);
     console.log(`page: ${page}, size: ${size}`);
 
     if (newsList.length > 0) {
@@ -90,16 +92,16 @@ const NewsTemplate = () => {
         (board) => board.id >= (page - 1) * size + 1 && board.id <= page * size,
       );
       setPageNewsList(filteredList);
-      console.log('From Server, pageNewsList: ', pageNewsList);
+      // 각 객체에 새로운 key 부여하기
+      let idCounter = 1;
+      pageNewsList.forEach((obj) => {
+        obj.id = idCounter++;
+      });
+      console.log('pageNewsList: ', pageNewsList);
     }
-
-    console.log('From Server, pageNewsList: ', pageNewsList);
   }, [newsList, page, size]);
 
   const getFilterTags = (tags, keyword) => {
-    // console.log('=======================');
-    // console.log(tags);
-    // console.log(keyword);
     setTags(tags);
     setKeyword(keyword);
   };
@@ -143,61 +145,63 @@ const NewsTemplate = () => {
       region = '세종';
     }
 
-    console.log('searching region is ', region);
-
     const fetchRegionData = async () => {
       if (!tags.length) return;
       try {
-        console.log('POST 요청 url: ', NEWS_URL);
+        console.log('POST 요청 url: ', NEWS_URL, ', region:', region);
+        setLoading(true);
         const res = await axios.post(NEWS_URL, { region });
         const getNewsList = await res.data;
-
-        // 각 객체에 새로운 key 부여하기
-        let idCounter = 1;
-        getNewsList.forEach((obj) => {
-          obj.id = idCounter++;
-        });
 
         setNewsList(getNewsList);
         console.log('From Server, (region useEffect) newsList: ', newsList);
       } catch (error) {
-        console.error('Error fetching data: ', error);
+        // console.error('Error fetching data: ', error);
+        setError(error.message);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchRegionData();
   }, [tags]);
 
-  // 태그가 바뀔때마다 fetch 요청
+  // 키워드가 바뀔때마다 fetch 요청
   useEffect(() => {
-    console.log('changed keyword: ', keyword);
-
     // 검색하기
     const fetchSearchData = async () => {
       if (!keyword) return;
       try {
-        console.log('GET 요청 url: ', API_BASE_URL + SEARCH);
+        console.log(
+          'GET 요청 url: ',
+          API_BASE_URL + SEARCH + '?name=' + keyword,
+        );
         // http://?name=keyword
         const res = await axios.get(API_BASE_URL + SEARCH, {
           params: { keyword },
         });
-        const getNewsList = await res.data; // 페이징이 된 데이터
-
-        // 각 객체에 새로운 key 부여하기
-        let idCounter = 1;
-        getNewsList.forEach((obj) => {
-          obj.id = idCounter++;
-        });
+        const getNewsList = res.data; // 페이징이 된 데이터
 
         setNewsList(getNewsList);
-        console.log('From Server, (keyword) newsList: ', newsList);
+        // console.log('From Server, (keyword) newsList: ', newsList);
       } catch (error) {
-        console.error('Error fetching data: ', error);
+        // console.error('Error fetching data: ', error);
+        setError(error.message);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchSearchData();
   }, [keyword]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <>

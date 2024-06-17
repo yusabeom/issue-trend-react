@@ -9,6 +9,7 @@ import ReportTemplate from './components/board/ReportTemplate';
 import ReportDetail from './components/board/ReportDetail';
 
 import Login from './components/user/Login';
+import NewsDetailModal from './components/board/NewsDetailModal';
 
 function App() {
   return (
