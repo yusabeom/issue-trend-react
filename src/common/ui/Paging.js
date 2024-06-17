@@ -44,7 +44,7 @@ const Paging = ({ size, count, curPage, type }) => {
   return (
     <Pagination
       count={count}
-      page={curPage}
+      page={+curPage}
       onChange={handlePageChange}
       color='secondary'
     />

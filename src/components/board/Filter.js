@@ -141,7 +141,7 @@ const Filter = ({ onTags }) => {
             <FontAwesomeIcon
               className={styles.icon}
               icon={faX}
-              size='2lg'
+              size='lg'
               onClick={() => {
                 setSearchValue('');
               }}
