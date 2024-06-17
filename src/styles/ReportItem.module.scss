@@ -1,0 +1,12 @@
+li.oneItem {
+  //   border: 1px green solid;
+  padding: 1rem 2.5rem;
+  display: flex;
+  justify-content: space-evenly;
+
+  p {
+    margin: 0 18px;
+    cursor: pointer;
+  }
+  border-bottom: 1px #000 solid;
+}

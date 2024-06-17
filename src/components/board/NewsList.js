@@ -12,8 +12,7 @@ import Paging from '../../common/ui/Paging';
 // 전국 실시간 뉴스 목록 컴포넌트
 
 /*
-Pagination
-한 페이지당 20개의 페이지를 로드, 10개 페이지씩 페이징
+newsList : 현재 페이지의 뉴스 기사
 */
 
 const reducer = (state, action) => {
@@ -50,12 +49,12 @@ const reducer = (state, action) => {
         hasMore: action.newsList.length || 0 - 5 > 0,
         components: action.newsList
           .slice(0, Math.min(5, action.newsList.length || 0))
-          .map((news) => <NewsItem key={news.id} article={news} />),
+          .map((news) => <NewsItem key={news.articleCode} article={news} />),
       };
   }
 };
 
-const NewsList = ({ newsList, page, size }) => {
+const NewsList = ({ newsList, page, size, count }) => {
   const [state, dispatch] = useReducer(reducer, {
     newsList, // 한 페이지의 뉴스 목록
     loading: false, // load more 상태값 관리
@@ -66,6 +65,7 @@ const NewsList = ({ newsList, page, size }) => {
   });
 
   useEffect(() => {
+    console.log('In NewsList, newsList: ', newsList);
     // newsList 업데이트
     dispatch({
       type: 'FETCH',
@@ -115,7 +115,9 @@ const NewsList = ({ newsList, page, size }) => {
         </div>
       )}
 
-      {!state.hasMore && <Paging size={size} />}
+      {!state.hasMore && (
+        <Paging size={size} count={count} curPage={page} type={'news'} />
+      )}
     </div>
   );
 };

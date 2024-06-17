@@ -5,6 +5,9 @@ import Home from './components/main/Home';
 import Join from './components/user/Join';
 import './App.css';
 import Layout from './common/layout/Layout';
+import ReportTemplate from './components/board/ReportTemplate';
+import ReportDetail from './components/board/ReportDetail';
+
 import Login from './components/user/Login';
 
 function App() {
@@ -18,6 +21,9 @@ function App() {
           <Route path='/news/:id' element={<NewsTemplate />} />
           <Route path='/login' element={<Login />} />
           <Route path='/join' element={<Join />} />
+          <Route path='/board' element={<ReportTemplate />} />
+          <Route path='/board/:id' element={<ReportTemplate />} />
+          <Route path='/board/detail/:id' element={<ReportDetail />} />
         </Route>
       </Routes>
     </>
