@@ -1,14 +1,21 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import styles from '../../styles/ByTypeNews.module.scss';
 import RegionSelector from './RegionSelector';
+import { useNavigate } from 'react-router-dom';
 
 const ByTypeNews = () => {
   const { itemContainer } = styles;
 
   const API_BASE_URL = 'http://localhost:8181/issue-trend/todayArticles';
 
-  const [region, setRegion] = useState('');
+  const [region, setRegion] = useState('서울');
   const [articles, setArticles] = useState([]);
+
+  const navigate = useNavigate();
+
+  const goArticle = (news) => {
+    navigate(`/news?code=${news}`);
+  };
 
   const fetchArticles = useCallback(async (region) => {
     try {
@@ -35,7 +42,6 @@ const ByTypeNews = () => {
   // 지역이 변경될 때 상태를 업데이트하고 기사를 가져옴
   const handleRegionChange = (newRegion) => {
     setRegion(newRegion);
-    console.log(region);
     fetchArticles(newRegion);
   };
 
@@ -48,6 +54,7 @@ const ByTypeNews = () => {
           <li
             key={news.articleCode}
             style={{ backgroundImage: `url(${news.img})` }}
+            // onClick={goArticle(news.articleCode)}
           ></li>
         ))}
       </ul>

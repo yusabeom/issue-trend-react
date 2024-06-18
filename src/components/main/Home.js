@@ -7,8 +7,6 @@ import CategoryNews from './CategoryNews';
 import SearchAndGraph from './SearchAndGraph';
 
 const Home = () => {
-  const { home } = styles;
-
   return (
     <>
       <WordCloud />
