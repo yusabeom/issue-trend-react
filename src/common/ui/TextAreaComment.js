@@ -12,7 +12,10 @@ import FormatBold from '@mui/icons-material/FormatBold';
 import FormatItalic from '@mui/icons-material/FormatItalic';
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
 import Check from '@mui/icons-material/Check';
+import styles from '../../styles/TextareaComment.module.scss';
+import profileImage from '../../assets/img/anonymous.jpg';
 
+// 댓글 UI
 export default function TextareaComment() {
   // AuthContext에서 로그인 상태를 가져옵니다. (Header.js 참고)
   // userName을 가져오고 프로필 이미지 요청
@@ -22,7 +25,12 @@ export default function TextareaComment() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   return (
     <FormControl>
-      <FormLabel>로그인 유저 정보</FormLabel>
+      <FormLabel>
+        <div className={styles.profile}>
+          <img src={profileImage} alt='댓글 작성자 프로필 사진' />
+        </div>
+        <span className={styles.loginUser}>서정원</span>
+      </FormLabel>
       <Textarea
         placeholder='댓글을 입력해주세요'
         minRows={3}
