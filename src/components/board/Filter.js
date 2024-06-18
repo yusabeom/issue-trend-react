@@ -1,4 +1,11 @@
-import { Box, Input, MenuItem, TextField, debounce } from '@mui/material';
+import {
+  Alert,
+  Box,
+  Input,
+  MenuItem,
+  TextField,
+  debounce,
+} from '@mui/material';
 import React, { useCallback, useEffect, useState } from 'react';
 import Select from '../../common/ui/Select';
 import styles from '../../styles/Filter.module.scss';
@@ -10,6 +17,7 @@ const Filter = ({ onTags }) => {
   const [inputValue, setInputValue] = useState(''); // 키워드 검색창에다 입력한 값
   const [searchValue, setSearchValue] = useState(''); // 검색한 키워드
   const [keywordMsg, setKeywordMsg] = useState('0'); // 키워드 검색창에 입력한 값의 길이
+  const [openAlert, setOpenAlert] = useState(false); // 검색어 alert 메세지 여부
 
   const optionsRegion = {
     se: '서울',
@@ -112,6 +120,13 @@ const Filter = ({ onTags }) => {
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       console.log('enter!!');
+      if (inputValue.trim() === '') {
+        setOpenAlert(true);
+        setTimeout(() => {
+          setOpenAlert(false);
+        }, 3000);
+        return;
+      }
       setSearchValue(inputValue);
       setInputValue('');
       setKeywordMsg('0');
@@ -187,6 +202,11 @@ const Filter = ({ onTags }) => {
           {keywordMsg + '/20'}
         </span>
       </div>
+      {openAlert && (
+        <Alert style={{ marginTop: '1rem' }} severity='warning'>
+          키워드를 입력해주세요.
+        </Alert>
+      )}
     </>
   );
 };

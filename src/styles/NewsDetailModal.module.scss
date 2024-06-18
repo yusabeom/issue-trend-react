@@ -1,6 +1,7 @@
 $buttonPupple: #807aa0;
 .chatWrapper {
   width: 700px;
+  overflow: auto;
   .headerStyle {
     background: $buttonPupple;
     color: #fff;
@@ -56,6 +57,36 @@ $buttonPupple: #807aa0;
       }
     }
   }
+
+  footer.reply {
+    margin: 3rem;
+    padding: 0 1rem;
+
+    ul.replyList {
+      li {
+        margin-bottom: 1.2rem;
+
+        p {
+          margin: 0.4rem;
+        }
+        p.replyWriter {
+          font-weight: 700;
+          display: flex;
+          justify-content: left;
+          align-items: center;
+          .profile {
+            margin-right: 0.8rem;
+          }
+        }
+        p.replyContent {
+        }
+        p.replyDate {
+          font-size: 0.8em;
+          color: rgb(199, 199, 199);
+        }
+      }
+    }
+  }
 }
 
 .infoWrapper {
@@ -80,5 +111,21 @@ $buttonPupple: #807aa0;
     opacity: 1;
     // transform: translateY(0);
     width: 400px;
+  }
+}
+
+.profile {
+  width: 2rem;
+  height: 2rem;
+  overflow: hidden;
+  border-radius: 50%;
+  position: relative;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    cursor: pointer;
   }
 }

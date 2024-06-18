@@ -24,6 +24,7 @@ const NewsTemplate = () => {
   const [tags, setTags] = useState([]);
   const [keyword, setKeyword] = useState('');
   const [loading, setLoading] = useState(true);
+  const [noItem, setNoItem] = useState(false);
   const [error, setError] = useState(null);
 
   const [searchParams] = useSearchParams();
@@ -88,16 +89,29 @@ const NewsTemplate = () => {
     console.log(`page: ${page}, size: ${size}`);
 
     if (newsList.length > 0) {
-      const filteredList = newsList.filter(
-        (board) => board.id >= (page - 1) * size + 1 && board.id <= page * size,
-      );
-      setPageNewsList(filteredList);
+      setNoItem(false);
+      console.log('if문 실행~');
+
+      // 페이징
+      // const filteredList = newsList.filter(
+      //   (board) => board.id >= (page - 1) * size + 1 && board.id <= page * size,
+      // );
+
+      const filteredList = newsList;
+
       // 각 객체에 새로운 key 부여하기
       let idCounter = 1;
-      pageNewsList.forEach((obj) => {
-        obj.id = idCounter++;
-      });
-      console.log('pageNewsList: ', pageNewsList);
+      const updatedList = filteredList.map((obj) => ({
+        ...obj,
+        newId: idCounter++,
+      }));
+      setPageNewsList(updatedList);
+      console.log(
+        'newsList가 변할 때 useEffect 에서 pageNewsList: ',
+        updatedList,
+      );
+    } else {
+      setNoItem(true);
     }
   }, [newsList, page, size]);
 
@@ -151,10 +165,12 @@ const NewsTemplate = () => {
         console.log('POST 요청 url: ', NEWS_URL, ', region:', region);
         setLoading(true);
         const res = await axios.post(NEWS_URL, { region });
-        const getNewsList = await res.data;
+        const getNewsList = res.data;
+        console.log('지역 요청 후 응답: ', getNewsList);
 
         setNewsList(getNewsList);
-        console.log('From Server, (region useEffect) newsList: ', newsList);
+
+        // console.log('From Server, (region useEffect) newsList: ', newsList);
       } catch (error) {
         // console.error('Error fetching data: ', error);
         setError(error.message);
@@ -174,9 +190,9 @@ const NewsTemplate = () => {
       try {
         console.log(
           'GET 요청 url: ',
-          API_BASE_URL + SEARCH + '?name=' + keyword,
+          API_BASE_URL + SEARCH + '?keyword=' + keyword,
         );
-        // http://?name=keyword
+        // http://localhost:8181/issue-trend/search?keyword=고속
         const res = await axios.get(API_BASE_URL + SEARCH, {
           params: { keyword },
         });
@@ -196,11 +212,11 @@ const NewsTemplate = () => {
   }, [keyword]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div style={{ margin: '20vh' }}>Loading...</div>;
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div style={{ margin: '20vh' }}>Error: {error}</div>;
   }
 
   return (
@@ -209,12 +225,16 @@ const NewsTemplate = () => {
 
       <div className='news-wrapper aspect-ratio'>
         <Filter onTags={getFilterTags} />
-        <NewsList
-          newsList={pageNewsList}
-          page={page}
-          size={size}
-          count={totalPages}
-        />
+        {noItem ? (
+          <div style={{ margin: '20vh' }}>기사가 존재하지 않습니다</div>
+        ) : (
+          <NewsList
+            newsList={pageNewsList}
+            page={page}
+            size={size}
+            count={totalPages}
+          />
+        )}
       </div>
     </>
   );

@@ -7,7 +7,7 @@ const ReportItem = ({ board }) => {
   const goToDetail = (e) => {
     const boardNo = e.target.parentNode.firstChild.textContent;
     console.log(boardNo);
-    navigate(`/board/${boardNo}`);
+    navigate(`/board/detail/${boardNo}`);
   };
 
   return (

@@ -16,7 +16,7 @@
   .sImgContainer {
     width: 245px;
     overflow: hidden;
-    background-color: #000;
+    background-color: #fff;
     -webkit-transition: height 0.5s;
     transition: height 0.5s;
 
@@ -39,6 +39,11 @@
         opacity 0.5s,
         transform 0.5s,
         -webkit-transform 0.5s;
+    }
+
+    img.noimage {
+      max-width: none;
+      max-height: none;
     }
   }
 

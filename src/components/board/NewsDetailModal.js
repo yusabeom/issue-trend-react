@@ -6,11 +6,13 @@ import React, {
   useState,
 } from 'react';
 import { Modal, Box, Button, Slide, Backdrop } from '@mui/material';
+import basicImage from '../../assets/img/logo.png';
 
 import styles from '../../styles/NewsDetailModal.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLink, faX } from '@fortawesome/free-solid-svg-icons';
 import { height } from '@mui/system';
+import TextareaComment from '../../common/ui/TextAreaComment';
 
 // 모달 안에 넣을 컴포넌트
 
@@ -18,12 +20,12 @@ const boxStyle = {
   position: 'absolute',
   height: '90%',
   top: '5%',
-  left: '20%',
+  left: '30%',
   transform: 'translate(-50%, -50%)',
   bgcolor: 'background.paper',
   boxShadow: 24,
   display: 'flex',
-  overflow: 'auto',
+  //   overflow: 'auto',
 };
 
 const NewsDetailModal = forwardRef((props, ref) => {
@@ -38,11 +40,31 @@ const NewsDetailModal = forwardRef((props, ref) => {
     writer,
     articleLink,
     source,
+    reply,
   } = styles;
   const [open, setOpen] = useState(false); // 채팅 모달창을 열었는지 여부
   const [isUserInfoVisible, setIsUserInfoVisible] = useState(false); // 유저 정보창 렌더링 여부
   const [clickedUserName, setClickedUserName] = useState(''); // 클릭한 유저 이름
   const [animate, setAnimate] = useState(false); // 유저 정보창 애니메이션
+  const [replyList, setReplyList] = useState([
+    {
+      no: '1',
+      replyProfile:
+        'https://upload.wikimedia.org/wikipedia/ko/4/4a/%EC%8B%A0%EC%A7%B1%EA%B5%AC.png',
+      replyWriter: '짱구',
+      replyContent: '좋은 정보 감사합니다~',
+      replyDate: '2024-06-16 20:25',
+    },
+    {
+      no: '2',
+      replyProfile:
+        'https://upload.wikimedia.org/wikipedia/ko/4/4a/%EC%8B%A0%EC%A7%B1%EA%B5%AC.png',
+      replyWriter: '아웃사이더',
+      replyContent: '그렇군요',
+      replyDate: '2024-06-16 20:21',
+    },
+  ]); // 댓글 리스트
+
   const infoWrapperRef = useRef(null);
 
   // Profile.js의 특정 user의 이름을 onClick하면 그 user의 이름 정보를 부모 컴포넌트인 ChatModal로 전달
@@ -107,9 +129,11 @@ const NewsDetailModal = forwardRef((props, ref) => {
               <div className={articleContents}>
                 <h2>{article.title}</h2>
 
-                <p className={dateTime}>{article.createdDate}</p>
+                <p className={dateTime}>{article.formattedCreatedDate}</p>
                 <div className={imgContainer}>
-                  <img src={article.img} alt='기사 이미지' />
+                  {article.img !== '이미지를 찾을 수 없습니다' && (
+                    <img src={article.img} alt='기사 이미지' />
+                  )}
                 </div>
                 <p className={text}>{article.text}</p>
                 <hr />
@@ -123,6 +147,31 @@ const NewsDetailModal = forwardRef((props, ref) => {
                   뉴스 보러 가기
                 </a>
               </div>
+              <footer className={reply}>
+                <ul className={styles.replyList}>
+                  {replyList &&
+                    replyList.map((reply) => (
+                      <li key={reply.no}>
+                        <p className={styles.replyWriter}>
+                          <div className={styles.profile}>
+                            <img
+                              src={reply.replyProfile}
+                              alt='댓글 작성자 프로필 사진'
+                            />
+                          </div>
+                          {reply.replyWriter}
+                        </p>
+                        <p className={styles.replyContent}>
+                          {reply.replyContent}
+                        </p>
+                        <p className={styles.replyDate}>{reply.replyDate}</p>
+                      </li>
+                    ))}
+                </ul>
+                <div className='replyInput'>
+                  <TextareaComment />
+                </div>
+              </footer>
             </div>
           </Box>
         </Slide>
