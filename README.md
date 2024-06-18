@@ -27,6 +27,9 @@ npm install wordcloud
 // Graph.js파일에서 필요한 라이브러리
 npm install chart.js
 npm install react-chartjs-2
+
+
+npm install react-spinners
 ```
 
 #### 3. commit 규칙

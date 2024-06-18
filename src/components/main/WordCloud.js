@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styles from '../../styles/WordCloud.module.scss';
 import Words from './Words';
 import { useNavigate } from 'react-router-dom';
+import { DotLoader } from 'react-spinners';
 
 const WordCloud = () => {
   const redirection = useNavigate();
@@ -13,6 +14,8 @@ const WordCloud = () => {
     cloudContainer,
     time,
     boxContainer,
+    loadContainer,
+    loadContent,
   } = styles;
 
   const API_BASE_URL =
@@ -25,20 +28,22 @@ const WordCloud = () => {
   useEffect(() => {
     const fetchWords = async () => {
       try {
-        const response = await fetch(API_BASE_URL);
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        setLoading(false);
-        const transformedData = data.map((element) => [
-          element.keyword,
-          element.frequency * 10,
-        ]);
-        setWords(transformedData);
+        setTimeout(async () => {
+          const response = await fetch(API_BASE_URL);
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          const data = await response.json();
+          const selectWordData = data.slice(0, 100);
+          setLoading(false);
+          const transformedData = selectWordData.map((element) => [
+            element.keyword,
+            element.frequency * 8,
+          ]);
+          setWords(transformedData);
+        }, 2000);
       } catch (error) {
         console.error('Error fetching data:', error);
-      } finally {
         setLoading(false);
       }
     };
@@ -56,7 +61,10 @@ const WordCloud = () => {
         <div className={boxContainer}>
           <div className={time}>2024년 06월 11일 18시 기준</div>
           {loading ? (
-            <div className={cloudContainer}>Loading...</div>
+            <div className={loadContainer}>
+              <DotLoader color='#413F42' size={70} speedMultiplier={1.5} />
+              <div className={loadContent}>키워드 불러오는중 ..</div>
+            </div>
           ) : (
             <div className={cloudContainer}>
               <Words words={words} />
