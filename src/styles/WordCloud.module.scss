@@ -51,6 +51,8 @@
         font-weight: bold;
         color: $buttonPupple;
         padding-right: 5px;
+
+        
     }
     
     
@@ -64,9 +66,22 @@
         display: flex;
         justify-content: center;
         
-    
-    
-        
+    }
+
+    .loadContainer {
+        width: 70%;
+        height: 500px;
+        background: white;
+        margin: 0 auto;
+        padding-top: 200px;
+        text-align: center;
+        box-shadow: 4px 4px 7px rgba(0, 0, 0, 0.1);
+        display: flex;
+        justify-content: center;
+
+        .loadContent{
+            margin: 20px 20px;
+        }
     }
     
 
