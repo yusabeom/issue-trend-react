@@ -21,9 +21,9 @@ const Words = ({ words }) => {
       WordCloud(canvasRef.current, {
         list: words,
         shape: heart,
-        gridSize: 6,
+        gridSize: 3,
         weightFactor: function (size) {
-          return Math.sqrt(size) * 6;
+          return Math.sqrt(size) * 4.5;
         },
         fontWeight: 'bold',
         color: function () {
@@ -52,7 +52,7 @@ const Words = ({ words }) => {
     }
   }, [words]);
 
-  return <canvas ref={canvasRef} width={760} height={500} />;
+  return <canvas ref={canvasRef} width={820} height={500} />;
 };
 
 export default Words;

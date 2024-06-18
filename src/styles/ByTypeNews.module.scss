@@ -1,4 +1,5 @@
 @import 'styles.scss';
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
 
 .newsTitle {
     font-size: 18px;
@@ -26,4 +27,22 @@
         background-size: cover;
         border-color: transparent;
     }
+}
+
+select {
+    width: 100px;
+    appearance: none;
+    background: transparent; /* 배경을 투명하게 설정합니다 */
+    border: 1px white; /* 테두리를 제거합니다 */
+    outline: none; /* 포커스 시 기본적으로 추가되는 테두리를 제거합니다 */
+    color: white;
+    padding: 5px 0; /* 선택 부분과 글자 사이의 간격을 조정합니다 */
+    font-size: 20px; /* 글자 크기를 설정합니다 */
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+option {
+    background: $darkBackground;
+    color: white;
 }
