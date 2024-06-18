@@ -9,7 +9,7 @@ import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 const roomSocket = io('http://192.168.0.27:5000');
 
 // 화면에는 유저 이름(userName)을 보여주고, 서버에서는 socket.id로 식별한다.
-function Chat() {
+const Chat = ({ onUsers }) => {
   // AuthContext에서 로그인 상태를 가져옵니다.
   // const { isLoggedIn, userName, onLogout } = useContext(AuthContext);
 
@@ -22,7 +22,6 @@ function Chat() {
   const [privateTarget, setPrivateTarget] = useState(''); // 1:1 대화 상대 아이디
   const [newMessages, setNewMessages] = useState([]); // 새 메세지
   const [roomNumber, setRoomNumber] = useState('1'); // 선택한 방 번호
-  const [userList, setUserList] = useState([]); // 서버로부터 받은 채팅방 유저 목록
 
   /* ================ 1. useEffect : 최초 렌더링 시 발생하는 이벤트 (서버로부터 리시브) ================ */
   // 이벤트 리스너 (from server) : sMessage - 서버로부터 받은 메세지
@@ -88,6 +87,7 @@ function Chat() {
     console.log('세번째 useEffect 실행!');
     const currentUsersCallback = (usersInRoom) => {
       console.log('현재 접속 중인 사용자들:', usersInRoom);
+      onUsers(usersInRoom);
     };
 
     roomSocket.on('currentUsers', currentUsersCallback);
@@ -254,6 +254,6 @@ function Chat() {
       </div>
     </div>
   );
-}
+};
 
 export default Chat;
