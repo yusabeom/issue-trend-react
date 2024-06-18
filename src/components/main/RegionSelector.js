@@ -29,7 +29,7 @@ const RegionSelector = ({ onRegionChange }) => {
 
   return (
     <div className={newsTitle}>
-      <select onChange={handleChange} defaultValue='서울'>
+      <select onChange={handleChange} defaultValue='서울▼'>
         {regions.map((region, index) => (
           <option key={index} value={region}>
             {region}
