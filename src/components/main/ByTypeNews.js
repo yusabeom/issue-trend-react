@@ -2,6 +2,9 @@ import React, { useCallback, useEffect, useState } from 'react';
 import styles from '../../styles/ByTypeNews.module.scss';
 import RegionSelector from './RegionSelector';
 import { useNavigate } from 'react-router-dom';
+import { set } from 'lodash';
+import TypeNewsModal from './TypeNewsModal';
+import { Modal, Typography, Box } from '@mui/material';
 
 const ByTypeNews = () => {
   const { itemContainer } = styles;
@@ -10,12 +13,8 @@ const ByTypeNews = () => {
 
   const [region, setRegion] = useState('서울');
   const [articles, setArticles] = useState([]);
-
-  const navigate = useNavigate();
-
-  const goArticle = (news) => {
-    navigate(`/news?code=${news}`);
-  };
+  const [open, setOpen] = React.useState(false);
+  const [code, setCode] = useState('');
 
   const fetchArticles = useCallback(async (region) => {
     try {
@@ -27,7 +26,11 @@ const ByTypeNews = () => {
         body: JSON.stringify({ region }),
       });
       const data = await response.json();
-      setArticles(data);
+      const filteredData = data.filter(
+        (article) => article.img !== '이미지를 찾을 수 없습니다',
+      );
+      const sliceData = filteredData.slice(0, 9);
+      setArticles(sliceData);
     } catch (error) {
       console.error('Error fetching articles:', error);
     }
@@ -45,6 +48,17 @@ const ByTypeNews = () => {
     fetchArticles(newRegion);
   };
 
+  // 모달 열고 닫는 핸들러
+  const openModal = (e) => {
+    const target = e.target.value.toString().padStart(10, '0');
+
+    setCode(target);
+    setOpen(true);
+  };
+  const closeModal = () => {
+    setOpen(false);
+  };
+
   return (
     <div>
       <RegionSelector onRegionChange={handleRegionChange} />
@@ -53,10 +67,17 @@ const ByTypeNews = () => {
         {articles.map((news) => (
           <li
             key={news.articleCode}
+            value={news.articleCode}
             style={{ backgroundImage: `url(${news.img})` }}
-            // onClick={goArticle(news.articleCode)}
+            onClick={openModal}
           ></li>
         ))}
+        <TypeNewsModal
+          open={open}
+          closeModal={closeModal}
+          articles={articles}
+          code={code}
+        />
       </ul>
     </div>
   );
