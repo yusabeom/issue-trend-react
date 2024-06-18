@@ -1,12 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Button, Container, Grid, TextField, Typography } from '@mui/material';
 import { API_BASE_URL, USER } from '../../config/host-config';
-import useGeolocation from 'react-hook-geolocation';
 import styles from '../../styles/Join.module.scss';
 import { AccessAlarm } from '@mui/icons-material';
 import PinDropIcon from '@mui/icons-material/PinDrop';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { Box, height } from '@mui/system';
+
+const { kakao } = window;
 
 const Join = () => {
+  const navigate = useNavigate();
+
   const [userValue, setUserValue] = useState({
     email: '',
     password: '',
@@ -198,14 +203,48 @@ const Join = () => {
     return () => clearInterval(timer);
   }, [remainingTime]);
 
+  const [address, setAddress] = useState('');
   // 내 위치 자동설정
-  const geolocation = useGeolocation();
+  let regionName = null;
+  const $address = document.getElementById('address');
+  function getAddr(lat, lng) {
+    let geocoder = new kakao.maps.services.Geocoder();
+    let coord = new kakao.maps.LatLng(lat, lng);
+    let callback = function (result, status) {
+      if (status === kakao.maps.services.Status.OK) {
+        console.log(result);
+      }
+      regionName = result[0].address.region_1depth_name;
+      setAddress(regionName);
+      document.getElementById('address').value = regionName;
+    };
+    geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
+  }
 
-  const addressClickHandler = (geolocation) => {
-    console.log(geolocation);
+  function getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        function (position) {
+          //getAddr(위도, 경도);
+          getAddr(position.coords.latitude, position.coords.longitude);
+        },
+        function (error) {
+          console.error(error);
+        },
+        {
+          enableHighAccuracy: false,
+          maximumAge: 0,
+          timeout: Infinity,
+        },
+      );
+    } else {
+      alert('현재 브라우저에서는 geolocation를 지원하지 않습니다');
+    }
+  }
+
+  const addressClickHandler = () => {
+    getLocation();
   };
-
-  const $fileTag = useRef();
 
   const isValid = () => {
     for (let key in correct) {
@@ -215,21 +254,79 @@ const Join = () => {
     return true;
   };
 
-  const fetchSignUpPost = () => {
-    fetch(`${API_BASE_URL}${USER}`, {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify(userValue),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        alert(`${data.email}님 회원가입에 성공했습니다.`);
-      })
-      .catch((err) => {
-        console.log('err: ', err);
-        alert('서버와의 통신이 원활하지 않습니다.');
-      });
+  // 프로필 이미지 등록하기
+  const $fileTag = useRef();
+
+  const [imgFile, setImgFile] = useState(null);
+  const showThumbnailHandler = (e) => {
+    const file = $fileTag.current.files[0];
+    console.log(`file: ${file}`);
+    const fileExt = file.name.slice(file.name.indexOf('.') + 1).toLowerCase();
+
+    if (
+      fileExt !== 'jpg' &&
+      fileExt !== 'png' &&
+      fileExt !== 'jpeg' &&
+      fileExt !== 'gif'
+    ) {
+      alert('이미지 파일(jpg, png, jpeg, gif)만 등록이 가능합니다.');
+
+      $fileTag.current.value = '';
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      console.log(`reader.result: ${reader.result}`);
+      setImgFile(reader.result);
+    };
   };
+
+  // 키워드 등록하기
+  // 입력한 키워드를 저장하는 배열
+  const [keywords, setKeywords] = useState([]);
+  const [keyword, setKeyword] = useState({ id: '', value: '' });
+
+  const handleKeyDown = (value) => {
+    console.log(value);
+    setKeyword({
+      id: keywords.length < 1 ? 1 : keywords[keywords.length - 1].id + 1,
+      value,
+    });
+
+    setKeywords((oldValue) => [...oldValue, value]);
+
+    // console.log(`keywords: ${keywords[0].id}, ${keywords[0].value}`);
+  };
+
+  console.log(keyword);
+  console.log([...keywords]);
+
+  const fetchSignUpPost = async () => {
+    const userJsonBlob = new Blob([JSON.stringify(userValue)], {
+      type: 'application/json',
+    });
+
+    const userFormData = new FormData();
+    userFormData.append('user', userJsonBlob);
+    userFormData.append('profileImage', $fileTag.current.files[0]);
+    userFormData.append('address', address);
+
+    const res = await fetch(API_BASE_URL + USER, {
+      method: 'POST',
+      body: userFormData,
+    });
+
+    if (res.status === 200) {
+      const data = await res.json();
+      alert(`${data.email}님 회원가입에 성공했습니다.`);
+      navigate('/login');
+    } else {
+      alert('서버와의 통신이 원활하지 않습니다.');
+    }
+  };
+
   const joinButtonClickHandler = (e) => {
     e.preventDefault();
 
@@ -239,8 +336,6 @@ const Join = () => {
       alert('입력란을 다시 확인해 주세요');
     }
   };
-
-  console.log(correct.phoneNumber);
 
   return (
     <Container component='main' className={styles.main}>
@@ -261,12 +356,10 @@ const Join = () => {
             <Grid item xs={12}>
               <div
                 className='thumbnail-box'
-                /* onClick={() => $fileTag.current.click() }*/ style={{
-                  border: '1px solid black',
-                }}
+                onClick={() => $fileTag.current.click()}
               >
                 <img
-                  src={require('../../assets/img/anonymous.jpg')}
+                  src={imgFile || require('../../assets/img/anonymous.jpg')}
                   alt='profile'
                 />
                 {/* require 앞에 imgFile 변수 넣어야 함 */}
@@ -280,7 +373,7 @@ const Join = () => {
                 style={{ display: 'none' }}
                 accept='image/*' /* 자사/소셜 로그인 진행시 DB에 넣을 때 경로문제 발생할 수도 있음 */
                 ref={$fileTag}
-                // onChange={showThumbnailHandler} 해야함
+                onChange={showThumbnailHandler}
               />
             </Grid>
             <Grid item xs={12}>
@@ -420,9 +513,8 @@ const Join = () => {
             <Grid item xs={9}>
               <TextField
                 fullWidth
-                // value={zonecode}  value라고 하면 안되나?
-                id='zonecode'
-                name='zonecode'
+                id='address'
+                name='address'
                 inputProps={{ readOnly: true }}
               />
             </Grid>
@@ -440,6 +532,26 @@ const Join = () => {
               </Button>
             </Grid>
 
+            <Grid item xs={12}>
+              <h6>issue-trend가 맞춤형 뉴스를 제공합니다.</h6>
+            </Grid>
+            <TextField
+              type='text'
+              placeholder='관심 키워드를 입력하고 엔터를 누르세요'
+              onKeyUp={(e) => {
+                if (e.key === 'Enter') {
+                  handleKeyDown(e.target.value);
+                }
+              }}
+            />
+
+            <Grid item xs={12}>
+              <ul>
+                <li>1</li>
+                <li>2</li>
+                <li>3</li>
+              </ul>
+            </Grid>
             <Grid item xs={12}>
               <Button
                 type='button'
