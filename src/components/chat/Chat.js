@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 
 // const webSocket = io('http://localhost:5000');
-const roomSocket = io('http://192.168.0.27:5000/room');
+const roomSocket = io('http://192.168.0.27:5000');
 
 // 화면에는 유저 이름(userName)을 보여주고, 서버에서는 socket.id로 식별한다.
 function Chat() {
@@ -22,6 +22,7 @@ function Chat() {
   const [privateTarget, setPrivateTarget] = useState(''); // 1:1 대화 상대 아이디
   const [newMessages, setNewMessages] = useState([]); // 새 메세지
   const [roomNumber, setRoomNumber] = useState('1'); // 선택한 방 번호
+  const [userList, setUserList] = useState([]); // 서버로부터 받은 채팅방 유저 목록
 
   /* ================ 1. useEffect : 최초 렌더링 시 발생하는 이벤트 (서버로부터 리시브) ================ */
   // 이벤트 리스너 (from server) : sMessage - 서버로부터 받은 메세지
@@ -54,11 +55,11 @@ function Chat() {
 
   // 로그인을 할 때 아이디를 받기 : sLogin - 아이디
   useEffect(() => {
-    // console.log('두번째 useEffect 실행!');
     if (!roomSocket) return;
 
+    console.log('두번째 useEffect 실행!');
     function sLoginCallback(id) {
-      // console.log('sLoginCallback 실행!', id);
+      console.log('sLoginCallback 실행!', id);
 
       // console.log(userId);
       // setTimeout(() => {
@@ -72,9 +73,26 @@ function Chat() {
       ]);
       // }, 500);
     }
+
     roomSocket.on('sLogin', sLoginCallback);
+
     return () => {
       roomSocket.off('sLogin', sLoginCallback);
+    };
+  }, []);
+
+  // 로그인을 할 때 접속 유저를 받기 : currentUsers - 같은 방에 접속 중인 유저
+  useEffect(() => {
+    if (!roomSocket) return;
+
+    console.log('세번째 useEffect 실행!');
+    const currentUsersCallback = (usersInRoom) => {
+      console.log('현재 접속 중인 사용자들:', usersInRoom);
+    };
+
+    roomSocket.on('currentUsers', currentUsersCallback);
+    return () => {
+      roomSocket.off('currentUsers', currentUsersCallback);
     };
   }, []);
 
@@ -176,14 +194,12 @@ function Chat() {
                     key={`${i}_li`}
                     name={v.id}
                     data-id={v.id}
-                    onClick={onSetPrivateTarget}
                   >
                     <div
-                      className={
-                        v.id === privateTarget ? 'private-user' : 'userId'
-                      }
+                      className={`clickButton ${v.id === privateTarget ? 'private-user' : 'userId'}`}
                       data-id={v.id}
                       name={v.id}
+                      onClick={onSetPrivateTarget}
                     >
                       {v.id}
                     </div>

@@ -10,6 +10,7 @@ import Footer from '../../common/layout/Footer';
 import { useSearchParams } from 'react-router-dom';
 import { API_BASE_URL } from '../../config/host-config';
 import axios from 'axios';
+import { Spinner } from 'reactstrap';
 
 const NewsTemplate = () => {
   // API_BASE_URL: 백엔드 hostname
@@ -162,6 +163,7 @@ const NewsTemplate = () => {
     const fetchRegionData = async () => {
       if (!tags.length) return;
       try {
+        // /issue-trend/todayArticles
         console.log('POST 요청 url: ', NEWS_URL, ', region:', region);
         setLoading(true);
         const res = await axios.post(NEWS_URL, { region });
@@ -212,7 +214,11 @@ const NewsTemplate = () => {
   }, [keyword]);
 
   if (loading) {
-    return <div style={{ margin: '20vh' }}>Loading...</div>;
+    return (
+      <div style={{ margin: '20vh' }}>
+        <Spinner color='danger'>잠시만 기다려주세요...</Spinner>
+      </div>
+    );
   }
 
   if (error) {
