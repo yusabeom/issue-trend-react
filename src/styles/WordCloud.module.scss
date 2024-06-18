@@ -40,17 +40,17 @@
 
 .boxContainer {
 
-    margin-top: 80px;
+    margin: 80px auto 0;
 
 
     .time {
         width: 60%;
-        margin: 0 auto 15px;
+        margin: 0 100px 15px 260px;
         text-align: end;
         font-size: 13px;
         font-weight: bold;
-        color: $buttonPupple;
-        padding-right: 5px;
+        color: black;
+        opacity: 0.8;
 
         
     }
@@ -61,10 +61,12 @@
         height: 500px;
         background: white;
         margin: 0 auto;
+        padding-top: 30px;
         text-align: center;
         box-shadow: 4px 4px 7px rgba(0, 0, 0, 0.1);
         display: flex;
         justify-content: center;
+        overflow: hidden;
         
     }
 
