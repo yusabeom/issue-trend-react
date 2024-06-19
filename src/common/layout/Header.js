@@ -1,10 +1,44 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import logo from '../../assets/img/logo.png';
 import styles from '../../styles/Header.module.scss';
 import ChatModal from '../../components/chat/ChatModal';
 import useNavigation from '../func/useNavigation';
+import AuthContext from '../../components/store/auth-context';
+import { useNavigate } from 'react-router-dom';
+import { Button } from '@mui/material';
+import { API_BASE_URL, USER } from '../../config/host-config';
 
 const Header = () => {
+  const profileRequestURL = `${API_BASE_URL}${USER}/load-profile`;
+  const navigate = useNavigate();
+  const { isLoggedIn, onLogout, userEmail } = useContext(AuthContext);
+
+  const [profileUrl, setProfileUrl] = useState(null);
+
+  const logoutHandler = () => {
+    onLogout();
+    navigate('/login');
+  };
+
+  const fetchProfileImage = async () => {
+    const res = await fetch(profileRequestURL, {
+      method: 'GET',
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem('ACCESS_TOKEN'),
+      },
+    });
+
+    if (res.status === 200) {
+      const profileBlob = await res.blob();
+      const imgUrl = window.URL.createObjectURL(profileBlob);
+      setProfileUrl(imgUrl);
+    } else {
+      const err = await res.text();
+      console.log('err: ' + err);
+      setProfileUrl(null);
+    }
+  };
+
   const { goLogin, goJoin, goHome, goNews, goBoard } = useNavigation();
 
   const {
@@ -36,6 +70,10 @@ const Header = () => {
     console.log('click chat Button!');
     childButtonRef.current.handleOpen();
   };
+
+  useEffect(() => {
+    if (isLoggedIn) fetchProfileImage();
+  }, [isLoggedIn]);
 
   useEffect(() => {
     window.addEventListener('scroll', updateScroll);
@@ -86,12 +124,41 @@ const Header = () => {
             scrollPosition < 10 ? btnGroup : `${btnGroup} ${changeBtnGroup}`
           }
         >
-          <div className={`${btn} ${btn1}`} onClick={goLogin}>
-            로그인
-          </div>
-          <div className={`${btn} ${btn2}`} onClick={goJoin}>
-            회원가입
-          </div>
+          {/* {isLoggedIn && (<div></div>) */}
+          {isLoggedIn ? (
+            <>
+              <div>{userEmail + '님 안녕하세요'}</div>
+              <img
+                src={profileUrl || require('../../assets/img/anonymous.jpg')}
+                alt='프로필 사진'
+                style={{
+                  marginLeft: 20,
+                  width: 75,
+                  borderRadius: '50%',
+                  height: 75,
+                }}
+              />
+              <Button className='logout-btn' onClick={logoutHandler}>
+                로그아웃
+              </Button>
+            </>
+          ) : (
+            <div>
+              <div className={`${btn} ${btn1}`} onClick={goLogin}>
+                로그인
+              </div>
+              <div className={`${btn} ${btn2}`} onClick={goJoin}>
+                회원가입
+              </div>
+            </div>
+          )}
+          {/*<div>
+              {/* {localStorage.getItem('login-flag')}님 안녕하세요. */}
+          {/* <div className={`${btn} ${btn1}`} onClick={goLogin}></div>
+              <div className={`${btn} ${btn2}`} onClick={goJoin}>
+                회원가입
+              </div>
+            </div> */}
         </div>
       </div>
     </header>
