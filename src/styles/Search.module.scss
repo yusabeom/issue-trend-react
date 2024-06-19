@@ -9,11 +9,19 @@
     .title {
         width: 70%;
         margin: 0 auto;
-        padding: 200px 0 20px;
+        padding: 200px 0 10px;
         text-align: center;
         font-size: 23px;
         font-weight: bold;
         border-bottom: solid 2px;
+
+        .date {
+            color: white;
+            font-size: 13px;
+            font-weight: 400;
+            margin-top: 20px;
+            text-align: end;
+        }
     }
 
     .contentDetail{
@@ -26,6 +34,8 @@
             width: 70%;
             margin: 30px auto;
             display: flex;
+            
+            
             p {
                 width: 40px;
                 height: 40px;
@@ -36,11 +46,13 @@
                 margin: 0;
                 align-content: center;
                 text-align: center;
+                
             }
 
             span {
                 align-content: center;
-                margin-left: 20px;
+                padding: 10px;
+                
             }
             
         }
