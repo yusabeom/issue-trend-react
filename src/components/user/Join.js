@@ -16,7 +16,7 @@ const Join = () => {
     email: '',
     password: '',
     // phoneNumber: '',
-    address: '',
+    regionName: '',
   });
 
   const [message, setMessage] = useState({
@@ -24,7 +24,7 @@ const Join = () => {
     password: '',
     passwordCheck: '',
     // phoneNumber: '',
-    address: '',
+    regionName: '',
   });
 
   const [correct, setCorrect] = useState({
@@ -32,7 +32,7 @@ const Join = () => {
     password: false,
     passwordCheck: false,
     // phoneNumber: false,
-    address: false,
+    regionName: false,
   });
 
   const saveInputState = ({ key, inputValue, msg, flag }) => {
@@ -223,10 +223,10 @@ const getNewsList = res.data;
   }, [remainingTime]);
   //------------------------------------------------------
 
-  const [address, setAddress] = useState('');
+  const [regionName, setRegionName] = useState('');
   // 내 위치 자동설정
-  let regionName = null;
-  const $address = document.getElementById('address');
+  // let regionName = null;
+
   function getAddr(lat, lng) {
     let geocoder = new kakao.maps.services.Geocoder();
     let coord = new kakao.maps.LatLng(lat, lng);
@@ -234,10 +234,8 @@ const getNewsList = res.data;
       if (status === kakao.maps.services.Status.OK) {
         console.log(result);
       }
-      regionName = result[0].address.region_1depth_name;
-      setAddress(regionName);
-      correct.address = true; // address의 상태를 true로
-      document.getElementById('address').value = regionName;
+      const area = result[0].address.region_1depth_name;
+      setRegionName(area);
     };
     geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
   }
@@ -263,7 +261,6 @@ const getNewsList = res.data;
     }
   }
 
-  let result;
   const addressClickHandler = () => {
     getLocation();
   };
@@ -338,7 +335,6 @@ const getNewsList = res.data;
     const userFormData = new FormData();
     userFormData.append('user', userJsonBlob);
     userFormData.append('profileImage', $fileTag.current.files[0]);
-    userFormData.append('address', address);
     userFormData.append('keywords', keywords);
 
     const res = await fetch(API_BASE_URL + USER, {
@@ -365,7 +361,7 @@ const getNewsList = res.data;
     }
   };
 
-  console.log('message: ', message);
+  console.log('userValue: ', userValue);
 
   return (
     <Container component='main' className={styles.main}>
@@ -386,7 +382,9 @@ const getNewsList = res.data;
             <Grid item xs={12}>
               <div
                 className='thumbnail-box'
-                onClick={() => $fileTag.current.click()}
+                onClick={() => {
+                  $fileTag.current.click();
+                }}
               >
                 <img
                   src={imgFile || require('../../assets/img/anonymous.jpg')}
@@ -540,9 +538,10 @@ const getNewsList = res.data;
             <Grid item xs={9}>
               <TextField
                 fullWidth
-                id='address'
-                name='address'
+                id='regionName'
+                name='regionName'
                 inputProps={{ readOnly: true }}
+                value={regionName}
               />
             </Grid>
             <Grid item xs={3}>

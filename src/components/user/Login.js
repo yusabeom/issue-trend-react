@@ -1,29 +1,40 @@
 import { Button, Container, Grid, TextField, Typography } from '@mui/material';
-import React from 'react';
+import React, { useContext } from 'react';
 import { API_BASE_URL as BASE, USER } from '../../config/host-config';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import AuthContext from '../store/auth-context';
 
 const Login = () => {
-  const REQUEST_URL = BASE + USER + '/signin';
+  const REQUEST_URL = BASE + USER + '/login';
+  const { onLogin } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-  const fetchLogin = () => {
+  const fetchLogin = async () => {
     const $email = document.getElementById('email');
     const $password = document.getElementById('password');
-
-    fetch(REQUEST_URL, {
+    console.log($email.value, $password.value);
+    const res = await fetch(REQUEST_URL, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ email: $email.value, password: $password.value }),
-    })
-      .then((res) => res.text())
-      .then((result) => console.log(result))
-      .catch((err) => {
-        console.log(err);
-      });
+      body: JSON.stringify({
+        email: $email.value,
+        password: $password.value,
+      }),
+    });
+
+    if (res.status === 400) {
+      const text = await res.text();
+      alert(text);
+      return;
+    }
+
+    const { token, email } = await res.json();
+    onLogin(token, email);
+    navigate('/login');
   };
+
   const loginHandler = (e) => {
     e.preventDefault();
-
     fetchLogin();
   };
 
