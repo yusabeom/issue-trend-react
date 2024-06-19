@@ -18,15 +18,18 @@ import { debounce } from 'lodash';
 import { Alert } from '@mui/material';
 
 // 댓글 UI
-export default function TextareaComment({ newComment }) {
+// newComment: 작성 후 submit한 댓글, initialValue: 댓글 초기값, type: 수정(modify) or 작성(insert)여부
+export default function TextareaComment({ newComment, initialValue, type }) {
   // AuthContext에서 로그인 상태를 가져옵니다. (Header.js 참고)
   // userName을 가져오고 프로필 이미지 요청
 
   const [italic, setItalic] = React.useState(false);
   const [fontWeight, setFontWeight] = React.useState('normal');
-  const [anchorEl, setAnchorEl] = React.useState(null); // 수정/삭제 Popover 여부
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const [replyComment, setReplyComment] = React.useState(''); // input창 댓글
+  const [replyComment, setReplyComment] = React.useState(
+    type === 'modify' ? initialValue : '',
+  ); // input창 댓글
   const [openAlert, setOpenAlert] = React.useState(false); // 댓글 alert 메세지 여부
   const scrollRef = React.useRef(null);
 
@@ -63,12 +66,14 @@ export default function TextareaComment({ newComment }) {
   };
   return (
     <FormControl>
-      <FormLabel>
-        <div className={styles.profile}>
-          <img src={profileImage} alt='댓글 작성자 프로필 사진' />
-        </div>
-        <span className={styles.loginUser}>서정원</span>
-      </FormLabel>
+      {type === 'insert' && (
+        <FormLabel>
+          <div className={styles.profile}>
+            <img src={profileImage} alt='댓글 작성자 프로필 사진' />
+          </div>
+          <span className={styles.loginUser}>서정원</span>
+        </FormLabel>
+      )}
       {openAlert && (
         <Alert style={{ marginBottom: '1rem' }} severity='warning'>
           댓글을 작성해주세요
@@ -78,7 +83,7 @@ export default function TextareaComment({ newComment }) {
         onChange={replyTextHandler}
         onSubmit={replySubmetHandler}
         value={replyComment}
-        placeholder='댓글을 입력해주세요'
+        placeholder='댓글을 작성해주세요'
         minRows={3}
         endDecorator={
           <Box
@@ -133,7 +138,7 @@ export default function TextareaComment({ newComment }) {
               <FormatItalic />
             </IconButton>
             <Button sx={{ ml: 'auto' }} onClick={replySubmetHandler}>
-              Send
+              {type === 'modify' ? '수정' : '작성'}
             </Button>
           </Box>
         }

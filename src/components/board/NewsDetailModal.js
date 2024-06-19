@@ -44,8 +44,7 @@ const boxStyle = {
   //   overflow: 'auto',
 };
 
-const NewsDetailModal = forwardRef((props, ref) => {
-  const article = props.article;
+const NewsDetailModal = forwardRef(({ article }, ref) => {
   const {
     headerStyle,
     articleContents,
@@ -62,6 +61,8 @@ const NewsDetailModal = forwardRef((props, ref) => {
   const [replyList, setReplyList] = useState([]); // 댓글 리스트
   const [anchorEl, setAnchorEl] = useState(null); // Popover 여부
   const [selectedReply, setSelectedReply] = useState(null); // popover에서 선택한 replyNo
+  const [editingCommentId, setEditingCommentId] = useState(null); // 수정하려는 댓글 id
+  const [newModifyingText, setNewModifyingText] = useState('');
 
   const infoWrapperRef = useRef(null);
 
@@ -122,7 +123,31 @@ const NewsDetailModal = forwardRef((props, ref) => {
   };
 
   // 댓글 수정하기
-  const handleModify = (replyNo) => {};
+  const handleModify = (replyNo) => {
+    setEditingCommentId(replyNo);
+  };
+
+  const newEditComment = async (editComment) => {
+    console.log(
+      'PUT 요청 url: ',
+      `/articles/${article.articleCode}/comments/${editingCommentId}`,
+    );
+    console.log('수정 text: ', editComment);
+
+    try {
+      const res = await axios.put(
+        `/articles/${article.articleCode}/comments/${editingCommentId}`,
+        { text: editComment },
+      );
+      console.log(res.data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setEditingCommentId(null);
+      setAnchorEl(null);
+      bringReplies();
+    }
+  };
 
   // 댓글 삭제하기
   const handleDelete = async (replyNo) => {
@@ -130,13 +155,18 @@ const NewsDetailModal = forwardRef((props, ref) => {
       'DELETE 요청 url: ',
       ARTICLE + `/articles/${article.articleCode}/comments/${replyNo}`,
     );
-    const res = await axios.delete(
-      ARTICLE + `/articles/${article.articleCode}/comments/${replyNo}`,
-    );
-
-    console.log(res.data);
-    setAnchorEl(null);
-    bringReplies();
+    try {
+      const res = await axios.delete(
+        ARTICLE + `/articles/${article.articleCode}/comments/${replyNo}`,
+      );
+      console.log(res.data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setEditingCommentId(null);
+      setAnchorEl(null);
+      bringReplies();
+    }
   };
 
   // Popover 이벤트 핸들러
@@ -202,9 +232,10 @@ const NewsDetailModal = forwardRef((props, ref) => {
                   뉴스 보러 가기
                 </a>
               </div>
-              <footer className={reply}>
+              <footer className={styles.reply}>
+                <h3>댓글 {replyList.length}</h3>
                 <ul className={styles.replyList}>
-                  {replyList &&
+                  {replyList.length > 0 &&
                     replyList.map((reply) => (
                       <li key={reply.commentNo}>
                         <div
@@ -256,15 +287,20 @@ const NewsDetailModal = forwardRef((props, ref) => {
                           </Popover>
                         </div>
 
-                        <p className={styles.replyContent}>
-                          {reply.commentNo + reply.text}
-                        </p>
-                        {/* <p className={styles.replyDate}>{reply.replyDate}</p> */}
+                        <p className={styles.replyContent}>{reply.text}</p>
+                        {/* 수정 영역 */}
+                        {editingCommentId === reply.commentNo && (
+                          <TextareaComment
+                            newComment={newEditComment}
+                            initialValue={reply.text}
+                            type={'modify'}
+                          />
+                        )}
                       </li>
                     ))}
                 </ul>
                 <div className='replyInput'>
-                  <TextareaComment newComment={newComment} />
+                  <TextareaComment newComment={newComment} type={'insert'} />
                 </div>
               </footer>
             </div>
