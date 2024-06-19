@@ -1,5 +1,3 @@
-@import '../App.css';
-
 .main {
   display: flex;
   flex-direction: row;
@@ -12,7 +10,7 @@
 $img-w: 150px;
 $img-h: 150px;
 
-.thumbnail-box {
+div.thumbnail-box {
   width: $img-w;
   height: $img-h;
   border-radius: 50%;
