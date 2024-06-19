@@ -1,20 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import WordCloud from 'wordcloud';
 import heart from '../../assets/svg/cloud.svg';
 import { useNavigate } from 'react-router-dom';
+import { KeywordContext } from '../../utils/KeywordContext';
 
 const Words = ({ words }) => {
   const canvasRef = useRef(null);
-  // console.log(words);
+  const { setMainKeyword } = useContext(KeywordContext);
   const navigate = useNavigate();
-
-  const handleSearch = (keyword) => {
-    if (keyword.trim()) {
-      navigate(`/todayArticles?keyword=${keyword}`);
-    } else {
-      alert('Please enter a keyword');
-    }
-  };
 
   useEffect(() => {
     if (canvasRef.current) {
@@ -23,7 +16,7 @@ const Words = ({ words }) => {
         shape: heart,
         gridSize: 3,
         weightFactor: function (size) {
-          return Math.sqrt(size) * 4.5;
+          return size * 1.3;
         },
         fontWeight: 'bold',
         color: function () {
@@ -40,8 +33,8 @@ const Words = ({ words }) => {
         click: function (items) {
           const keyword = items[0];
           console.log(keyword);
-
-          handleSearch(keyword);
+          navigate('/news');
+          setMainKeyword(keyword);
         },
 
         rotateRatio: 0.5,
@@ -50,7 +43,7 @@ const Words = ({ words }) => {
         drawOutOfBound: true,
       });
     }
-  }, [words]);
+  }, [words, setMainKeyword]);
 
   return <canvas ref={canvasRef} width={820} height={500} />;
 };
