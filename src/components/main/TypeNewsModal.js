@@ -1,27 +1,7 @@
 import { Box, Modal, Typography } from '@mui/material';
+import { lineHeight, maxHeight } from '@mui/system';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 500,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-};
-
-const content = {
-  mt: 2,
-  padding: 2,
-  borderRadius: 1,
-  boxShadow: 3,
-  maxHeight: '300px',
-  overflow: 'auto',
-};
+import styles from '../../styles/TypeNewsModal.module.scss';
 
 const TypeNewsModal = ({ open, closeModal, articles, code }) => {
   const filteredArticles = articles.filter((news) => news.articleCode === code);
@@ -37,14 +17,25 @@ const TypeNewsModal = ({ open, closeModal, articles, code }) => {
       aria-labelledby='modal-modal-title'
       aria-describedby='modal-modal-description'
     >
-      <Box sx={style}>
-        <Typography id='modal-modal-title' variant='h6' component='h2'>
-          {article.title}
+      <Box className={styles.style}>
+        <Typography
+          className={styles.header}
+          id='modal-modal-title'
+          variant='h6'
+          component='h2'
+        >
+          뉴스기사
         </Typography>
-        <Typography id='modal-modal-description' sx={{ mt: 2 }}>
-          {article.formattedCreatedDate}
-        </Typography>
-        <Typography sx={content}>{article.text}</Typography>
+        <div className={styles.contentContainer}>
+          <Typography className={styles.title}>{article.title}</Typography>
+          <Typography id='modal-modal-description' className={styles.date}>
+            {article.formattedCreatedDate}
+          </Typography>
+          <Typography className={styles.imgBox}>
+            <img src={article.img} />
+          </Typography>
+          <Typography className={styles.content}>{article.text}</Typography>
+        </div>
       </Box>
     </Modal>
   );

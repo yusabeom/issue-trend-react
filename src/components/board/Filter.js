@@ -6,18 +6,22 @@ import {
   TextField,
   debounce,
 } from '@mui/material';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import Select from '../../common/ui/Select';
 import styles from '../../styles/Filter.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faX } from '@fortawesome/free-solid-svg-icons';
 import { SearchRounded } from '@mui/icons-material';
+import { KeywordContext } from '../../utils/KeywordContext';
 
 const Filter = ({ onTags }) => {
   const [inputValue, setInputValue] = useState(''); // 키워드 검색창에다 입력한 값
   const [searchValue, setSearchValue] = useState(''); // 검색한 키워드
   const [keywordMsg, setKeywordMsg] = useState('0'); // 키워드 검색창에 입력한 값의 길이
   const [openAlert, setOpenAlert] = useState(false); // 검색어 alert 메세지 여부
+
+  const { mainKeyword } = useContext(KeywordContext);
+  console.log(mainKeyword);
 
   const optionsRegion = {
     se: '서울',
@@ -56,8 +60,8 @@ const Filter = ({ onTags }) => {
 
   // 태그가 바뀔 때마다 부모에게 전달
   useEffect(() => {
-    onTags(tags, searchValue);
-  }, [tags, searchValue]);
+    onTags(tags, searchValue, mainKeyword);
+  }, [tags, searchValue, mainKeyword]);
 
   // 태그에 요소 추가
   const addNewTag = (key) => {
@@ -132,6 +136,11 @@ const Filter = ({ onTags }) => {
       setKeywordMsg('0');
     }
   };
+
+  // mainKeyword이 변경될 때 inputValue 업데이트
+  useEffect(() => {
+    setInputValue(mainKeyword);
+  }, [mainKeyword]);
 
   return (
     <>
