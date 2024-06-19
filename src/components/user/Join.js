@@ -5,7 +5,7 @@ import styles from '../../styles/Join.module.scss';
 import { AccessAlarm } from '@mui/icons-material';
 import PinDropIcon from '@mui/icons-material/PinDrop';
 import { Navigate, useNavigate } from 'react-router-dom';
-import { Box, height } from '@mui/system';
+import axios from 'axios';
 
 const { kakao } = window;
 
@@ -15,7 +15,7 @@ const Join = () => {
   const [userValue, setUserValue] = useState({
     email: '',
     password: '',
-    phoneNumber: '',
+    // phoneNumber: '',
     address: '',
   });
 
@@ -23,7 +23,7 @@ const Join = () => {
     email: '',
     password: '',
     passwordCheck: '',
-    phoneNumber: '',
+    // phoneNumber: '',
     address: '',
   });
 
@@ -31,11 +31,12 @@ const Join = () => {
     email: false,
     password: false,
     passwordCheck: false,
-    phoneNumber: false,
+    // phoneNumber: false,
     address: false,
   });
 
   const saveInputState = ({ key, inputValue, msg, flag }) => {
+    console.log('values: ', { key, inputValue, msg, flag });
     inputValue !== 'pass' &&
       setUserValue((oldVal) => {
         return { ...oldVal, [key]: inputValue };
@@ -50,26 +51,42 @@ const Join = () => {
     });
   };
 
-  const fetchDuplicateCheck = (email) => {
+  const fetchDuplicateCheck = async (email) => {
     let msg = '';
     let flag = false;
 
-    fetch(`${API_BASE_URL}${USER}/check?email=${email}`)
-      .then((res) => res.json())
-      .then((result) => {
-        console.log(`결과: ${result}`);
-
-        if (result) {
-          msg = '이메일이 중복되었습니다.';
-        } else {
-          msg = '사용 가능한 이메일 입니다.';
-          flag = true;
-        }
-        saveInputState({ key: 'email', inputValue: email, msg, flag });
+    try {
+      const res = await axios.get(`${API_BASE_URL}${USER}/check`, {
+        params: { email },
       });
+
+      /*
+      const res = await axios.get(API_BASE_URL + SEARCH, {
+        params: { keyword },
+      });
+const getNewsList = res.data;
+// http://localhost:8181/issue-trend/search?keyword=고속
+*/
+
+      // const result = await res.json();
+      const result = res.data;
+      console.log(`결과: ${result}`);
+
+      if (result) {
+        msg = '이메일이 중복되었습니다.';
+      } else {
+        msg = '사용 가능한 이메일 입니다.';
+        flag = true;
+      }
+    } catch (error) {
+      msg = '중복 확인 중 오류가 발생했습니다.';
+      console.error(error);
+    }
+
+    saveInputState({ key: 'email', inputValue: email, msg, flag });
   };
 
-  const emailHandler = (e) => {
+  const emailHandler = async (e) => {
     const emailRegex = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
     const inputValue = e.target.value;
 
@@ -81,7 +98,8 @@ const Join = () => {
     } else if (!emailRegex.test(inputValue)) {
       msg = '이메일 형식이 올바르지 않습니다.';
     } else {
-      fetchDuplicateCheck(inputValue);
+      await fetchDuplicateCheck(inputValue);
+      return;
     }
 
     saveInputState({
@@ -137,6 +155,7 @@ const Join = () => {
   };
 
   // 핸드폰 번호
+
   const [phoneNumber, setPhoneNumber] = useState('');
   const phoneNumberHandler = (e) => {
     const phoneNumberRegex = /(01[016789{1}])-([0-9]{4})-([0-9]{4})$/;
@@ -202,6 +221,7 @@ const Join = () => {
 
     return () => clearInterval(timer);
   }, [remainingTime]);
+  //------------------------------------------------------
 
   const [address, setAddress] = useState('');
   // 내 위치 자동설정
@@ -216,6 +236,7 @@ const Join = () => {
       }
       regionName = result[0].address.region_1depth_name;
       setAddress(regionName);
+      correct.address = true; // address의 상태를 true로
       document.getElementById('address').value = regionName;
     };
     geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
@@ -242,6 +263,7 @@ const Join = () => {
     }
   }
 
+  let result;
   const addressClickHandler = () => {
     getLocation();
   };
@@ -286,21 +308,26 @@ const Join = () => {
   // 키워드 등록하기
   // 입력한 키워드를 저장하는 배열
   const [keywords, setKeywords] = useState([]);
-  const [keyword, setKeyword] = useState({ id: '', value: '' });
+  // const [keyword, setKeyword] = useState({ id: '', value: '' });
 
   const handleKeyDown = (value) => {
     console.log(value);
-    setKeyword({
-      id: keywords.length < 1 ? 1 : keywords[keywords.length - 1].id + 1,
-      value,
+
+    setKeywords((currentKeywords) => {
+      return [
+        ...currentKeywords,
+        {
+          id: keywords.length < 1 ? 1 : keywords[keywords.length - 1].id + 1,
+          value,
+        },
+      ];
     });
 
-    setKeywords((oldValue) => [...oldValue, value]);
-
-    // console.log(`keywords: ${keywords[0].id}, ${keywords[0].value}`);
+    // setKeywords((oldValue) => [...oldValue, { id: keyword.id, value }]);
+    document.getElementById('keyword').value = '';
   };
 
-  console.log(keyword);
+  console.log(keywords.length);
   console.log([...keywords]);
 
   const fetchSignUpPost = async () => {
@@ -312,6 +339,7 @@ const Join = () => {
     userFormData.append('user', userJsonBlob);
     userFormData.append('profileImage', $fileTag.current.files[0]);
     userFormData.append('address', address);
+    userFormData.append('keywords', keywords);
 
     const res = await fetch(API_BASE_URL + USER, {
       method: 'POST',
@@ -336,6 +364,8 @@ const Join = () => {
       alert('입력란을 다시 확인해 주세요');
     }
   };
+
+  console.log('message: ', message);
 
   return (
     <Container component='main' className={styles.main}>
@@ -396,7 +426,6 @@ const Join = () => {
                 {message.email}
               </span>
             </Grid>
-
             <Grid item xs={12}>
               <TextField
                 variant='outlined'
@@ -435,8 +464,7 @@ const Join = () => {
                 {message.passwordCheck}
               </span>
             </Grid>
-
-            <Grid item xs={9}>
+            {/* <Grid item xs={9}>
               <TextField
                 variant='outlined'
                 required
@@ -490,7 +518,7 @@ const Join = () => {
                 type='tel'
                 id='mobile-number-check'
               />
-              {/* <span id='check-span'>{authNumTimer}</span> */}
+              {/* <span id='check-span'>{authNumTimer}</span> 
             </Grid>
             <Grid item xs={3}>
               <Button
@@ -499,8 +527,7 @@ const Join = () => {
                 variant='contained'
                 style={
                   { background: '#38d9a9' }
-                  /* onclick={checkMobileNumberHandler} */
-                }
+                  /* onclick={checkMobileNumberHandler} 
                 sx={{
                   height: '95%',
                 }}
@@ -508,8 +535,8 @@ const Join = () => {
               >
                 확인
               </Button>
-            </Grid>
-
+            </Grid>{' '}
+            */}
             <Grid item xs={9}>
               <TextField
                 fullWidth
@@ -531,25 +558,24 @@ const Join = () => {
                 내 동네 설정
               </Button>
             </Grid>
-
             <Grid item xs={12}>
               <h6>issue-trend가 맞춤형 뉴스를 제공합니다.</h6>
             </Grid>
             <TextField
               type='text'
               placeholder='관심 키워드를 입력하고 엔터를 누르세요'
+              id='keyword'
               onKeyUp={(e) => {
                 if (e.key === 'Enter') {
                   handleKeyDown(e.target.value);
                 }
               }}
             />
-
             <Grid item xs={12}>
               <ul>
-                <li>1</li>
-                <li>2</li>
-                <li>3</li>
+                {keywords.map((keyword) => {
+                  return <li key={keyword.id}>{keyword.value}</li>;
+                })}
               </ul>
             </Grid>
             <Grid item xs={12}>
