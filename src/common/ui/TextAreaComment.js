@@ -14,15 +14,36 @@ import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
 import Check from '@mui/icons-material/Check';
 import styles from '../../styles/TextareaComment.module.scss';
 import profileImage from '../../assets/img/anonymous.jpg';
+import { debounce } from 'lodash';
 
 // 댓글 UI
-export default function TextareaComment() {
+export default function TextareaComment({ newComment }) {
   // AuthContext에서 로그인 상태를 가져옵니다. (Header.js 참고)
   // userName을 가져오고 프로필 이미지 요청
 
   const [italic, setItalic] = React.useState(false);
   const [fontWeight, setFontWeight] = React.useState('normal');
   const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const [replyComment, setReplyComment] = React.useState('');
+
+  // debounce 함수 생성
+  const debouncedReplyTextHandler = React.useCallback(
+    debounce((value) => {
+      setReplyComment(value);
+    }, 300),
+    [],
+  );
+
+  const replyTextHandler = (e) => {
+    debouncedReplyTextHandler(e.target.value);
+    // console.log(replyComment);
+  };
+
+  const replySubmetHandler = (e) => {
+    // console.log('submitted 댓글: ', replyComment);
+    newComment(replyComment);
+  };
   return (
     <FormControl>
       <FormLabel>
@@ -32,6 +53,8 @@ export default function TextareaComment() {
         <span className={styles.loginUser}>서정원</span>
       </FormLabel>
       <Textarea
+        onChange={replyTextHandler}
+        onSubmit={replySubmetHandler}
         placeholder='댓글을 입력해주세요'
         minRows={3}
         endDecorator={
@@ -86,7 +109,9 @@ export default function TextareaComment() {
             >
               <FormatItalic />
             </IconButton>
-            <Button sx={{ ml: 'auto' }}>Send</Button>
+            <Button sx={{ ml: 'auto' }} onClick={replySubmetHandler}>
+              Send
+            </Button>
           </Box>
         }
         sx={{

@@ -163,7 +163,7 @@ const NewsTemplate = () => {
     const fetchRegionData = async () => {
       if (!tags.length) return;
       try {
-        // /issue-trend/todayArticles
+        // /issue-trend/todayArticles (requestBody)
         console.log('POST 요청 url: ', NEWS_URL, ', region:', region);
         setLoading(true);
         const res = await axios.post(NEWS_URL, { region });
@@ -194,7 +194,7 @@ const NewsTemplate = () => {
           'GET 요청 url: ',
           API_BASE_URL + SEARCH + '?keyword=' + keyword,
         );
-        // http://localhost:8181/issue-trend/search?keyword=고속
+        // http://localhost:8181/issue-trend/search?keyword=고속 (requestParam)
         const res = await axios.get(API_BASE_URL + SEARCH, {
           params: { keyword },
         });
