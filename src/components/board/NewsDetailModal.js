@@ -60,7 +60,8 @@ const NewsDetailModal = forwardRef((props, ref) => {
   } = styles;
   const [open, setOpen] = useState(false); // 채팅 모달창을 열었는지 여부
   const [replyList, setReplyList] = useState([]); // 댓글 리스트
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = useState(null); // Popover 여부
+  const [selectedReply, setSelectedReply] = useState(null); // popover에서 선택한 replyNo
 
   const infoWrapperRef = useRef(null);
 
@@ -81,7 +82,7 @@ const NewsDetailModal = forwardRef((props, ref) => {
 
     const replies = await res.data; // 해당 기사 댓글 목록
     setReplyList(replies);
-    console.log('get replylist from server : ', replyList);
+    console.log('get replylist from server : ', replies);
   };
 
   const handleOpen = () => {
@@ -98,7 +99,7 @@ const NewsDetailModal = forwardRef((props, ref) => {
     handleOpen,
   }));
 
-  // 입력창에 입력해서 제출한 댓글
+  // 입력창에 입력해서 제출한 댓글 작성하기
   const newComment = async (input) => {
     console.log(input);
 
@@ -119,12 +120,34 @@ const NewsDetailModal = forwardRef((props, ref) => {
       console.log(error);
     }
   };
-  const handlePopoverClose = () => {
+
+  // 댓글 수정하기
+  const handleModify = (replyNo) => {};
+
+  // 댓글 삭제하기
+  const handleDelete = async (replyNo) => {
+    console.log(
+      'DELETE 요청 url: ',
+      ARTICLE + `/articles/${article.articleCode}/comments/${replyNo}`,
+    );
+    const res = await axios.delete(
+      ARTICLE + `/articles/${article.articleCode}/comments/${replyNo}`,
+    );
+
+    console.log(res.data);
     setAnchorEl(null);
+    bringReplies();
   };
 
-  const handleClick = (event) => {
+  // Popover 이벤트 핸들러
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+    setSelectedReply(null);
+  };
+
+  const handleClick = (event, replyNo) => {
     setAnchorEl(event.currentTarget);
+    setSelectedReply(replyNo);
   };
 
   const openPopOver = Boolean(anchorEl);
@@ -184,7 +207,10 @@ const NewsDetailModal = forwardRef((props, ref) => {
                   {replyList &&
                     replyList.map((reply) => (
                       <li key={reply.commentNo}>
-                        <div className={styles.commentHeader}>
+                        <div
+                          className={styles.commentHeader}
+                          value={reply.commentNo}
+                        >
                           <div className={styles.replyWriter}>
                             <div className={styles.profile}>
                               <img
@@ -197,8 +223,8 @@ const NewsDetailModal = forwardRef((props, ref) => {
 
                           <div className={styles.crud}>
                             <FontAwesomeIcon
-                              onMouseEnter={handleClick}
-                              // onMouseLeave={handlePopoverClose}
+                              style={{ cursor: 'pointer' }}
+                              onClick={(e) => handleClick(e, reply.commentNo)}
                               icon={faEllipsisVertical}
                             />
                           </div>
@@ -214,12 +240,25 @@ const NewsDetailModal = forwardRef((props, ref) => {
                             }}
                           >
                             <Typography sx={{ p: 2 }}>
-                              The content of the Popover.
+                              <Button
+                                onClick={() => handleModify(selectedReply)}
+                                value={reply.commentNo}
+                              >
+                                수정
+                              </Button>
+                              <Button
+                                onClick={() => handleDelete(selectedReply)}
+                                value={reply.commentNo}
+                              >
+                                삭제
+                              </Button>
                             </Typography>
                           </Popover>
                         </div>
 
-                        <p className={styles.replyContent}>{reply.text}</p>
+                        <p className={styles.replyContent}>
+                          {reply.commentNo + reply.text}
+                        </p>
                         {/* <p className={styles.replyDate}>{reply.replyDate}</p> */}
                       </li>
                     ))}

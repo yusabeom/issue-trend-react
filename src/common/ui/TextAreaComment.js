@@ -15,6 +15,7 @@ import Check from '@mui/icons-material/Check';
 import styles from '../../styles/TextareaComment.module.scss';
 import profileImage from '../../assets/img/anonymous.jpg';
 import { debounce } from 'lodash';
+import { Alert } from '@mui/material';
 
 // 댓글 UI
 export default function TextareaComment({ newComment }) {
@@ -23,26 +24,42 @@ export default function TextareaComment({ newComment }) {
 
   const [italic, setItalic] = React.useState(false);
   const [fontWeight, setFontWeight] = React.useState('normal');
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = React.useState(null); // 수정/삭제 Popover 여부
 
-  const [replyComment, setReplyComment] = React.useState('');
+  const [replyComment, setReplyComment] = React.useState(''); // input창 댓글
+  const [openAlert, setOpenAlert] = React.useState(false); // 댓글 alert 메세지 여부
+  const scrollRef = React.useRef(null);
 
   // debounce 함수 생성
-  const debouncedReplyTextHandler = React.useCallback(
-    debounce((value) => {
-      setReplyComment(value);
-    }, 300),
-    [],
-  );
+  // const debouncedReplyTextHandler = React.useCallback(
+  //   debounce((value) => {
+  //     setReplyComment(value);
+  //   }, 300),
+  //   [],
+  // );
 
   const replyTextHandler = (e) => {
-    debouncedReplyTextHandler(e.target.value);
+    setReplyComment(e.target.value);
     // console.log(replyComment);
   };
 
   const replySubmetHandler = (e) => {
     // console.log('submitted 댓글: ', replyComment);
+    if (replyComment.trim() === '') {
+      setOpenAlert(true);
+      scrollToBottom();
+      return;
+    }
     newComment(replyComment);
+    setReplyComment('');
+    scrollToBottom();
+  };
+
+  const scrollToBottom = () => {
+    if (scrollRef.current) {
+      scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
+      // scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
   };
   return (
     <FormControl>
@@ -52,9 +69,15 @@ export default function TextareaComment({ newComment }) {
         </div>
         <span className={styles.loginUser}>서정원</span>
       </FormLabel>
+      {openAlert && (
+        <Alert style={{ marginBottom: '1rem' }} severity='warning'>
+          댓글을 작성해주세요
+        </Alert>
+      )}
       <Textarea
         onChange={replyTextHandler}
         onSubmit={replySubmetHandler}
+        value={replyComment}
         placeholder='댓글을 입력해주세요'
         minRows={3}
         endDecorator={
