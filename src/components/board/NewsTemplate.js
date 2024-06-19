@@ -22,7 +22,7 @@ const NewsTemplate = () => {
   const [totalPages, setTotalPages] = useState(0); // 전체 페이지 수
   const [pageNewsList, setPageNewsList] = useState([]); // 현재 페이지의 뉴스 기사
   const [tags, setTags] = useState([]);
-  const [keyword, setKeyword] = useState('');
+  const [keywords, setKeywords] = useState('');
   const [loading, setLoading] = useState(true);
   const [noItem, setNoItem] = useState(false);
   const [error, setError] = useState(null);
@@ -117,9 +117,10 @@ const NewsTemplate = () => {
 
   const getFilterTags = (tags, keyword, mainKeyword) => {
     setTags(tags);
-    setKeyword(keyword);
-    setKeyword(mainKeyword);
+    setKeywords({ keyword, mainKeyword });
   };
+
+  const { keyword, mainKeyword } = keywords;
 
   // 태그가 바뀔때마다 fetch 요청
   useEffect(() => {
