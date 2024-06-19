@@ -5,12 +5,24 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { Modal, Box, Button, Slide, Backdrop } from '@mui/material';
+import {
+  Modal,
+  Box,
+  Button,
+  Slide,
+  Backdrop,
+  Popover,
+  Typography,
+} from '@mui/material';
 import basicImage from '../../assets/img/logo.png';
 
 import styles from '../../styles/NewsDetailModal.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLink, faX } from '@fortawesome/free-solid-svg-icons';
+import {
+  faEllipsisVertical,
+  faLink,
+  faX,
+} from '@fortawesome/free-solid-svg-icons';
 import { height } from '@mui/system';
 import TextareaComment from '../../common/ui/TextAreaComment';
 import { API_BASE_URL, USER } from '../../config/host-config';
@@ -48,6 +60,7 @@ const NewsDetailModal = forwardRef((props, ref) => {
   } = styles;
   const [open, setOpen] = useState(false); // 채팅 모달창을 열었는지 여부
   const [replyList, setReplyList] = useState([]); // 댓글 리스트
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const infoWrapperRef = useRef(null);
 
@@ -106,6 +119,16 @@ const NewsDetailModal = forwardRef((props, ref) => {
       console.log(error);
     }
   };
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const openPopOver = Boolean(anchorEl);
+  const id = openPopOver ? 'simple-popover' : undefined;
 
   return (
     <div>
@@ -161,15 +184,41 @@ const NewsDetailModal = forwardRef((props, ref) => {
                   {replyList &&
                     replyList.map((reply) => (
                       <li key={reply.commentNo}>
-                        <p className={styles.replyWriter}>
-                          <div className={styles.profile}>
-                            <img
-                              src={reply.replyProfile}
-                              alt='댓글 작성자 프로필 사진'
+                        <div className={styles.commentHeader}>
+                          <div className={styles.replyWriter}>
+                            <div className={styles.profile}>
+                              <img
+                                src={reply.profileImage}
+                                alt='댓글 작성자 프로필 사진'
+                              />
+                            </div>
+                            <div className={styles.email}>{reply.email}</div>
+                          </div>
+
+                          <div className={styles.crud}>
+                            <FontAwesomeIcon
+                              onMouseEnter={handleClick}
+                              // onMouseLeave={handlePopoverClose}
+                              icon={faEllipsisVertical}
                             />
                           </div>
-                          {reply.userNo}
-                        </p>
+
+                          <Popover
+                            id={id}
+                            open={openPopOver}
+                            anchorEl={anchorEl}
+                            onClose={handlePopoverClose}
+                            anchorOrigin={{
+                              vertical: 'bottom',
+                              horizontal: 'right',
+                            }}
+                          >
+                            <Typography sx={{ p: 2 }}>
+                              The content of the Popover.
+                            </Typography>
+                          </Popover>
+                        </div>
+
                         <p className={styles.replyContent}>{reply.text}</p>
                         {/* <p className={styles.replyDate}>{reply.replyDate}</p> */}
                       </li>
