@@ -199,8 +199,6 @@ const NewsTemplate = () => {
 
   return (
     <>
-      <Header />
-
       <div className='news-wrapper aspect-ratio'>
         <Filter onTags={getFilterTags} agencies={newsAgencies} />
         <div>

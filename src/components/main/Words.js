@@ -16,7 +16,8 @@ const Words = ({ words }) => {
         shape: heart,
         gridSize: 3,
         weightFactor: function (size) {
-          return size * 1.3;
+          // return size;
+          return Math.sqrt(size) * 8;
         },
         fontWeight: 'bold',
         color: function () {
@@ -45,7 +46,7 @@ const Words = ({ words }) => {
     }
   }, [words, setMainKeyword]);
 
-  return <canvas ref={canvasRef} width={820} height={500} />;
+  return <canvas ref={canvasRef} width={820} height={510} />;
 };
 
 export default Words;
