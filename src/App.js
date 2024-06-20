@@ -10,11 +10,15 @@ import ReportDetail from './components/board/ReportDetail';
 
 import Login from './components/user/Login';
 import NewsDetailModal from './components/board/NewsDetailModal';
+import AuthContext, {
+  AuthContextProvider,
+} from './components/store/auth-context';
+import { useContext, useEffect, useState } from 'react';
 import MyPage from './components/user/mypage/MyPage';
 
 function App() {
   return (
-    <>
+    <AuthContextProvider>
       <Routes>
         <Route path='/' element={<Intro />} />
         <Route path='/' element={<Layout />}>
@@ -29,7 +33,7 @@ function App() {
           <Route path='/issue-trend/mypage' element={<MyPage />} />
         </Route>
       </Routes>
-    </>
+    </AuthContextProvider>
   );
 }
 
