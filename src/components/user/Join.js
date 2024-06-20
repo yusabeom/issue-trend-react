@@ -12,11 +12,11 @@ const { kakao } = window;
 
 const Join = () => {
   const navigate = useNavigate();
-  const [nick, setNickName] = useState('');
+  const [nickname, setNickName] = useState('');
 
   const [userValue, setUserValue] = useState({
     email: '',
-    nick: '',
+    nickname: '',
     password: '',
     // phoneNumber: '',
     regionName: '',
@@ -24,7 +24,7 @@ const Join = () => {
 
   const [message, setMessage] = useState({
     email: '',
-    nick: '',
+    nickname: '',
     password: '',
     passwordCheck: '',
     // phoneNumber: '',
@@ -33,7 +33,7 @@ const Join = () => {
 
   const [correct, setCorrect] = useState({
     email: false,
-    nick: '',
+    nickname: '',
     password: false,
     passwordCheck: false,
     // phoneNumber: false,
@@ -140,20 +140,20 @@ const getNewsList = res.data;
     }
 
     saveInputState({
-      key: 'email',
+      key: 'nickName',
       inputValue,
       msg,
       flag,
     });
   };
 
-  const nickFetchDuplicateCheck = async (nick) => {
+  const nickFetchDuplicateCheck = async (nickname) => {
     let msg = '';
     let flag = false;
 
     try {
       const res = await axios.get(`${API_BASE_URL}${USER}/nick-check`, {
-        params: { nick },
+        params: { nickname },
       });
 
       const result = res.data;
@@ -164,13 +164,12 @@ const getNewsList = res.data;
       } else {
         msg = '사용 가능한 닉네임 입니다.';
         flag = true;
+        saveInputState({ key: 'nickname', inputValue: nickname, msg, flag });
       }
     } catch (error) {
       msg = '중복 확인 중 오류가 발생했습니다.';
       console.error(error);
     }
-
-    saveInputState({ key: 'nick', inputValue: nick, msg, flag });
   };
 
   const passwordHandler = (e) => {
@@ -434,6 +433,8 @@ const getNewsList = res.data;
   // console.log([...keywords]);
 
   const deleteHandler = (e) => {
+    const $element = e.target;
+    setKeywords((oldValues) => oldValues.filter((k) => k !== $element.value));
     e.target.remove();
   };
 
@@ -446,6 +447,12 @@ const getNewsList = res.data;
     userFormData.append('user', userJsonBlob);
     userFormData.append('profileImage', $fileTag.current.files[0]);
     userFormData.append('keywords', keywords);
+
+    console.log(userFormData);
+    console.log(userFormData.user);
+    console.log(userFormData.profileImage);
+    console.log(userFormData.keywords);
+    console.log([...userFormData.keywords]);
 
     const res = await fetch(API_BASE_URL + USER, {
       method: 'POST',
@@ -539,18 +546,18 @@ const getNewsList = res.data;
                 variant='outlined'
                 required
                 fullWidth
-                name='nick'
+                name='nickname'
                 label='닉네임'
                 type='text'
-                id='nick'
-                autoComplete='nick'
+                id='nickname'
+                autoComplete='nickname'
                 onChange={nickChangeHandler}
               />
               <span
                 id='check-span'
-                style={correct.nick ? { color: 'green' } : { color: 'red' }}
+                style={correct.nickname ? { color: 'green' } : { color: 'red' }}
               >
-                {message.nick}
+                {message.nickname}
               </span>
             </Grid>
             <Grid item xs={12}>
