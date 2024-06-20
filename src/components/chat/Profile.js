@@ -1,27 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import styles from './Profile.module.scss';
 import { io } from 'socket.io-client';
+const roomSocket = io('http://192.168.0.27:5000');
 
-const roomSocket = io('http://192.168.0.27:5000/room');
-
-const Profile = ({ clickName }) => {
+const Profile = ({ clickName, users }) => {
   const [userList, setUserList] = useState([]); // 서버로부터 받은 채팅방 유저 목록
-
-  // 로그인을 할 때 아이디를 받기 : sLogin - 아이디
-  useEffect(() => {
-    // console.log('두번째 useEffect 실행!');
-    if (!roomSocket) return;
-
-    function sListCallback(users) {
-      setUserList(users);
-      console.log('Profile userId: ', users.userId);
-      console.log('Profile roomNumber: ', users.roomNumber);
-    }
-    roomSocket.on('sList', sListCallback);
-    return () => {
-      roomSocket.off('sList', sListCallback);
-    };
-  }, []);
 
   const clickNameHandler = (e) => {
     const clickedUserName = e.target.getAttribute('data-name');
@@ -32,67 +15,23 @@ const Profile = ({ clickName }) => {
   return (
     <div className={styles.profile}>
       <ul className='userList'>
-        <li>
-          <div className={styles.profileImgContainer}>
-            <img
-              src='https://i.namu.wiki/i/GQMqb8jtiqpCo6_US7jmWDO30KfPB2MMvbdURVub61Rs6ALKqbG-nUATj-wNk7bXXWIDjiLHJxWYkTELUgybkA.webp'
-              alt='프로필사진'
-            />
-          </div>
-          <div
-            className={styles.profileName}
-            onClick={clickNameHandler}
-            data-name={'cs'}
-          >
-            춘식이
-          </div>
-        </li>
-        <li>
-          <div className={styles.profileImgContainer}>
-            <img
-              src='https://flexible.img.hani.co.kr/flexible/normal/400/500/imgdb/original/2023/0503/20230503501277.jpg'
-              alt='프로필사진'
-            />
-          </div>
-          <div
-            className={styles.profileName}
-            onClick={clickNameHandler}
-            data-name={'madongsuk'}
-          >
-            user2
-          </div>
-        </li>
-        <li>
-          <div className={styles.profileImgContainer}>
-            <img
-              src='https://img1.daumcdn.net/thumb/R1280x0/?fname=http://t1.daumcdn.net/brunch/service/user/5FL0/image/xLbJIwcn-Lfseo85FZsiNfyRLgA.jpg'
-              alt='프로필사진'
-            />
-          </div>
-          <div
-            className={styles.profileName}
-            onClick={clickNameHandler}
-            data-name={'caocao'}
-          >
-            {' '}
-            user3
-          </div>
-        </li>
-        <li>
-          <div className={styles.profileImgContainer}>
-            <img
-              src='https://upload.wikimedia.org/wikipedia/ko/4/4a/%EC%8B%A0%EC%A7%B1%EA%B5%AC.png'
-              alt='프로필사진'
-            />
-          </div>
-          <div
-            className={styles.profileName}
-            onClick={clickNameHandler}
-            data-name={'jjang'}
-          >
-            user4
-          </div>
-        </li>
+        {users.map((user) => (
+          <li>
+            <div className={styles.profileImgContainer}>
+              <img
+                src='https://i.namu.wiki/i/GQMqb8jtiqpCo6_US7jmWDO30KfPB2MMvbdURVub61Rs6ALKqbG-nUATj-wNk7bXXWIDjiLHJxWYkTELUgybkA.webp'
+                alt='프로필사진'
+              />
+            </div>
+            <div
+              className={styles.profileName}
+              onClick={clickNameHandler}
+              data-name={user}
+            >
+              {user}
+            </div>
+          </li>
+        ))}
       </ul>
     </div>
   );

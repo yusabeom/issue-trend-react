@@ -62,28 +62,52 @@ $buttonPupple: #807aa0;
     margin: 3rem;
     padding: 0 1rem;
 
+    h3 {
+      font-size: 1.1em;
+      margin-bottom: 1.5rem;
+    }
+
     ul.replyList {
       li {
-        margin-bottom: 1.2rem;
+        margin-bottom: 1.8rem;
 
         p {
           margin: 0.4rem;
         }
-        p.replyWriter {
-          font-weight: 700;
+
+        .commentHeader {
           display: flex;
-          justify-content: left;
-          align-items: center;
-          .profile {
-            margin-right: 0.8rem;
+          justify-content: space-between;
+          .replyWriter {
+            font-weight: 700;
+            display: flex;
+            justify-content: left;
+            align-items: center;
+            .profile {
+              margin-right: 0.8rem;
+            }
+
+            .email {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            }
+          }
+          .crud {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: 'pointer';
           }
         }
+
         p.replyContent {
         }
-        p.replyDate {
-          font-size: 0.8em;
-          color: rgb(199, 199, 199);
-        }
+
+        // p.replyDate {
+        //   font-size: 0.8em;
+        //   color: rgb(199, 199, 199);
+        // }
       }
     }
   }

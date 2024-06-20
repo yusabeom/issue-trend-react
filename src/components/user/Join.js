@@ -191,7 +191,7 @@ const getNewsList = res.data;
       flag,
     });
   };
-  console.log(phoneNumber);
+  // console.log(phoneNumber);
 
   const [remainingTime, setRemainingTime] = useState(0);
   const [isTimerOpen, setIstimerOpen] = useState(false);
@@ -227,15 +227,23 @@ const getNewsList = res.data;
   // 내 위치 자동설정
   // let regionName = null;
 
-  function getAddr(lat, lng) {
+  async function getAddr(lat, lng) {
     let geocoder = new kakao.maps.services.Geocoder();
     let coord = new kakao.maps.LatLng(lat, lng);
-    let callback = function (result, status) {
+    let callback = await function (result, status) {
       if (status === kakao.maps.services.Status.OK) {
-        console.log(result);
+        // console.log(result);
+        const area = result[0].address.region_1depth_name;
+        console.log(area);
+
+        saveInputState({
+          key: 'regionName',
+          inputValue: area,
+          msg: '지역 설정 완료',
+          flag: true,
+        });
       }
-      const area = result[0].address.region_1depth_name;
-      setRegionName(area);
+      //
     };
     geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
   }
@@ -246,9 +254,11 @@ const getNewsList = res.data;
         function (position) {
           //getAddr(위도, 경도);
           getAddr(position.coords.latitude, position.coords.longitude);
+          console.log(position);
         },
         function (error) {
           console.error(error);
+          alert('위치 조회를 차단하셨습니다! 차단 풀어주세요~');
         },
         {
           enableHighAccuracy: false,
@@ -263,11 +273,37 @@ const getNewsList = res.data;
 
   const addressClickHandler = () => {
     getLocation();
+
+    // let msg;
+    // let flag = false;
+
+    // console.log(regionName);
+    // if (!regionName) {
+    //   msg = '지역설정은 필수값 입니다.';
+
+    //   saveInputState({
+    //     key: 'regionName',
+    //     inputValue: regionName,
+    //     msg,
+    //     flag,
+    //   });
+    // } else {
+    //   flag = true;
+    //   saveInputState({
+    //     key: 'regionName',
+    //     inputValue: regionName,
+    //     msg,
+    //     flag,
+    //   });
+    // }
   };
 
   const isValid = () => {
+    console.log('correct:', correct);
     for (let key in correct) {
+      console.log(key);
       const flag = correct[key];
+      console.log(flag);
       if (!flag) return false;
     }
     return true;
@@ -324,8 +360,8 @@ const getNewsList = res.data;
     document.getElementById('keyword').value = '';
   };
 
-  console.log(keywords.length);
-  console.log([...keywords]);
+  // console.log(keywords.length);
+  // console.log([...keywords]);
 
   const fetchSignUpPost = async () => {
     const userJsonBlob = new Blob([JSON.stringify(userValue)], {
@@ -541,7 +577,7 @@ const getNewsList = res.data;
                 id='regionName'
                 name='regionName'
                 inputProps={{ readOnly: true }}
-                value={regionName}
+                value={userValue.regionName}
               />
             </Grid>
             <Grid item xs={3}>
@@ -557,6 +593,12 @@ const getNewsList = res.data;
                 내 동네 설정
               </Button>
             </Grid>
+            <span
+              id='check-span'
+              style={correct.regionName ? { color: 'green' } : { color: 'red' }}
+            >
+              {message.regionName}
+            </span>
             <Grid item xs={12}>
               <h6>issue-trend가 맞춤형 뉴스를 제공합니다.</h6>
             </Grid>

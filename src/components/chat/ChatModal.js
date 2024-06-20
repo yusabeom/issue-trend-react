@@ -32,6 +32,7 @@ const ChatModal = forwardRef((props, ref) => {
   const [clickedUserName, setClickedUserName] = useState(''); // 클릭한 유저 이름
   const [animate, setAnimate] = useState(false); // 유저 정보창 애니메이션
   const infoWrapperRef = useRef(null);
+  const [userList, setUserList] = useState([]); // 서버로부터 받은 채팅방 유저 목록
 
   // Profile.js의 특정 user의 이름을 onClick하면 그 user의 이름 정보를 부모 컴포넌트인 ChatModal로 전달
   // 이름과 함께 UserInfo.js를 display 하면서 그 자식 컴포넌트에게 이름을 전달
@@ -72,6 +73,11 @@ const ChatModal = forwardRef((props, ref) => {
     handleOpen,
   }));
 
+  const onUsers = (usersInRoom) => {
+    console.log('In ChatModal, usersInRoom is ', usersInRoom);
+    setUserList(usersInRoom);
+  };
+
   return (
     <div>
       <Button variant='contained' color='primary' onClick={handleOpen}>
@@ -102,8 +108,8 @@ const ChatModal = forwardRef((props, ref) => {
               </h2>
 
               <div className={chatContents}>
-                <Chat />
-                <Profile clickName={getUserName} />
+                <Chat onUsers={onUsers} />
+                <Profile clickName={getUserName} users={userList} />
               </div>
             </div>
 
