@@ -19,6 +19,13 @@ const Filter = ({ onTags, agencies }) => {
   const [searchValue, setSearchValue] = useState(''); // 검색한 키워드
   const [keywordMsg, setKeywordMsg] = useState('0'); // 키워드 검색창에 입력한 값의 길이
   const [openAlert, setOpenAlert] = useState(false); // 검색어 alert 메세지 여부
+  const [submitTags, setSubmitTags] = useState({
+    // 서버에 제출할 태그
+    region: null,
+    keyword: null,
+    sort: null,
+    agency: null,
+  });
 
   const { mainKeyword } = useContext(KeywordContext);
   console.log(mainKeyword);
@@ -51,12 +58,6 @@ const Filter = ({ onTags, agencies }) => {
   };
 
   const [tags, setTags] = useState([]);
-  // tags = ['in', 'se', 'today'];
-
-  // 태그가 바뀔 때마다 부모에게 전달
-  // useEffect(() => {
-  //   onTags(tags, searchValue, mainKeyword);
-  // }, [tags, searchValue, mainKeyword]);
 
   useEffect(() => {
     console.log('agencies: ', agencies);
@@ -77,7 +78,6 @@ const Filter = ({ onTags, agencies }) => {
   const addNewTag = (key) => {
     // filter-tag 태그에 새로운 태그 붙이기
     console.log('key: ', key);
-    console.log('typeof key: ', isNaN(key));
 
     // const content = optionsRegion[key];
     // console.log('content: ', optionsRegion[key]);
@@ -85,22 +85,51 @@ const Filter = ({ onTags, agencies }) => {
     setTags((prevTags) => {
       if (key.length > 5 && prevTags.some((tag) => tag.length > 5)) {
         // 정렬은 하나만 추가 가능
+        setSubmitTags((prevData) => ({
+          ...prevData,
+          sort: optionsSort[key],
+        }));
         return [
           ...prevTags.filter((tag) => tag !== 'recent' && tag !== 'replies'),
           key,
         ];
-      }
-      if (key.length === 2 && prevTags.some((tag) => tag.length === 2)) {
+      } else if (key.length === 2 && prevTags.some((tag) => tag.length === 2)) {
         // 지역은 하나만 추가 가능
+        setSubmitTags((prevData) => ({
+          ...prevData,
+          region: optionsRegion[key],
+        }));
         return [...prevTags.filter((tag) => tag.length !== 2), key];
       } else if (!isNaN(key) && prevTags.some((tag) => !isEnglish(tag))) {
         // 언론사는 하나만 추가 가능
+        console.log('언론사!');
+        setSubmitTags((prevData) => ({
+          ...prevData,
+          agency: optionsUploadTime[key],
+        }));
         return [
           ...prevTags.filter((tag) => isEnglish(tag)),
           optionsUploadTime[key],
         ];
       } else if (!prevTags.some((tag) => tag === key)) {
         // 만약 배열에 넣으려는 값이 이미 존재하지 않을 때만 요소를 배열에 추가
+        if (key.length > 5) {
+          setSubmitTags((prevData) => ({
+            ...prevData,
+            sort: optionsSort[key],
+          }));
+        } else if (key.length === 2) {
+          setSubmitTags((prevData) => ({
+            ...prevData,
+            region: optionsRegion[key],
+          }));
+        } else if (!isNaN(key)) {
+          setSubmitTags((prevData) => ({
+            ...prevData,
+            agency: optionsUploadTime[key],
+          }));
+        }
+
         return [...prevTags, key];
       }
       return [...prevTags];
@@ -122,21 +151,43 @@ const Filter = ({ onTags, agencies }) => {
     if (inputValue.length <= 20) {
       setInputValue(inputValue);
       setKeywordMsg(inputValue.length);
+      setSearchValue(inputValue);
+      setSubmitTags((prevData) => ({
+        ...prevData,
+        keyword: inputValue,
+      }));
     }
   };
 
+  // tags = ['in', 'se', 'today'];
+
+  // 메인화면에서 워드 클라우드 단어를 눌렀을 때
+  useEffect(() => {
+    setSearchValue(mainKeyword);
+    setSubmitTags((prevData) => ({
+      ...prevData,
+      keyword: mainKeyword,
+    }));
+    onTags(submitTags);
+  }, [mainKeyword]);
+
   // 키워드 검색 input에 키워드 입력 후 엔터키를 누르거나 돋보기 아이콘을 클릭했을 때 핸들러
   const submitFilter = (e) => {
-    if (e.key === 'Enter') {
-      console.log('enter!!');
-      if (inputValue.trim() === '') {
+    if (e.key === 'Enter' || e.type === 'click') {
+      // console.log('submitted tags: ', tags);
+      // console.log('submitted keyword: ', searchValue);
+
+      // 태그와 키워드가 비워져 있으면
+      if (inputValue.trim() === '' && tags.length === 0) {
         setOpenAlert(true);
         setTimeout(() => {
           setOpenAlert(false);
         }, 3000);
         return;
       }
-      setSearchValue(inputValue);
+
+      onTags(submitTags);
+
       setInputValue('');
       setKeywordMsg('0');
     }

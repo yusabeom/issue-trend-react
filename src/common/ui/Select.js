@@ -6,7 +6,7 @@ const Select = ({ placeholder, options, select }) => {
 
   const handleSelectChange = (e) => {
     // console.log('value: ', e.target.value);
-    setSelectedValue(e.target.value);
+    setSelectedValue(e.target.value); // key값
     select(e.target.value);
   };
 

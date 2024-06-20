@@ -35,25 +35,12 @@ const NewsTemplate = () => {
   const size = searchParams.get('size') || 20; // amound (페이지 당 게시물 개수)
 
   useEffect(() => {
-    // (필터, 페이지에 따라)서버로부터 뉴스 목록 데이터 가져오기
-    // fetch가 정상적으로 이루어지면 loading을 false로
-    // 2nd parameter : { page, size, tags, keyword }
-    // console.log(NEWS_URL);
-    // console.log('★tag&keyword: ', tags.length || keyword ? 'Truthy' : 'Falsy');
-
     const fetchData = async () => {
-      if (tags.length || keyword) return;
       try {
         console.log('GET 요청 url: ', NEWS_URL);
         setLoading(true);
         const res = await axios.get(NEWS_URL);
         const getNewsList = await res.data; // 페이징이 된 데이터
-
-        // 각 객체에 새로운 key 부여하기
-        // let idCounter = 1;
-        // getNewsList.forEach((obj) => {
-        //   obj.id = idCounter++;
-        // });
 
         setNewsList(getNewsList);
       } catch (error) {
@@ -84,75 +71,32 @@ const NewsTemplate = () => {
     }
   }, [newsList, page, size]);
 
-  const getFilterTags = (tags, keyword, mainKeyword) => {
-    setTags(tags);
-    if (mainKeyword) {
-      setKeyword(mainKeyword);
-    } else {
-      setKeyword(keyword);
-    }
+  const getFilterTags = (tagObject) => {
+    setTags(tagObject);
+    console.log(tagObject);
   };
 
-  // 태그가 바뀔때마다 fetch 요청
   useEffect(() => {
-    let region;
-    if (tags.includes('kk')) {
-      region = '경기';
-    } else if (tags.includes('se')) {
-      region = '서울';
-    } else if (tags.includes('in')) {
-      region = '인천';
-    } else if (tags.includes('bu')) {
-      region = '부산';
-    } else if (tags.includes('ul')) {
-      region = '울산';
-    } else if (tags.includes('kn')) {
-      region = '경남';
-    } else if (tags.includes('da')) {
-      region = '대구';
-    } else if (tags.includes('kb')) {
-      region = '경북';
-    } else if (tags.includes('ku')) {
-      region = '광주';
-    } else if (tags.includes('jn')) {
-      region = '전남';
-    } else if (tags.includes('jj')) {
-      region = '제주';
-    } else if (tags.includes('jb')) {
-      region = '전북';
-    } else if (tags.includes('kw')) {
-      region = '강원';
-    } else if (tags.includes('dj')) {
-      region = '대전';
-    } else if (tags.includes('cb')) {
-      region = '충북';
-    } else if (tags.includes('cn')) {
-      region = '충남';
-    } else if (tags.includes('sj')) {
-      region = '세종';
-    }
-
+    // 서버에 요청
     const fetchRegionData = async () => {
       if (!tags.length) return;
+
       try {
         // /issue-trend/todayArticles (requestBody)
-        console.log('POST 요청 url: ', NEWS_URL, ', region:', region);
-        setLoading(true);
-        const res = await axios.post(NEWS_URL, { region });
-        const getNewsList = res.data;
-        console.log('지역 요청 후 응답: ', getNewsList);
-
-        setNewsList(getNewsList);
-
+        console.log('POST 요청 url: ', NEWS_URL, ', tags:', tags);
+        // setLoading(true);
+        // const res = await axios.post(NEWS_URL, tags);
+        // const getNewsList = res.data;
+        // console.log('지역 요청 후 응답: ', getNewsList);
+        // setNewsList(getNewsList);
         // console.log('From Server, (region useEffect) newsList: ', newsList);
       } catch (error) {
         // console.error('Error fetching data: ', error);
-        setError(error.message);
+        // setError(error.message);
       } finally {
         setLoading(false);
       }
     };
-
     fetchRegionData();
   }, [tags]);
 
