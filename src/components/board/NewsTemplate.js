@@ -27,6 +27,7 @@ const NewsTemplate = () => {
   const [loading, setLoading] = useState(true);
   const [noItem, setNoItem] = useState(false);
   const [error, setError] = useState(null);
+  const [newsAgencies, setNewsAgencies] = useState([]); // 뉴스 언론사
 
   const [searchParams] = useSearchParams();
 
@@ -49,10 +50,10 @@ const NewsTemplate = () => {
         const getNewsList = await res.data; // 페이징이 된 데이터
 
         // 각 객체에 새로운 key 부여하기
-        let idCounter = 1;
-        getNewsList.forEach((obj) => {
-          obj.id = idCounter++;
-        });
+        // let idCounter = 1;
+        // getNewsList.forEach((obj) => {
+        //   obj.id = idCounter++;
+        // });
 
         setNewsList(getNewsList);
       } catch (error) {
@@ -64,23 +65,6 @@ const NewsTemplate = () => {
     };
 
     fetchData();
-
-    /*
-    // 더미 데이터 생성
-    const newNewsList = [];
-    for (let i = 0; i < 50; i++) {
-      newNewsList.push({
-        id: i + 1,
-        title: `${i + 1}번째 뉴스 타이틀`,
-        content: `${i + 1}번째 뉴스 내용입니다. 내용 중간에 짤리는 부분은 서버에서 구현해주...`,
-        datetime: `${i * 2 < 60 ? 2 * i + '분' : i + '시간'}전`,
-        imgUrl:
-          'https://mimgnews.pstatic.net/image/origin/003/2024/06/11/12598694.jpg?type=nf220_150',
-      });
-    }
-
-    setNewsList(newNewsList);
-    */
   }, []);
 
   useEffect(() => {
@@ -91,26 +75,10 @@ const NewsTemplate = () => {
 
     if (newsList.length > 0) {
       setNoItem(false);
-      console.log('if문 실행~');
-
-      // 페이징
-      // const filteredList = newsList.filter(
-      //   (board) => board.id >= (page - 1) * size + 1 && board.id <= page * size,
-      // );
-
-      const filteredList = newsList;
-
-      // 각 객체에 새로운 key 부여하기
-      let idCounter = 1;
-      const updatedList = filteredList.map((obj) => ({
-        ...obj,
-        newId: idCounter++,
-      }));
-      setPageNewsList(updatedList);
-      console.log(
-        'newsList가 변할 때 useEffect 에서 pageNewsList: ',
-        updatedList,
-      );
+      // 뉴스 언론사 배열 가져오기
+      const newsAgencySet = new Set(newsList.map((news) => news.newsAgency));
+      setNewsAgencies(Array.from(newsAgencySet));
+      // console.log(newsAgencies);
     } else {
       setNoItem(true);
     }
@@ -234,12 +202,17 @@ const NewsTemplate = () => {
       <Header />
 
       <div className='news-wrapper aspect-ratio'>
-        <Filter onTags={getFilterTags} />
+        <Filter onTags={getFilterTags} agencies={newsAgencies} />
+        <div>
+          <p style={{ padding: '1rem 0 0' }}>
+            {newsList.length}건의 기사가 검색되었습니다
+          </p>
+        </div>
         {noItem ? (
           <div style={{ margin: '20vh' }}>기사가 존재하지 않습니다</div>
         ) : (
           <NewsList
-            newsList={pageNewsList}
+            newsList={newsList}
             page={page}
             size={size}
             count={totalPages}
