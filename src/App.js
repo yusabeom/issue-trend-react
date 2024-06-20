@@ -10,7 +10,7 @@ import ReportDetail from './components/board/ReportDetail';
 
 import Login from './components/user/Login';
 import NewsDetailModal from './components/board/NewsDetailModal';
-import MyPage from './components/user/MyPage';
+import MyPage from './components/user/mypage/MyPage';
 
 function App() {
   return (

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from '../../styles/MyPage.module.scss';
+import styles from '../../../styles/MyPage.module.scss';
 import ChangeInfo from './ChangeInfo';
 import RecentPost from './RecentPost';
 import WritePost from './WritePost';
@@ -47,7 +47,7 @@ const MyPage = () => {
           <div className={head}>
             <div className={headTitle}>
               <img
-                src={require('../../assets/img/anonymous.jpg')}
+                src={require('../../../assets/img/anonymous.jpg')}
                 alt='프로필 사진'
                 style={{
                   width: 75,
