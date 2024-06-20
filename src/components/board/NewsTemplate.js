@@ -117,8 +117,11 @@ const NewsTemplate = () => {
 
   const getFilterTags = (tags, keyword, mainKeyword) => {
     setTags(tags);
-    setKeyword(keyword);
-    setKeyword(mainKeyword);
+    if (mainKeyword) {
+      setKeyword(mainKeyword);
+    } else {
+      setKeyword(keyword);
+    }
   };
 
   // 태그가 바뀔때마다 fetch 요청
