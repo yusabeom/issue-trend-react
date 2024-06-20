@@ -10,6 +10,7 @@ import ReportDetail from './components/board/ReportDetail';
 
 import Login from './components/user/Login';
 import NewsDetailModal from './components/board/NewsDetailModal';
+import MyPage from './components/user/MyPage';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path='/board' element={<ReportTemplate />} />
           <Route path='/board/:id' element={<ReportTemplate />} />
           <Route path='/board/detail/:id' element={<ReportDetail />} />
+          <Route path='/issue-trend/mypage' element={<MyPage />} />
         </Route>
       </Routes>
     </>
