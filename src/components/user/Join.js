@@ -6,14 +6,17 @@ import { AccessAlarm } from '@mui/icons-material';
 import PinDropIcon from '@mui/icons-material/PinDrop';
 import { Navigate, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import EmailIcon from '@mui/icons-material/Email';
 
 const { kakao } = window;
 
 const Join = () => {
   const navigate = useNavigate();
+  const [nick, setNickName] = useState('');
 
   const [userValue, setUserValue] = useState({
     email: '',
+    nick: '',
     password: '',
     // phoneNumber: '',
     regionName: '',
@@ -21,6 +24,7 @@ const Join = () => {
 
   const [message, setMessage] = useState({
     email: '',
+    nick: '',
     password: '',
     passwordCheck: '',
     // phoneNumber: '',
@@ -29,6 +33,7 @@ const Join = () => {
 
   const [correct, setCorrect] = useState({
     email: false,
+    nick: '',
     password: false,
     passwordCheck: false,
     // phoneNumber: false,
@@ -109,6 +114,65 @@ const getNewsList = res.data;
       flag,
     });
   };
+
+  const nickChangeHandler = async (e) => {
+    const inputValue = e.target.value;
+    let msg = '좋아요';
+    let flag = true;
+    saveInputState({ key: 'nick', inputValue, msg, flag });
+  };
+  /*
+  const nickChangeHandler = async (e) => {
+    // 2자 이상 16자 이하, 영어 또는 숫자 또는 한글로 구성
+    const nickRegex = /^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{2,16}$/;
+    const inputValue = e.target.value;
+
+    let msg;
+    let flag = false;
+
+    if (!inputValue) {
+      msg = '닉네임은 필수값 입니다.';
+    } else if (!nickRegex.test(inputValue)) {
+      msg = '2자 이상 16자 이하, 영어 또는 숫자 또는 한글로 조합해주세요';
+    } else {
+      await nickFetchDuplicateCheck(inputValue);
+      return;
+    }
+
+    saveInputState({
+      key: 'email',
+      inputValue,
+      msg,
+      flag,
+    });
+  };
+
+  const nickFetchDuplicateCheck = async (nick) => {
+    let msg = '';
+    let flag = false;
+
+    try {
+      const res = await axios.get(`${API_BASE_URL}${USER}/nick-check`, {
+        params: { nick },
+      });
+
+      const result = res.data;
+      console.log(`nick중복체크 결과: ${result}`);
+
+      if (result) {
+        msg = '닉네임 중복되었습니다. 다른 닉네임을 입력해주세요.';
+      } else {
+        msg = '사용 가능한 닉네임 입니다.';
+        flag = true;
+      }
+    } catch (error) {
+      msg = '중복 확인 중 오류가 발생했습니다.';
+      console.error(error);
+    }
+
+    saveInputState({ key: 'nick', inputValue: nick, msg, flag });
+  };
+  */
 
   const passwordHandler = (e) => {
     document.getElementById('password-check').value = '';
@@ -346,6 +410,13 @@ const getNewsList = res.data;
   const handleKeyDown = (value) => {
     console.log(value);
 
+    for (const keyword of keywords) {
+      if (keyword.value === value) {
+        alert('이미 존재하는 키워드입니다.');
+        return;
+      }
+    }
+
     setKeywords((currentKeywords) => {
       return [
         ...currentKeywords,
@@ -362,6 +433,10 @@ const getNewsList = res.data;
 
   // console.log(keywords.length);
   // console.log([...keywords]);
+
+  const deleteHandler = (e) => {
+    e.target.remove();
+  };
 
   const fetchSignUpPost = async () => {
     const userJsonBlob = new Blob([JSON.stringify(userValue)], {
@@ -458,6 +533,25 @@ const getNewsList = res.data;
                 style={correct.email ? { color: 'green' } : { color: 'red' }}
               >
                 {message.email}
+              </span>
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant='outlined'
+                required
+                fullWidth
+                name='nick'
+                label='닉네임'
+                type='text'
+                id='nick'
+                autoComplete='nick'
+                onChange={nickChangeHandler}
+              />
+              <span
+                id='check-span'
+                style={correct.nick ? { color: 'green' } : { color: 'red' }}
+              >
+                {message.nick}
               </span>
             </Grid>
             <Grid item xs={12}>
@@ -615,7 +709,15 @@ const getNewsList = res.data;
             <Grid item xs={12}>
               <ul>
                 {keywords.map((keyword) => {
-                  return <li key={keyword.id}>{keyword.value}</li>;
+                  return (
+                    <li
+                      style={{ border: 'solid 1px black' }}
+                      onClick={deleteHandler}
+                      key={keyword.id}
+                    >
+                      {keyword.value}
+                    </li>
+                  );
                 })}
               </ul>
             </Grid>

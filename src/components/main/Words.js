@@ -17,7 +17,7 @@ const Words = ({ words }) => {
         gridSize: 3,
         weightFactor: function (size) {
           // return size;
-          return Math.sqrt(size) * 4;
+          return Math.sqrt(size) * 8;
         },
         fontWeight: 'bold',
         color: function () {
