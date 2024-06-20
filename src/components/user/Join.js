@@ -115,13 +115,13 @@ const getNewsList = res.data;
     });
   };
 
-  const nickChangeHandler = async (e) => {
-    const inputValue = e.target.value;
-    let msg = '좋아요';
-    let flag = true;
-    saveInputState({ key: 'nick', inputValue, msg, flag });
-  };
-  /*
+  // const nickChangeHandler = async (e) => {
+  //   const inputValue = e.target.value;
+  //   let msg = '좋아요';
+  //   let flag = true;
+  //   saveInputState({ key: 'nick', inputValue, msg, flag });
+  // };
+
   const nickChangeHandler = async (e) => {
     // 2자 이상 16자 이하, 영어 또는 숫자 또는 한글로 구성
     const nickRegex = /^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{2,16}$/;
@@ -172,7 +172,6 @@ const getNewsList = res.data;
 
     saveInputState({ key: 'nick', inputValue: nick, msg, flag });
   };
-  */
 
   const passwordHandler = (e) => {
     document.getElementById('password-check').value = '';
@@ -707,7 +706,7 @@ const getNewsList = res.data;
               }}
             />
             <Grid item xs={12}>
-              <ul>
+              <ul style={{ display: 'flex', justifyContent: '' }}>
                 {keywords.map((keyword) => {
                   return (
                     <li
