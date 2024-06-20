@@ -140,7 +140,7 @@ const getNewsList = res.data;
     }
 
     saveInputState({
-      key: 'nickName',
+      key: 'nickname',
       inputValue,
       msg,
       flag,
@@ -435,6 +435,7 @@ const getNewsList = res.data;
   const deleteHandler = (e) => {
     const $element = e.target;
     setKeywords((oldValues) => oldValues.filter((k) => k !== $element.value));
+    console.log(keywords);
     e.target.remove();
   };
 
@@ -447,12 +448,6 @@ const getNewsList = res.data;
     userFormData.append('user', userJsonBlob);
     userFormData.append('profileImage', $fileTag.current.files[0]);
     userFormData.append('keywords', keywords);
-
-    console.log(userFormData);
-    console.log(userFormData.user);
-    console.log(userFormData.profileImage);
-    console.log(userFormData.keywords);
-    console.log([...userFormData.keywords]);
 
     const res = await fetch(API_BASE_URL + USER, {
       method: 'POST',

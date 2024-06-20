@@ -13,7 +13,8 @@ export const AuthContextProvider = (props) => {
   const [userEmail, setUserEmail] = useState('');
 
   const loginHandler = (token, userEmail) => {
-    localStorage.setItem('ACCESS_TOKEN', token);
+    localStorage.setItem('ACCESS_TOKEN', token.access_token);
+    localStorage.setItem('REFRESH_TOKEN', token.refresh_token);
     localStorage.setItem('LOGIN_EMAIL', userEmail);
     setIsLoggedIn(true);
     setUserEmail(userEmail);
