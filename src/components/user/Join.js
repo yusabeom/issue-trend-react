@@ -435,6 +435,7 @@ const getNewsList = res.data;
   const deleteHandler = (e) => {
     const $element = e.target;
     setKeywords((oldValues) => oldValues.filter((k) => k !== $element.value));
+    console.log(keywords);
     e.target.remove();
   };
 
