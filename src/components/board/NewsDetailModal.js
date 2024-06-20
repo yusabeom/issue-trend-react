@@ -130,13 +130,14 @@ const NewsDetailModal = forwardRef(({ article }, ref) => {
   const newEditComment = async (editComment) => {
     console.log(
       'PUT 요청 url: ',
-      `/articles/${article.articleCode}/comments/${editingCommentId}`,
+      ARTICLE + `/articles/${article.articleCode}/comments/${editingCommentId}`,
     );
     console.log('수정 text: ', editComment);
 
     try {
       const res = await axios.put(
-        `/articles/${article.articleCode}/comments/${editingCommentId}`,
+        ARTICLE +
+          `/articles/${article.articleCode}/comments/${editingCommentId}`,
         { text: editComment },
       );
       console.log(res.data);
