@@ -29,8 +29,10 @@ const Login = () => {
     }
 
     const { token, email } = await res.json();
+    console.log('token:', token);
+    console.log('email:', email);
     onLogin(token, email);
-    navigate('/login');
+    navigate('/home');
   };
 
   const loginHandler = (e) => {
