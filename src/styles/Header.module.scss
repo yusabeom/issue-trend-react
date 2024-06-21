@@ -1,8 +1,6 @@
 @import 'styles.scss';
 
-
-
-.changeHeader{
+.changeHeader {
   background-color: #ffffff !important;
   height: 7vh !important;
 }
@@ -25,18 +23,13 @@
   padding-left: 400px;
 
   font-weight: bold;
-  
- 
-  
 
   .headerContainer {
     display: flex;
- 
+
     // border-bottom: solid 1px gray;
     // box-shadow: 0 3px 2px -2px rgb(177, 177, 177);
   }
-
-  
 
   .headerItem {
     display: flex;
@@ -59,10 +52,11 @@
   .btnGroup {
     display: flex;
     position: absolute;
-    top: 80px;
+    top: 30px;
     right: 10px;
     padding-right: 400px;
-    
+    height: 10px;
+
     font-weight: bold;
   }
 
@@ -95,4 +89,8 @@
   .btn2:hover {
     color: grey;
   }
+}
+
+.loginName {
+  margin-top: 3rem;
 }

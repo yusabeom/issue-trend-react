@@ -15,6 +15,7 @@ import AuthContext, {
 } from './components/store/auth-context';
 import { useContext, useEffect, useState } from 'react';
 import MyPage from './components/user/mypage/MyPage';
+import ReportWriteModal from './components/board/ReportWriteModal';
 
 function App() {
   return (

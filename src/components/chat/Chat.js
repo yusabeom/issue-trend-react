@@ -4,6 +4,7 @@ import logo from '../../assets/img/iologo.png';
 import { io } from 'socket.io-client';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import AuthContext from '../../components/store/auth-context';
 
 // const webSocket = io('http://localhost:5000');
 const roomSocket = io('http://192.168.0.27:5000');
@@ -11,7 +12,7 @@ const roomSocket = io('http://192.168.0.27:5000');
 // 화면에는 유저 이름(userName)을 보여주고, 서버에서는 socket.id로 식별한다.
 const Chat = ({ onUsers }) => {
   // AuthContext에서 로그인 상태를 가져옵니다.
-  // const { isLoggedIn, userName, onLogout } = useContext(AuthContext);
+  const { isLoggedIn, userEmail, onLogout } = useContext(AuthContext);
 
   const messagesEndRef = useRef(null);
   const [userId, setUserId] = useState(''); // 유저가 보낼 아이디 (로그인)
@@ -28,7 +29,7 @@ const Chat = ({ onUsers }) => {
   useEffect(() => {
     if (!roomSocket) return;
 
-    console.log('첫번째 useEffect 실행!', userId);
+    console.log('첫번째 useEffect 실행!', userEmail);
 
     // 메세지를 서버로부터 수신
     function sMessageCallback(msg) {
@@ -125,7 +126,7 @@ const Chat = ({ onUsers }) => {
   // 로그인을 할 때(submit) 아이디(와 프로필 사진)를 서버에 전송
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    roomSocket.emit('login', { userId, roomNumber }); // 서버로 아이디 전송 (처음에는 이름으로 전달)
+    roomSocket.emit('login', { userEmail, roomNumber }); // 서버로 아이디 전송 (처음에는 이름으로 전달)
     setIsLogin(true);
   };
 
@@ -244,8 +245,8 @@ const Chat = ({ onUsers }) => {
                 // style={{ display: 'none' }}
                 // placeholder={userId}
                 onChange={onChangeUserIdHandler}
-                value={userId}
-                // readOnly
+                value={userEmail}
+                readOnly
               ></input>
               <button type='submit'>입장하기</button>
             </form>
