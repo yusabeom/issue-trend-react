@@ -22,7 +22,7 @@ const Filter = ({ onTags, agencies }) => {
   const [submitTags, setSubmitTags] = useState({
     // 서버에 제출할 태그
     region: null,
-    keyword: '',
+    keyword: null,
     sort: null,
     agency: null,
   });
@@ -166,14 +166,21 @@ const Filter = ({ onTags, agencies }) => {
   // 메인화면에서 워드 클라우드 단어를 눌렀을 때
   useEffect(() => {
     console.log('mainKeyword:', mainKeyword);
-    setSearchValue(mainKeyword);
-    setSubmitTags((prevData) => ({
-      ...prevData,
-      keyword: mainKeyword,
-    }));
-    console.log('워드클라우드 -> ', submitTags);
-    onTags(submitTags);
-  }, [mainKeyword]);
+    // setSearchValue(mainKeyword);
+    // setSubmitTags((prevData) => ({
+    //   ...prevData,
+    //   keyword: mainKeyword,
+    // }));
+    setTimeout(() => {
+      onTags({
+        region: null,
+        keyword: mainKeyword,
+        sort: null,
+        agency: null,
+      });
+    }, 1000);
+  }, []);
+  console.log('워드클라우드 -> ', submitTags);
 
   // 키워드 검색 input에 키워드 입력 후 엔터키를 누르거나 돋보기 아이콘을 클릭했을 때 핸들러
   const submitFilter = (e) => {
