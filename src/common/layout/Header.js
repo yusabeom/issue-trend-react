@@ -9,13 +9,21 @@ import { Button } from '@mui/material';
 import { API_BASE_URL, USER } from '../../config/host-config';
 
 const Header = () => {
+  const { isLoggedIn, onLogout, userEmail } = useContext(AuthContext);
   const profileRequestURL = `${API_BASE_URL}${USER}/load-profile`;
   const navigate = useNavigate();
-  const { isLoggedIn, onLogout, userEmail } = useContext(AuthContext);
 
   const [profileUrl, setProfileUrl] = useState(null);
 
-  const logoutHandler = () => {
+  const logoutHandler = async () => {
+    const res = await fetch(`${API_BASE_URL}${USER}/logout`, {
+      method: 'GET',
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem('ACCESS_TOKEN'),
+      },
+    });
+
+    // AuthContext의 onLogout 함수를 호출하여 로그인 상태를 업데이트 합니다.
     onLogout();
     navigate('/login');
   };
@@ -124,9 +132,9 @@ const Header = () => {
             scrollPosition < 10 ? btnGroup : `${btnGroup} ${changeBtnGroup}`
           }
         >
-          {/* {isLoggedIn && (<div></div>) */}
           {isLoggedIn ? (
             <>
+              {/*div style={{ display: 'flex' }}*/}
               <div>{userEmail + '님 안녕하세요'}</div>
               <img
                 src={profileUrl || require('../../assets/img/anonymous.jpg')}
