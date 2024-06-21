@@ -35,6 +35,12 @@ export const AuthContextProvider = (props) => {
     setUserEmail('');
   };
 
+  useEffect(() => {
+    if (localStorage.getItem('ACCESS_TOKEN')) {
+      setIsLoggedIn(true);
+    }
+  });
+
   return (
     <AuthContext.Provider
       value={{

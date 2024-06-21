@@ -135,7 +135,7 @@ const Header = () => {
           {isLoggedIn ? (
             <>
               {/*div style={{ display: 'flex' }}*/}
-              <div>{userEmail + '님 안녕하세요'}</div>
+              <div>{localStorage.getItem('LOGIN_EMAIL') + '님 안녕하세요'}</div>
               <img
                 src={profileUrl || require('../../assets/img/anonymous.jpg')}
                 alt='프로필 사진'
