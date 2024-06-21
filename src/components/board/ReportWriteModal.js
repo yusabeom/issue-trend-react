@@ -1,5 +1,6 @@
 import React, {
   forwardRef,
+  useContext,
   useEffect,
   useImperativeHandle,
   useRef,
@@ -16,6 +17,9 @@ import {
   FormControl,
   OutlinedInput,
   FormHelperText,
+  Snackbar,
+  FormControlLabel,
+  Checkbox,
 } from '@mui/material';
 import basicImage from '../../assets/img/logo.png';
 
@@ -32,6 +36,8 @@ import TextareaComment from '../../common/ui/TextAreaComment';
 import { API_BASE_URL, USER } from '../../config/host-config';
 import axios from 'axios';
 import { Textarea } from '@mui/joy';
+import AuthContext from '../../components/store/auth-context';
+import { useNavigate } from 'react-router-dom';
 
 const ARTICLE = API_BASE_URL + USER;
 
@@ -51,6 +57,8 @@ const boxStyle = {
 };
 
 const ReportWriteModal = forwardRef((props, ref) => {
+  const navigate = useNavigate();
+  const { isLoggedIn, userEmail, onLogout } = useContext(AuthContext);
   const {
     headerStyle,
     articleContents,
@@ -64,13 +72,8 @@ const ReportWriteModal = forwardRef((props, ref) => {
     reply,
   } = styles;
   const [open, setOpen] = useState(false); // 채팅 모달창을 열었는지 여부
-  const [replyList, setReplyList] = useState([]); // 댓글 리스트
-  const [anchorEl, setAnchorEl] = useState(null); // Popover 여부
-  const [selectedReply, setSelectedReply] = useState(null); // popover에서 선택한 replyNo
-  const [editingCommentId, setEditingCommentId] = useState(null); // 수정하려는 댓글 id
-  const [newModifyingText, setNewModifyingText] = useState('');
-
-  const infoWrapperRef = useRef(null);
+  const [imageSrc, setImageSrc] = useState(null); // 첨부한 파일 이미지
+  const $snackbarRef = useRef(null); // 스낵바 ref
 
   const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
@@ -88,6 +91,11 @@ const ReportWriteModal = forwardRef((props, ref) => {
   // 이름과 함께 UserInfo.js를 display 하면서 그 자식 컴포넌트에게 이름을 전달
 
   const handleOpen = () => {
+    if (!isLoggedIn) {
+      if ($snackbarRef.current) {
+        $snackbarRef.current.click();
+      }
+    }
     setOpen(true);
   };
 
@@ -100,10 +108,47 @@ const ReportWriteModal = forwardRef((props, ref) => {
     handleOpen,
   }));
 
+  // snackbar 버튼 상태변수
+  const [state, setState] = React.useState({
+    openSnackbar: false,
+    vertical: 'top',
+    horizontal: 'center',
+  });
+  const { vertical, horizontal, openSnackbar } = state;
+
+  // snackbar 버튼 이벤트
+  const handleClick = (newState) => () => {
+    setState({ ...newState, openSnackbar: true });
+    setTimeout(() => {
+      setState({ ...newState, openSnackbar: false });
+      console.log('로그인 페이지로 이동하기');
+      navigate('/login');
+    }, 3000);
+  };
+
+  const handleSnackBarClose = () => {
+    setState({ ...state, openSnackbar: false });
+  };
+
+  // 첨부한 파일이 바뀔 때 이벤트 핸들러
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setImageSrc(e.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <div>
       <Button variant='contained' color='primary' onClick={handleOpen}>
         Open Modal
+      </Button>
+      <Button onClick={handleClick({ vertical: 'top', horizontal: 'center' })}>
+        Top-Center
       </Button>
       <Modal
         open={open}
@@ -136,10 +181,15 @@ const ReportWriteModal = forwardRef((props, ref) => {
                   </FormControl>
 
                   <Textarea
-                    sx={{ marginTop: '2rem', height: '200px' }}
+                    sx={{
+                      marginTop: '2rem',
+                      height: '300px',
+                      overflow: 'auto',
+                    }}
                     color='neutral'
                     disabled={false}
                     minRows={2}
+                    maxRows={10}
                     placeholder='내용을 입력해주세요'
                     size='md'
                     variant='plain'
@@ -154,19 +204,61 @@ const ReportWriteModal = forwardRef((props, ref) => {
                       startIcon={<FontAwesomeIcon icon={faCloudUpload} />}
                     >
                       Upload file
-                      <VisuallyHiddenInput type='file' />
+                      <VisuallyHiddenInput
+                        type='file'
+                        onChange={handleFileChange}
+                      />
                     </Button>
+                    {imageSrc && (
+                      <div style={{ marginTop: '20px' }}>
+                        <img
+                          src={imageSrc}
+                          alt='Uploaded'
+                          style={{ maxWidth: '100%', height: 'auto' }}
+                        />
+                      </div>
+                    )}
                   </div>
 
-                  <div className={styles.submitButton}>
-                    <Button> 제보하기 </Button>
-                  </div>
+                  <footer>
+                    <div className={styles.agreement}>
+                      <Checkbox />
+                      <span>
+                        {' '}
+                        <strong onClick={}>개인정보 수집 및 이용</strong>에 동의합니다.
+                      </span>
+                    </div>
+                    <div className={styles.agreeDetail}>
+                      1. 개인정보의 수집·이용 항목회사는 수집한 개인정보를
+                      다음의 목적을 위해 활용합니다. [서비스 안내 및 제보 내용에
+                      관한 확인 및 처리 등의 업무 진행] <br />
+                      2. 수집하는 개인정보 항목이름, 전화번호, 이메일 등
+                      입력항목 <br />
+                      3. 개인정보의 보유 및 이용기간원칙적으로 개인정보의 수집
+                      및 이용목적이 달성된 후에는 해당 정보를 지체없이
+                      파기합니다.
+                    </div>
+                    <div className={styles.submitButton}>
+                      <div className={styles.postButton}> 제보하기 </div>
+                    </div>
+                  </footer>
                 </form>
               </main>
             </div>
           </Box>
         </Slide>
       </Modal>
+
+      <Box sx={{ width: 500 }}>
+        <Snackbar
+          anchorOrigin={{ vertical, horizontal }}
+          open={openSnackbar}
+          onClose={handleSnackBarClose}
+          message='로그인 후 제보해주세요'
+          key={vertical + horizontal}
+          ref={$snackbarRef}
+        />
+      </Box>
     </div>
   );
 });
