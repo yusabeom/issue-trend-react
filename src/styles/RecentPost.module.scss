@@ -1,0 +1,28 @@
+.title {
+    font-size: 23px;
+    margin: 20px 45px 20px;
+    
+}
+
+.post {
+    display: flex;
+    max-height: 200px;
+    margin-top: 50px;
+    padding-left: 20px;
+    // background-color: red;
+    
+    img {
+        width: 200px;
+    }
+
+    .postContent {
+        padding: 20px;
+
+        li {
+            margin: 10px;
+        }
+
+        
+
+    }
+}
