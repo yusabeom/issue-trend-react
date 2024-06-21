@@ -12,7 +12,7 @@ const ReportList = ({ boardList, size, count, page }) => {
     <div className={styles.reportListWrapper}>
       <ul>
         {boardList.map((board) => (
-          <ReportItem key={board.id} board={board} />
+          <ReportItem key={board.postNo} board={board} />
         ))}
       </ul>
       <div className={styles.pagination}>

@@ -9,6 +9,10 @@ import {
   faStar,
 } from '@fortawesome/free-solid-svg-icons';
 import TextareaComment from '../../common/ui/TextAreaComment';
+import { API_BASE_URL, USER } from '../../config/host-config';
+import axios from 'axios';
+
+const ARTICLE = API_BASE_URL + USER;
 
 const ReportDetail = () => {
   const [openReply, setOpenReply] = useState(false); // 댓글창 열기
@@ -56,17 +60,20 @@ const ReportDetail = () => {
 
     const getBoardDetail = await res.data; // 게시물 데이터
     */
-    console.log('id: ', id);
 
-    const getBoardDetail = {
-      id: '13425',
-      title: '영등포구 선유도 공원 메뚜기떼 출몰',
-      content:
-        '일요일 아침(16일)에 선유도 공원에 갔는데 외래종으로 추정되는 메뚜기떼가 선유도쪽에 있네요 국내 환경에 영향을 주는 종일까 걱정되어 제보합니다.',
-      datetime: '2024-06-16',
-      writer: '불꽃남자',
+    const fetchData = async () => {
+      try {
+        console.log('GET 요청 url: ', ARTICLE + '/search-post/' + id);
+        const res = await axios.get(ARTICLE + '/search-post/' + id);
+        const getBoardDetail = await res.data;
+
+        setBoardDetail(getBoardDetail);
+      } catch (error) {
+        // console.error('Error fetching data: ', error);
+        console.error(error);
+      }
     };
-    setBoardDetail(getBoardDetail);
+    fetchData();
   }, []);
 
   useEffect(() => {
@@ -96,11 +103,11 @@ const ReportDetail = () => {
                 <div className={styles.profile}>
                   <img src={writerProfile} alt='작성자 프로필 사진' />
                 </div>
-                {boardDetail.writer}
+                {boardDetail.email}
               </p>
               <div>
                 <a href=''>신고하기</a>
-                <p>{boardDetail.datetime}</p>
+                <p>{boardDetail.formatDate}</p>
               </div>
             </div>
           </header>
@@ -108,12 +115,12 @@ const ReportDetail = () => {
           <hr />
 
           <main className='contentRegion'>
-            <p className={styles.content}>{boardDetail.content}</p>
-            <div className={styles.boardTags}>
+            <p className={styles.content}>{boardDetail.text}</p>
+            {/* <div className={styles.boardTags}>
               <div className={styles.tag}>#범죄</div>
               <div className={styles.tag}>#제보</div>
               <div className={styles.tag}>#경찰</div>
-            </div>
+            </div> */}
           </main>
 
           <hr />

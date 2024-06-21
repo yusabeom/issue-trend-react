@@ -38,7 +38,7 @@ import { API_BASE_URL, USER } from '../../config/host-config';
 import axios from 'axios';
 import { Textarea } from '@mui/joy';
 import AuthContext from '../../components/store/auth-context';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useRouteLoaderData } from 'react-router-dom';
 
 const ARTICLE = API_BASE_URL + USER;
 
@@ -193,7 +193,8 @@ const ReportWriteModal = forwardRef((props, ref) => {
     } catch (error) {
       console.error('Error:', error);
     } finally {
-      navigate('/board');
+      setOpen(false);
+      window.location.reload();
     }
   };
 
