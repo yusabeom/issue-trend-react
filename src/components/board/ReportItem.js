@@ -12,11 +12,11 @@ const ReportItem = ({ board }) => {
 
   return (
     <li className={styles.oneItem}>
-      <p>{board.id}</p>
-      <p>{board.region}</p>
+      <p>{board.postNo}</p>
+      {/* <p>{board.region}</p> */}
       <p onClick={goToDetail}>{board.title}</p>
-      <p>{board.writer}</p>
-      <p>{board.datetime}</p>
+      <p>{board.email}</p>
+      <p>{board.formatDate}</p>
     </li>
   );
 };

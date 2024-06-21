@@ -67,6 +67,14 @@
   }
 }
 
+.searchButton {
+  cursor: pointer;
+  padding: 2rem 0 0;
+  &:hover {
+    color: #807aa0;
+  }
+}
+
 .icon {
   cursor: pointer;
 }
