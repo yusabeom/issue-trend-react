@@ -70,6 +70,7 @@ const MyPage = () => {
               </ul>
             </div>
           </div>
+
           <div className={content}>
             {activeComponent === 'change' && <ChangeInfo />}
             {activeComponent === 'recent' && <RecentPost />}
