@@ -28,10 +28,11 @@ const Login = () => {
       return;
     }
 
-    const { token, email } = await res.json();
+    const { token, email, userNo } = await res.json();
     console.log('token:', token);
     console.log('email:', email);
-    onLogin(token, email);
+    console.log('userNo:', userNo);
+    onLogin(token, email, userNo);
     navigate('/home');
   };
 

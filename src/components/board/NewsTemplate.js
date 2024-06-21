@@ -22,12 +22,18 @@ const NewsTemplate = () => {
   const [newsList, setNewsList] = useState([]); // 전체 뉴스 기사 수
   const [totalPages, setTotalPages] = useState(0); // 전체 페이지 수
   const [pageNewsList, setPageNewsList] = useState([]); // 현재 페이지의 뉴스 기사
-  const [tags, setTags] = useState([]);
+  const [tags, setTags] = useState({
+    region: null,
+    keyword: '',
+    sort: null,
+    agency: null,
+  });
   const [keyword, setKeyword] = useState('');
   const [loading, setLoading] = useState(true);
   const [noItem, setNoItem] = useState(false);
   const [error, setError] = useState(null);
   const [newsAgencies, setNewsAgencies] = useState([]); // 뉴스 언론사
+  const [fetch, setFetch] = useState(false);
 
   const [searchParams] = useSearchParams();
 
@@ -54,49 +60,59 @@ const NewsTemplate = () => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    // 전체 페이지 수 = 전체 게시물 수 / 페이지 당 게시물 수
-    const totalPageCount = Math.ceil(newsList.length / size);
-    setTotalPages(totalPageCount);
-    console.log(`page: ${page}, size: ${size}`);
-
-    if (newsList.length > 0) {
-      setNoItem(false);
-      // 뉴스 언론사 배열 가져오기
-      const newsAgencySet = new Set(newsList.map((news) => news.newsAgency));
-      setNewsAgencies(Array.from(newsAgencySet));
-      // console.log(newsAgencies);
-    } else {
-      setNoItem(true);
-    }
-  }, [newsList, page, size]);
-
   const getFilterTags = (tagObject) => {
     setTags(tagObject);
-    console.log(tagObject);
+    console.log('tagObject:', tagObject);
   };
+  useEffect(() => {
+    const getNewsAgencies = Array.from(
+      new Set(newsList.map((item) => item.newsAgency)),
+    );
+    console.log('agencies:', Array.from(getNewsAgencies));
+    setNewsAgencies(Array.from(getNewsAgencies));
+  }, [newsList]);
 
   useEffect(() => {
-    // 서버에 요청
+    // 서버에 요청하기
     const fetchRegionData = async () => {
-      if (!tags.length) return;
-
+      if (
+        tags.agency === null &&
+        (tags.keyword === '' || tags.keyword === null) &&
+        tags.region === null &&
+        tags.sort === null
+      )
+        return;
       try {
-        // /issue-trend/todayArticles (requestBody)
-        console.log('POST 요청 url: ', NEWS_URL, ', tags:', tags);
-        // setLoading(true);
-        // const res = await axios.post(NEWS_URL, tags);
-        // const getNewsList = res.data;
-        // console.log('지역 요청 후 응답: ', getNewsList);
-        // setNewsList(getNewsList);
-        // console.log('From Server, (region useEffect) newsList: ', newsList);
+        // /issue-trend/filterArticles (requestBody)
+        console.log(
+          'POST 요청 url: ',
+          API_BASE_URL + '/issue-trend/filterArticles',
+          ', tags:',
+          tags,
+        );
+        setLoading(true);
+        const res = await axios.post(
+          API_BASE_URL + '/issue-trend/filterArticles',
+          tags,
+        );
+        const getNewsList = res.data;
+        // console.log('태그 요청 후 응답: ', getNewsList);
+        setNewsList(getNewsList);
       } catch (error) {
-        // console.error('Error fetching data: ', error);
+        console.error('Error fetching data: ', error);
         // setError(error.message);
       } finally {
         setLoading(false);
+        setTags({
+          region: null,
+          keyword: '',
+          sort: null,
+          agency: null,
+        });
+        setFetch(false);
       }
     };
+
     fetchRegionData();
   }, [tags]);
 
