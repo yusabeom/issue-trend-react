@@ -32,7 +32,6 @@ function App() {
           <Route path='/board/:id' element={<ReportTemplate />} />
           <Route path='/board/detail/:id' element={<ReportDetail />} />
           <Route path='/issue-trend/mypage' element={<MyPage />} />
-          <Route path='/board/write' element={<ReportWriteModal />} />
         </Route>
       </Routes>
     </AuthContextProvider>

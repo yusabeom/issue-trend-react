@@ -20,6 +20,7 @@ import {
   Snackbar,
   FormControlLabel,
   Checkbox,
+  Alert,
 } from '@mui/material';
 import basicImage from '../../assets/img/logo.png';
 
@@ -73,7 +74,15 @@ const ReportWriteModal = forwardRef((props, ref) => {
   } = styles;
   const [open, setOpen] = useState(false); // 채팅 모달창을 열었는지 여부
   const [imageSrc, setImageSrc] = useState(null); // 첨부한 파일 이미지
+  const [openDetail, setOpenDetail] = useState(true); // 동의 항목
+
   const $snackbarRef = useRef(null); // 스낵바 ref
+
+  const [titleInput, setTitleInput] = useState('');
+  const [contentInput, setContentInput] = useState('');
+  const [checked, setChecked] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
+  const [imgFile, setImgFile] = useState(null);
 
   const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
@@ -134,11 +143,57 @@ const ReportWriteModal = forwardRef((props, ref) => {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
+      setImgFile(file);
       const reader = new FileReader();
       reader.onload = (e) => {
         setImageSrc(e.target.result);
       };
       reader.readAsDataURL(file);
+    }
+  };
+
+  const showagreeDeatail = () => {
+    setOpenDetail((prev) => !prev);
+  };
+
+  const handleReport = async (e) => {
+    e.preventDefault();
+    if (!checked) {
+      setOpenAlert(true);
+    }
+
+    const formData = new FormData();
+    formData.append(
+      'requestDTO',
+      new Blob(
+        [
+          JSON.stringify({
+            userNo: 4,
+            title: titleInput,
+            text: contentInput,
+          }),
+        ],
+        { type: 'application/json' },
+      ),
+    );
+
+    if (imgFile) {
+      formData.append('img', imgFile);
+    }
+
+    // axios
+    console.log('POST url: ', ARTICLE + '/create-post');
+    try {
+      const res = await axios.post(ARTICLE + '/create-post', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log(res.data);
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      navigate('/board');
     }
   };
 
@@ -176,7 +231,14 @@ const ReportWriteModal = forwardRef((props, ref) => {
               <main>
                 <form noValidate autoComplete='off'>
                   <FormControl sx={{ width: '35ch', fontSize: '30px' }}>
-                    <OutlinedInput placeholder='제목을 입력하세요' />
+                    <OutlinedInput
+                      placeholder='제목을 입력하세요'
+                      onChange={(e) => {
+                        setTitleInput(e.target.value);
+                        console.log(titleInput);
+                      }}
+                      value={titleInput}
+                    />
                     <FormHelperText />
                   </FormControl>
 
@@ -193,6 +255,10 @@ const ReportWriteModal = forwardRef((props, ref) => {
                     placeholder='내용을 입력해주세요'
                     size='md'
                     variant='plain'
+                    onChange={(e) => {
+                      setContentInput(e.target.value);
+                    }}
+                    value={contentInput}
                   />
 
                   <div className={styles.uploadFile}>
@@ -220,28 +286,53 @@ const ReportWriteModal = forwardRef((props, ref) => {
                     )}
                   </div>
 
-                  <footer>
-                    <div className={styles.agreement}>
-                      <Checkbox />
-                      <span>
-                        {' '}
-                        <strong onClick={}>개인정보 수집 및 이용</strong>에 동의합니다.
-                      </span>
-                    </div>
-                    <div className={styles.agreeDetail}>
-                      1. 개인정보의 수집·이용 항목회사는 수집한 개인정보를
-                      다음의 목적을 위해 활용합니다. [서비스 안내 및 제보 내용에
-                      관한 확인 및 처리 등의 업무 진행] <br />
-                      2. 수집하는 개인정보 항목이름, 전화번호, 이메일 등
-                      입력항목 <br />
-                      3. 개인정보의 보유 및 이용기간원칙적으로 개인정보의 수집
-                      및 이용목적이 달성된 후에는 해당 정보를 지체없이
-                      파기합니다.
-                    </div>
-                    <div className={styles.submitButton}>
-                      <div className={styles.postButton}> 제보하기 </div>
-                    </div>
-                  </footer>
+                  {titleInput.trim() && contentInput.trim() && (
+                    <footer>
+                      <div className={styles.agreement}>
+                        <Checkbox
+                          checked={checked}
+                          onChange={(e) => setChecked(e.target.checked)}
+                        />
+                        <span>
+                          {' '}
+                          <strong onClick={showagreeDeatail}>
+                            개인정보 수집 및 이용
+                          </strong>
+                          에 동의합니다.
+                        </span>
+                      </div>
+                      <div
+                        className={
+                          openDetail
+                            ? styles.hiddenAgreeDetail
+                            : styles.showAgreeDetail
+                        }
+                      >
+                        1. 개인정보의 수집·이용 항목회사는 수집한 개인정보를
+                        다음의 목적을 위해 활용합니다. [서비스 안내 및 제보
+                        내용에 관한 확인 및 처리 등의 업무 진행] <br /> <br />
+                        2. 수집하는 개인정보 항목이름, 전화번호, 이메일 등
+                        입력항목 <br /> <br />
+                        3. 개인정보의 보유 및 이용기간원칙적으로 개인정보의 수집
+                        및 이용목적이 달성된 후에는 해당 정보를 지체없이
+                        파기합니다.
+                      </div>
+                      <div className={styles.submitButton}>
+                        <div
+                          className={styles.postButton}
+                          onClick={handleReport}
+                        >
+                          {' '}
+                          제보하기{' '}
+                        </div>
+                      </div>
+                      {openAlert && (
+                        <Alert style={{ marginTop: '1rem' }} severity='warning'>
+                          동의를 해야 제보할 수 있습니다.
+                        </Alert>
+                      )}
+                    </footer>
+                  )}
                 </form>
               </main>
             </div>
@@ -262,6 +353,5 @@ const ReportWriteModal = forwardRef((props, ref) => {
     </div>
   );
 });
-
 ReportWriteModal.displayName = 'ReportWriteModal';
 export default ReportWriteModal;

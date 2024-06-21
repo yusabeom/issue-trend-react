@@ -36,8 +36,13 @@ $buttonPupple: #807aa0;
         }
       }
 
-      .agreeDetail {
+      .hiddenAgreeDetail {
         display: none;
+      }
+
+      .showAgreeDetail {
+        display: block;
+        margin-left: 2rem;
       }
 
       .submitButton {
