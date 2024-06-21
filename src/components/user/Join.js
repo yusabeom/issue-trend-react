@@ -403,6 +403,7 @@ const getNewsList = res.data;
   // 키워드 등록하기
   // 입력한 키워드를 저장하는 배열
   const [keywords, setKeywords] = useState([]);
+  console.log(typeof keywords);
   // const [keyword, setKeyword] = useState({ id: '', value: '' });
 
   const handleKeyDown = (value) => {
@@ -444,14 +445,26 @@ const getNewsList = res.data;
   };
 
   const fetchSignUpPost = async () => {
-    const userJsonBlob = new Blob([JSON.stringify(userValue)], {
+    const { email, nickname, password, regionName } = userValue;
+    const keywordArray = [];
+    keywords.forEach((k) => keywordArray.push(k.value));
+
+    const user = {
+      email,
+      nickname,
+      password,
+      regionName,
+      favoriteKeywords: keywordArray, // JSON 문자열로 전송
+    };
+
+    const userJsonBlob = new Blob([JSON.stringify(user)], {
       type: 'application/json',
     });
+    console.log(userJsonBlob);
 
     const userFormData = new FormData();
     userFormData.append('user', userJsonBlob);
     userFormData.append('profileImage', $fileTag.current.files[0]);
-    userFormData.append('keywords', keywords);
 
     const res = await fetch(API_BASE_URL + USER, {
       method: 'POST',
@@ -459,10 +472,12 @@ const getNewsList = res.data;
     });
 
     if (res.status === 200) {
+      console.log(`res: ${res}`); //----
       const data = await res.json();
       alert(`${data.email}님 회원가입에 성공했습니다.`);
       navigate('/login');
     } else {
+      console.log(res.text());
       alert('서버와의 통신이 원활하지 않습니다.');
     }
   };

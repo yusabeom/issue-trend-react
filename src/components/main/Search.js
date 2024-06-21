@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styles from '../../styles/Search.module.scss';
 import { API_BASE_URL, USER } from '../../config/host-config';
 import axios from 'axios';
+import axiosInstance from '../../config/axios-config';
 
 const Search = () => {
   const { searchContainer, title, content, contentDetail, number, date } =
@@ -15,7 +16,7 @@ const Search = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(SEARCH_URL);
+        const response = await axiosInstance.get(SEARCH_URL);
         const data = response.data;
         setSearch(data);
 

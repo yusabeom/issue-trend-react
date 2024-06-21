@@ -5,8 +5,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import AuthContext from '../store/auth-context';
 
 const Login = () => {
+  // http://localhost:8181/issue-trend/login
   const REQUEST_URL = BASE + USER + '/login';
   const { onLogin } = useContext(AuthContext);
+  // onLogin: () => {},
   const navigate = useNavigate();
 
   const fetchLogin = async () => {
@@ -28,11 +30,15 @@ const Login = () => {
       return;
     }
 
-    const { token, email } = await res.json();
+    const { token, email, loginPath, profileImage, regionName } =
+      await res.json();
     console.log('token:', token);
     console.log('email:', email);
-    onLogin(token, email);
-    navigate('/home');
+    console.log('loginPath:', loginPath);
+    console.log('profileImage:', profileImage);
+    console.log('regionName:', regionName);
+    onLogin(token, email, loginPath, profileImage, regionName);
+    navigate('/home'); // --> 경로를 어디로 지정해야 하나 /home?
   };
 
   const loginHandler = (e) => {
