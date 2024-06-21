@@ -433,10 +433,14 @@ const getNewsList = res.data;
   // console.log([...keywords]);
 
   const deleteHandler = (e) => {
-    const $element = e.target;
-    setKeywords((oldValues) => oldValues.filter((k) => k !== $element.value));
-    console.log(keywords);
-    e.target.remove();
+    // console.log(`e.target.textContent: ${e.target.textContent}`);
+    // console.log(`typeof e.target.textContent ${typeof e.target.textContent}`);
+    const value = e.target.textContent;
+    setKeywords((oldKeywords) => {
+      const updatedKeywords = oldKeywords.filter((k) => k.value !== value);
+      return updatedKeywords;
+    });
+    // console.log(`지운 후: ${keywords}`);
   };
 
   const fetchSignUpPost = async () => {
