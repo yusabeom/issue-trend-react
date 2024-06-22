@@ -20,24 +20,7 @@ const ReportDetail = () => {
   const [writerProfile, setWriterProfile] = useState(
     'https://i.namu.wiki/i/GQMqb8jtiqpCo6_US7jmWDO30KfPB2MMvbdURVub61Rs6ALKqbG-nUATj-wNk7bXXWIDjiLHJxWYkTELUgybkA.webp',
   ); // 작성자 프사
-  const [replyList, setReplyList] = useState([
-    {
-      no: '1',
-      replyProfile:
-        'https://upload.wikimedia.org/wikipedia/ko/4/4a/%EC%8B%A0%EC%A7%B1%EA%B5%AC.png',
-      replyWriter: '짱구',
-      replyContent: '좋은 정보 감사합니다~',
-      replyDate: '2024-06-16 20:25',
-    },
-    {
-      no: '2',
-      replyProfile:
-        'https://upload.wikimedia.org/wikipedia/ko/4/4a/%EC%8B%A0%EC%A7%B1%EA%B5%AC.png',
-      replyWriter: '아웃사이더',
-      replyContent: '그렇군요',
-      replyDate: '2024-06-16 20:21',
-    },
-  ]); // 댓글 리스트
+  const [replyList, setReplyList] = useState([]); // 댓글 리스트
 
   // 경로 상에 붙은 변수 정보(path variable)을 가져오는 방법
   // ex) /board/detail/{data}
@@ -73,15 +56,60 @@ const ReportDetail = () => {
         console.error(error);
       }
     };
+
     fetchData();
   }, []);
 
-  useEffect(() => {
+  const bringReplies = () => {
     console.log('boardDetail: ', boardDetail);
+    const fetchRepliesData = async () => {
+      // 해당 게시글 댓글 불러오기
+      // "/articles/{postNo}/comments"
+      console.log(
+        'GET 요청 url: ',
+        ARTICLE + `/post/${boardDetail.postNo}/comments`,
+      );
+
+      const res = await axios.get(
+        ARTICLE + `/post/${boardDetail.postNo}/comments`,
+      );
+
+      const replies = await res.data; // 해당 기사 댓글 목록
+      setReplyList(replies);
+      console.log('get replylist from server : ', replies);
+    };
+    fetchRepliesData();
+  };
+
+  useEffect(() => {
+    bringReplies();
   }, [boardDetail]);
 
+  // 댓글 리스트 열기
   const handleClickReply = () => {
     setOpenReply(!openReply);
+  };
+
+  // 입력창에 입력해서 제출한 댓글 작성하기
+  const newComment = async (input) => {
+    console.log(input);
+
+    // 댓글을 서버에 전송(insert)
+    // "/post/{postNo}/comments"
+    console.log(
+      'POST 요청 url: ',
+      ARTICLE + `/post/${boardDetail.postNo}/comments`,
+    );
+    try {
+      const res = await axios.post(
+        ARTICLE + `/post/${boardDetail.postNo}/comments`,
+        { userNo: 1, postNo: boardDetail.postNo, text: input },
+      );
+      console.log('서버 정상 동작: ', res.data);
+      bringReplies();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -135,10 +163,12 @@ const ReportDetail = () => {
               )}{' '}
               &nbsp; | {replyList.length}
             </Button>
-            <div className={styles.crud}>
-              <Button variant='outlined'>수정</Button>
-              <Button variant='outlined'>삭제</Button>
-            </div>
+            {localStorage.getItem('USER_NO') === boardDetail.userNo && (
+              <div className={styles.crud}>
+                <Button variant='outlined'>수정</Button>
+                <Button variant='outlined'>삭제</Button>
+              </div>
+            )}
           </footer>
         </div>
       )}
@@ -148,23 +178,23 @@ const ReportDetail = () => {
           <ul className={styles.replyList}>
             {replyList &&
               replyList.map((reply) => (
-                <li key={reply.no}>
+                <li key={reply.commentNo}>
                   <p className={styles.replyWriter}>
                     <div className={styles.profile}>
                       <img
-                        src={reply.replyProfile}
+                        src={reply.profileImage}
                         alt='댓글 작성자 프로필 사진'
                       />
                     </div>
-                    {reply.replyWriter}
+                    {reply.nickname}
                   </p>
-                  <p className={styles.replyContent}>{reply.replyContent}</p>
-                  <p className={styles.replyDate}>{reply.replyDate}</p>
+                  <p className={styles.replyContent}>{reply.text}</p>
+                  {/* <p className={styles.replyDate}>{reply.replyDate}</p> */}
                 </li>
               ))}
           </ul>
           <div className='replyInput'>
-            <TextareaComment />
+            <TextareaComment newComment={newComment} type={'insert'} />
           </div>
         </div>
       )}

@@ -101,9 +101,9 @@ const ReportWriteModal = forwardRef((props, ref) => {
 
   const handleOpen = () => {
     if (!isLoggedIn) {
-      if ($snackbarRef.current) {
-        $snackbarRef.current.click();
-      }
+      console.log('로그인이 안됐어요!');
+
+      return;
     }
     setOpen(true);
   };

@@ -21,6 +21,7 @@ export const AuthContextProvider = (props) => {
     loginPath,
     profileImage,
     regionName,
+    userNo,
   ) => {
     localStorage.setItem('ACCESS_TOKEN', token.access_token);
     localStorage.setItem('REFRESH_TOKEN', token.refresh_token);
@@ -28,6 +29,7 @@ export const AuthContextProvider = (props) => {
     localStorage.setItem('LOGIN_PATH', loginPath);
     localStorage.setItem('PROFILE_IMAGE', profileImage);
     localStorage.setItem('REGION_NAME', regionName);
+    localStorage.setItem('USER_NO', userNo);
 
     setIsLoggedIn(true);
     setUserEmail(userEmail);

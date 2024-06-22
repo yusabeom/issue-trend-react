@@ -12,7 +12,8 @@ const roomSocket = io('http://192.168.0.27:5000');
 // 화면에는 유저 이름(userName)을 보여주고, 서버에서는 socket.id로 식별한다.
 const Chat = ({ onUsers }) => {
   // AuthContext에서 로그인 상태를 가져옵니다.
-  const { isLoggedIn, userEmail, onLogout } = useContext(AuthContext);
+  const { isLoggedIn, userEmail, regionName, onLogout } =
+    useContext(AuthContext);
 
   const messagesEndRef = useRef(null);
   const [userId, setUserId] = useState(''); // 유저가 보낼 아이디 (로그인)
@@ -22,7 +23,7 @@ const Chat = ({ onUsers }) => {
 
   const [privateTarget, setPrivateTarget] = useState(''); // 1:1 대화 상대 아이디
   const [newMessages, setNewMessages] = useState([]); // 새 메세지
-  const [roomNumber, setRoomNumber] = useState('1'); // 선택한 방 번호
+  const [roomNumber, setRoomNumber] = useState(regionName); // 선택한 방 번호
 
   /* ================ 1. useEffect : 최초 렌더링 시 발생하는 이벤트 (서버로부터 리시브) ================ */
   // 이벤트 리스너 (from server) : sMessage - 서버로부터 받은 메세지
@@ -126,14 +127,18 @@ const Chat = ({ onUsers }) => {
   // 로그인을 할 때(submit) 아이디(와 프로필 사진)를 서버에 전송
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    roomSocket.emit('login', { userEmail, roomNumber }); // 서버로 아이디 전송 (처음에는 이름으로 전달)
+    const userEmail2 = localStorage.getItem('LOGIN_EMAIL');
+    const roomNumber = localStorage.getItem('REGION_NAME');
+    setUserId(userEmail2);
+    console.log('userEmail: ', userEmail2);
+    roomSocket.emit('login', { userId: userEmail2, roomNumber }); // 서버로 아이디 전송 (처음에는 이름으로 전달)
     setIsLogin(true);
   };
 
   // 유저 이름 input태그(입력창)의 내용이 바뀔 때 발생하는 이벤트 핸들러
-  const onChangeUserIdHandler = (e) => {
-    setUserId(e.target.value); // 값을 상태값에 저장
-  };
+  // const onChangeUserIdHandler = (e) => {
+  //   setUserId(e.target.value); // 값을 상태값에 저장
+  // };
 
   // 채팅 전송 이벤트 핸들러 (form)
   const onSendSubmitHandler = (e) => {
@@ -238,14 +243,13 @@ const Chat = ({ onUsers }) => {
             <form className='login-form' onSubmit={onSubmitHandler}>
               {/* 방번호 선택 */}
               <select onChange={onRoomChangeHandler}>
-                <option value='1'>Room 1</option>
-                <option value='2'>Room 2</option>
+                <option value={regionName}>{regionName} 방</option>
+                {/* <option value='2'>Room 2</option> */}
               </select>
               <input
                 // style={{ display: 'none' }}
                 // placeholder={userId}
-                onChange={onChangeUserIdHandler}
-                value={userEmail}
+                value={localStorage.getItem('LOGIN_EMAIL')}
                 readOnly
               ></input>
               <button type='submit'>입장하기</button>
