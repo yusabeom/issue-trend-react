@@ -1,11 +1,16 @@
 import {
   Button,
   Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   Grid,
   IconButton,
   InputAdornment,
   TextField,
   Typography,
+  Link as MuiLink,
 } from '@mui/material';
 import React, { useContext, useState } from 'react';
 import { API_BASE_URL as BASE, USER } from '../../config/host-config';
@@ -17,14 +22,21 @@ const Login = () => {
   // http://localhost:8181/issue-trend/login
   const REQUEST_URL = BASE + USER + '/login';
   const { onLogin } = useContext(AuthContext);
-  // onLogin: () => {},
+  const navigate = useNavigate();
+
+  // 모달 상태 관리
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
 
   const [showPw, setShowPw] = useState(false);
   const handleToggleShowPw = () => {
     setShowPw((prevShowPw) => !prevShowPw);
   };
-
-  const navigate = useNavigate();
 
   const fetchLogin = async () => {
     const $email = document.getElementById('email');
@@ -78,7 +90,33 @@ const Login = () => {
     fetchLogin();
   };
 
-  // console.log(`지도 키 값: ${process.env.REACT_APP_KAKAOMAP_KEY}`);
+  const initialFindEmailState = {
+    email: '',
+    error: '',
+  };
+
+  const [findPwValue, setFindPwValue] = useState(initialFindEmailState);
+  const [isEmailValid, setIsEmailValid] = useState(false);
+
+  const emailRegex = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
+
+  const findPasswordEmailHandler = (e) => {
+    const inputValue = e.target.value;
+    let error = '';
+
+    if (!inputValue) {
+      error = '이메일은 필수값 입니다.';
+    } else if (!emailRegex.test(inputValue)) {
+      error = '이메일 형식이 올바르지 않습니다.';
+    }
+
+    setFindPwValue({
+      email: inputValue,
+      error,
+    });
+
+    setIsEmailValid(!error); // error가 비어있으면 true, 아니면 false
+  };
 
   return (
     <Container
@@ -112,10 +150,10 @@ const Login = () => {
           <Grid item xs={12}>
             <TextField
               variant='outlined'
+              label='비밀번호'
               required
               fullWidth
               id='password'
-              label='비밀번호'
               name='password'
               autoComplete='current-password'
               type={showPw ? 'text' : 'password'}
@@ -147,11 +185,43 @@ const Login = () => {
               <Link to='/join'>회원가입</Link>
             </Grid>
             <Grid item xs={6}>
-              <Link to='#'>비밀번호 찾기</Link>
+              <MuiLink href='#' onClick={handleOpenModal} underline='hover'>
+                비밀번호 찾기
+              </MuiLink>
             </Grid>
           </Grid>
         </Grid>
       </form>
+
+      {/* 비밀번호 찾기 모달 */}
+      {/* <Dialog open={isModalOpen}> */}
+      <Dialog open={isModalOpen} maxWidth='sm' fullWidth>
+        <DialogTitle>비밀번호 찾기</DialogTitle>
+        <DialogContent>
+          <Typography>이메일을 입력하세요</Typography>
+          <TextField
+            autoFocus
+            margin='dense'
+            id='findPasswordEmail'
+            label='이메일 주소'
+            type='email'
+            fullWidth
+            onChange={findPasswordEmailHandler}
+          />
+          <span style={{ color: 'red' }}>{findPwValue.error}</span>
+        </DialogContent>
+        <DialogActions>
+          <Button color='primary' onClick={handleCloseModal}>
+            취소
+          </Button>
+          <Button
+            color='primary'
+            disabled={!isEmailValid} /*onClick={findPasswordHandler}*/
+          >
+            전송
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Container>
   );
 };
