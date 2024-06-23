@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 const AuthContext = React.createContext({
   isLoggedIn: false,
   userEmail: '',
-  userNo: '',
+  userNo: -1,
   onLogout: () => {},
   onLogin: () => {},
 });
@@ -54,6 +54,7 @@ export const AuthContextProvider = (props) => {
         userEmail,
         onLogout: logoutHandler,
         onLogin: loginHandler,
+        userNo,
       }}
     >
       {props.children}

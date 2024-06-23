@@ -51,9 +51,17 @@ const ReportDetail = () => {
       const res = await axios.get(ARTICLE + '/search-post/' + id);
       const getBoardDetail = await res.data;
 
-      console.log(getBoardDetail.postNo);
-      setBoardDetail(getBoardDetail);
-      console.log('set실행: ', boardDetail);
+      console.log('getBoardDetail.postNo' + getBoardDetail.postNo);
+      setBoardDetail({
+        postNo: getBoardDetail.postNo,
+        userNo: getBoardDetail.userNo,
+        title: getBoardDetail.title,
+        text: getBoardDetail.text,
+        writeDate: getBoardDetail.writeDate,
+        img: getBoardDetail.img,
+        email: getBoardDetail.email,
+        formatDate: getBoardDetail.formatDate,
+      });
     } catch (error) {
       // console.error('Error fetching data: ', error);
       console.error(error);
@@ -63,13 +71,8 @@ const ReportDetail = () => {
   // 게시물 이미지 불러오기
   const fetchImage = async () => {
     try {
-      console.log(
-        'GET 요청 url: ',
-        ARTICLE + '/load-image/' + boardDetail.postNo,
-      );
-      const res = await axios.get(
-        ARTICLE + '/load-image/' + boardDetail.postNo,
-      );
+      console.log('GET 요청 url: ', ARTICLE + '/load-image/' + id);
+      const res = await axios.get(ARTICLE + '/load-image/' + id);
       const getBoardImg = await res.data;
 
       setImgUrl(getBoardImg);
@@ -82,17 +85,11 @@ const ReportDetail = () => {
 
   // 해당 게시글 댓글 불러오기
   const bringReplies = () => {
-    console.log('boardDetail: ', boardDetail.postNo);
     const fetchRepliesData = async () => {
       // "/articles/{postNo}/comments"
-      console.log(
-        'GET 요청 url: ',
-        ARTICLE + `/post/${boardDetail.postNo}/comments`,
-      );
+      console.log('GET 요청 url: ', ARTICLE + `/post/${id}/comments`);
 
-      const res = await axios.get(
-        ARTICLE + `/post/${boardDetail.postNo}/comments`,
-      );
+      const res = await axios.get(ARTICLE + `/post/${id}/comments`);
 
       const replies = await res.data; // 해당 기사 댓글 목록
       setReplyList(replies);
@@ -103,12 +100,12 @@ const ReportDetail = () => {
 
   useEffect(() => {
     fetchData();
-    console.log('postNo is ', boardDetail.postNo);
-    fetchImage();
-    bringReplies();
   }, []);
 
   useEffect(() => {
+    console.log('postNo is ', boardDetail.postNo);
+    fetchImage();
+    bringReplies();
     // console.log('postNo is ', boardDetail.postNo);
   }, [boardDetail]);
 

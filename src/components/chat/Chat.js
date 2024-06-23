@@ -128,7 +128,82 @@ const Chat = ({ onUsers }) => {
   const onSubmitHandler = (e) => {
     e.preventDefault();
     const userEmail2 = localStorage.getItem('LOGIN_EMAIL');
-    const roomNumber = localStorage.getItem('REGION_NAME');
+    const region = localStorage.getItem('REGION_NAME');
+
+    let roomNumber;
+
+    switch (region) {
+      case '서울':
+        roomNumber = 2;
+        break;
+
+      case '경기':
+        roomNumber = 31;
+        break;
+
+      case '인천':
+        roomNumber = 32;
+        break;
+
+      case '강원':
+        roomNumber = 33;
+        break;
+
+      case '충남':
+        roomNumber = 41;
+        break;
+
+      case '대전':
+        roomNumber = 42;
+        break;
+
+      case '충북':
+        roomNumber = 43;
+        break;
+
+      case '세종':
+        roomNumber = 44;
+        break;
+
+      case '부산':
+        roomNumber = 51;
+        break;
+
+      case '울산':
+        roomNumber = 52;
+        break;
+
+      case '대구':
+        roomNumber = 53;
+        break;
+
+      case '경북':
+        roomNumber = 54;
+        break;
+
+      case '경남':
+        roomNumber = 55;
+        break;
+
+      case '전남':
+        roomNumber = 61;
+        break;
+
+      case '광주':
+        roomNumber = 62;
+        break;
+
+      case '전북':
+        roomNumber = 63;
+        break;
+
+      case '제주':
+        roomNumber = 64;
+        break;
+
+      default:
+        break;
+    }
     setUserId(userEmail2);
     console.log('userEmail: ', userEmail2);
     roomSocket.emit('login', { userId: userEmail2, roomNumber }); // 서버로 아이디 전송 (처음에는 이름으로 전달)
