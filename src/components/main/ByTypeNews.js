@@ -7,7 +7,7 @@ import TypeNewsModal from './TypeNewsModal';
 import { Modal, Typography, Box } from '@mui/material';
 
 const ByTypeNews = () => {
-  const { itemContainer } = styles;
+  const { itemContainer, hoverText, hoverContainer } = styles;
 
   const API_BASE_URL = 'http://localhost:8181/issue-trend/todayArticles';
 
@@ -15,6 +15,7 @@ const ByTypeNews = () => {
   const [articles, setArticles] = useState([]);
   const [open, setOpen] = React.useState(false);
   const [code, setCode] = useState('');
+  const [hoverContent, setHoverContent] = useState(null);
 
   const fetchArticles = useCallback(async (region) => {
     try {
@@ -49,14 +50,22 @@ const ByTypeNews = () => {
   };
 
   // 모달 열고 닫는 핸들러
-  const openModal = (e) => {
-    const target = e.target.value.toString().padStart(10, '0');
+  const openModal = (articleCode) => {
+    const target = articleCode.toString().padStart(10, '0');
 
     setCode(target);
     setOpen(true);
   };
   const closeModal = () => {
     setOpen(false);
+  };
+
+  const handleHover = (articleCode) => {
+    setHoverContent(articleCode);
+  };
+
+  const handleMouseLeave = () => {
+    setHoverContent(null);
   };
 
   return (
@@ -68,9 +77,19 @@ const ByTypeNews = () => {
           <li
             key={news.articleCode}
             value={news.articleCode}
-            style={{ backgroundImage: `url(${news.img})` }}
-            onClick={openModal}
-          ></li>
+            style={{
+              backgroundImage: `url(${news.img})`,
+            }}
+            onClick={() => openModal(news.articleCode)}
+            onMouseEnter={() => handleHover(news.articleCode)}
+            onMouseLeave={handleMouseLeave}
+          >
+            <div className={hoverContainer}>
+              {hoverContent === news.articleCode && (
+                <span className={hoverText}>{news.shortTitle}</span>
+              )}
+            </div>
+          </li>
         ))}
         <TypeNewsModal
           open={open}
