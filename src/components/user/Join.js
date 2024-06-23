@@ -1,8 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Button, Container, Grid, TextField, Typography } from '@mui/material';
+import {
+  Button,
+  Container,
+  Grid,
+  IconButton,
+  InputAdornment,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { API_BASE_URL, USER } from '../../config/host-config';
 import styles from '../../styles/Join.module.scss';
-import { AccessAlarm } from '@mui/icons-material';
+import { AccessAlarm, Visibility, VisibilityOff } from '@mui/icons-material';
 import PinDropIcon from '@mui/icons-material/PinDrop';
 import { Navigate, useNavigate } from 'react-router-dom';
 import axios from 'axios';

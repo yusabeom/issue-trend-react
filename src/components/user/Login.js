@@ -1,14 +1,29 @@
-import { Button, Container, Grid, TextField, Typography } from '@mui/material';
-import React, { useContext } from 'react';
+import {
+  Button,
+  Container,
+  Grid,
+  IconButton,
+  InputAdornment,
+  TextField,
+  Typography,
+} from '@mui/material';
+import React, { useContext, useState } from 'react';
 import { API_BASE_URL as BASE, USER } from '../../config/host-config';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthContext from '../store/auth-context';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 const Login = () => {
   // http://localhost:8181/issue-trend/login
   const REQUEST_URL = BASE + USER + '/login';
   const { onLogin } = useContext(AuthContext);
   // onLogin: () => {},
+
+  const [showPw, setShowPw] = useState(false);
+  const handleToggleShowPw = () => {
+    setShowPw((prevShowPw) => !prevShowPw);
+  };
+
   const navigate = useNavigate();
 
   const fetchLogin = async () => {
@@ -103,6 +118,16 @@ const Login = () => {
               label='비밀번호'
               name='password'
               autoComplete='current-password'
+              type={showPw ? 'text' : 'password'}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position='end'>
+                    <IconButton onClick={handleToggleShowPw} edge='end'>
+                      {showPw ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
           </Grid>
           <Grid item xs={12}>
