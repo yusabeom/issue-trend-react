@@ -30,14 +30,31 @@ const Login = () => {
       return;
     }
 
-    const { token, email, loginPath, profileImage, regionName } =
-      await res.json();
+    const {
+      token,
+      email,
+      loginPath,
+      profileImage,
+      regionName,
+      nickname,
+      userNo,
+    } = await res.json();
     console.log('token:', token);
     console.log('email:', email);
     console.log('loginPath:', loginPath);
     console.log('profileImage:', profileImage);
     console.log('regionName:', regionName);
-    onLogin(token, email, loginPath, profileImage, regionName);
+    console.log('nickname:', nickname);
+    console.log('userNo:', userNo);
+    onLogin(
+      token,
+      email,
+      loginPath,
+      profileImage,
+      regionName,
+      nickname,
+      userNo,
+    );
     navigate('/home'); // --> 경로를 어디로 지정해야 하나 /home?
   };
 
