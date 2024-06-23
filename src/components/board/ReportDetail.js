@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import styles from '../../styles/ReportDetail.module.scss';
 import { Button } from '@mui/material';
@@ -11,6 +11,7 @@ import {
 import TextareaComment from '../../common/ui/TextAreaComment';
 import { API_BASE_URL, USER } from '../../config/host-config';
 import axios from 'axios';
+import ReportWriteModal from './ReportWriteModal';
 
 const ARTICLE = API_BASE_URL + USER;
 
@@ -127,10 +128,31 @@ const ReportDetail = () => {
     try {
       const res = await axios.post(
         ARTICLE + `/post/${boardDetail.postNo}/comments`,
-        { userNo: 1, postNo: boardDetail.postNo, text: input },
+        {
+          userNo: localStorage.getItem('USER_NO'),
+          postNo: boardDetail.postNo,
+          text: input,
+        },
       );
       console.log('서버 정상 동작: ', res.data);
       bringReplies();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // 수정 모달창 열기
+  const childButtonRef = useRef(null);
+  const openModifyModal = () => {
+    childButtonRef.current.handleOpen();
+  };
+
+  // 삭제 처리하기
+  const deleteRequest = async () => {
+    console.log('DELETE 요청 url: ', ARTICLE + `/delete-post/${id}`);
+    try {
+      const res = await axios.delete(ARTICLE + ARTICLE + `/delete-post/${id}`);
+      console.log('서버 정상 동작: ', res.data);
     } catch (error) {
       console.log(error);
     }
@@ -180,6 +202,7 @@ const ReportDetail = () => {
               <div className={styles.tag}>#제보</div>
               <div className={styles.tag}>#경찰</div>
             </div> */}
+
             <div>
               <img src={imgUrl} alt='게시물 이미지' />
             </div>
@@ -197,10 +220,14 @@ const ReportDetail = () => {
               )}{' '}
               &nbsp; | {replyList.length}
             </Button>
-            {localStorage.getItem('USER_NO') === boardDetail.userNo && (
+            {+localStorage.getItem('USER_NO') === +boardDetail.userNo && (
               <div className={styles.crud}>
-                <Button variant='outlined'>수정</Button>
-                <Button variant='outlined'>삭제</Button>
+                <Button variant='outlined' onClick={openModifyModal}>
+                  수정
+                </Button>
+                <Button variant='outlined' onClick={deleteRequest}>
+                  삭제
+                </Button>
               </div>
             )}
           </footer>
@@ -220,7 +247,7 @@ const ReportDetail = () => {
                         alt='댓글 작성자 프로필 사진'
                       />
                     </div>
-                    {reply.nickname}
+                    {reply.email}
                   </p>
                   <p className={styles.replyContent}>{reply.text}</p>
                   {/* <p className={styles.replyDate}>{reply.replyDate}</p> */}
@@ -232,6 +259,14 @@ const ReportDetail = () => {
           </div>
         </div>
       )}
+
+      <div style={{ display: 'none' }}>
+        <ReportWriteModal
+          ref={childButtonRef}
+          type={'edit'}
+          object={boardDetail}
+        />
+      </div>
     </div>
   );
 };

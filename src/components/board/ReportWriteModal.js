@@ -72,14 +72,18 @@ const ReportWriteModal = forwardRef((props, ref) => {
     source,
     reply,
   } = styles;
-  const [open, setOpen] = useState(false); // 채팅 모달창을 열었는지 여부
+  const [open, setOpen] = useState(false); // 모달창을 열었는지 여부
   const [imageSrc, setImageSrc] = useState(null); // 첨부한 파일 이미지
   const [openDetail, setOpenDetail] = useState(true); // 동의 항목
 
   const $snackbarRef = useRef(null); // 스낵바 ref
 
-  const [titleInput, setTitleInput] = useState('');
-  const [contentInput, setContentInput] = useState('');
+  const [titleInput, setTitleInput] = useState(
+    props.type === 'edit' ? props.object.title : '',
+  ); // 제목
+  const [contentInput, setContentInput] = useState(
+    props.type === 'edit' ? props.object.text : '',
+  );
   const [checked, setChecked] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
   const [imgFile, setImgFile] = useState(null);
@@ -104,6 +108,10 @@ const ReportWriteModal = forwardRef((props, ref) => {
       console.log('로그인이 안됐어요!');
 
       return;
+    }
+
+    if (props.type === 'edit') {
+      console.log('title: ', props.object.title);
     }
     setOpen(true);
   };
@@ -156,6 +164,7 @@ const ReportWriteModal = forwardRef((props, ref) => {
     setOpenDetail((prev) => !prev);
   };
 
+  // 게시글 작성
   const handleReport = async (e) => {
     e.preventDefault();
     if (!checked) {
@@ -168,7 +177,7 @@ const ReportWriteModal = forwardRef((props, ref) => {
       new Blob(
         [
           JSON.stringify({
-            userNo: 4,
+            userNo: localStorage.getItem('USER_NO'),
             title: titleInput,
             text: contentInput,
           }),
@@ -196,6 +205,59 @@ const ReportWriteModal = forwardRef((props, ref) => {
       setOpen(false);
       window.location.reload();
     }
+  };
+
+  // 게시글 수정
+  const handleEditReport = async (e) => {
+    e.preventDefault();
+    if (!checked) {
+      setOpenAlert(true);
+    }
+
+    const formData = new FormData();
+    const postNo = props.object.postNo;
+    formData.append(
+      'requestDTO',
+      new Blob(
+        [
+          JSON.stringify({
+            userNo: localStorage.getItem('USER_NO'),
+            title: titleInput,
+            text: contentInput,
+          }),
+        ],
+        { type: 'application/json' },
+      ),
+    );
+
+    if (imgFile) {
+      formData.append('newImage', imgFile);
+    }
+
+    // axios
+    console.log('PUT url: ', ARTICLE + '/update-post/' + postNo);
+    try {
+      const res = await axios.put(
+        ARTICLE + '/update-post/' + postNo,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      );
+      console.log(res.data);
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      setOpen(false);
+      window.location.reload();
+    }
+  };
+
+  // 작성 취소
+  const handleCancelReport = () => {
+    setOpen(false);
   };
 
   return (
@@ -236,7 +298,6 @@ const ReportWriteModal = forwardRef((props, ref) => {
                       placeholder='제목을 입력하세요'
                       onChange={(e) => {
                         setTitleInput(e.target.value);
-                        console.log(titleInput);
                       }}
                       value={titleInput}
                     />
@@ -319,13 +380,29 @@ const ReportWriteModal = forwardRef((props, ref) => {
                         파기합니다.
                       </div>
                       <div className={styles.submitButton}>
-                        <div
-                          className={styles.postButton}
-                          onClick={handleReport}
-                        >
-                          {' '}
-                          제보하기{' '}
-                        </div>
+                        {props.type === 'write' ? (
+                          <div
+                            className={styles.postButton}
+                            onClick={handleReport}
+                          >
+                            제보하기
+                          </div>
+                        ) : (
+                          <div className={styles.delEdit}>
+                            <div
+                              className={styles.delButton}
+                              onClick={handleCancelReport}
+                            >
+                              취소
+                            </div>
+                            <div
+                              className={styles.editButton}
+                              onClick={handleEditReport}
+                            >
+                              수정
+                            </div>
+                          </div>
+                        )}
                       </div>
                       {openAlert && (
                         <Alert style={{ marginTop: '1rem' }} severity='warning'>

@@ -20,7 +20,7 @@ const IssueReport = () => {
           제보하기
         </div>
         <div style={{ display: 'none' }}>
-          <ReportWriteModal ref={childButtonRef} />
+          <ReportWriteModal ref={childButtonRef} type={'write'} />
         </div>
       </div>
     </div>

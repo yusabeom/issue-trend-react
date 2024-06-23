@@ -129,6 +129,8 @@ const Chat = ({ onUsers }) => {
     e.preventDefault();
     const userEmail2 = localStorage.getItem('LOGIN_EMAIL');
     const region = localStorage.getItem('REGION_NAME');
+    const userNo = localStorage.getItem('USER_NO');
+    const nickname = localStorage.getItem('NICK_NAME');
 
     let roomNumber;
 
@@ -204,9 +206,9 @@ const Chat = ({ onUsers }) => {
       default:
         break;
     }
-    setUserId(userEmail2);
-    console.log('userEmail: ', userEmail2);
-    roomSocket.emit('login', { userId: userEmail2, roomNumber }); // 서버로 아이디 전송 (처음에는 이름으로 전달)
+    setUserId(nickname);
+    console.log('userEmail: ', nickname);
+    roomSocket.emit('login', { userId: nickname, roomNumber }); // 서버로 아이디 전송 (처음에는 이름으로 전달)
     setIsLogin(true);
   };
 
