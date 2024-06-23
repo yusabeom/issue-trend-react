@@ -3,6 +3,7 @@ import React, { useContext } from 'react';
 import { API_BASE_URL as BASE, USER } from '../../config/host-config';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthContext from '../store/auth-context';
+import { KAKAO_AUTH_URL } from '../../config/Kakao-config';
 
 const Login = () => {
   // http://localhost:8181/issue-trend/login
@@ -30,31 +31,15 @@ const Login = () => {
       return;
     }
 
-    const {
-      token,
-      email,
-      loginPath,
-      profileImage,
-      regionName,
-      nickname,
-      userNo,
-    } = await res.json();
+    const { token, email, loginPath, profileImage, regionName, nickname } =
+      await res.json();
     console.log('token:', token);
     console.log('email:', email);
     console.log('loginPath:', loginPath);
     console.log('profileImage:', profileImage);
     console.log('regionName:', regionName);
     console.log('nickname:', nickname);
-    console.log('userNo:', userNo);
-    onLogin(
-      token,
-      email,
-      loginPath,
-      profileImage,
-      regionName,
-      nickname,
-      userNo,
-    );
+    onLogin(token, email, loginPath, profileImage, regionName, nickname);
     navigate('/home'); // --> 경로를 어디로 지정해야 하나 /home?
   };
 
@@ -116,7 +101,15 @@ const Login = () => {
               로그인
             </Button>
           </Grid>
-
+          <Grid item xs={12}>
+            <a href={KAKAO_AUTH_URL}>
+              <img
+                style={{ width: '100%' }}
+                alt='kakaobtn'
+                src={require('../../assets/img/kakao_login_medium_wide.png')}
+              />
+            </a>
+          </Grid>
           <Grid container>
             <Grid item xs={6}>
               <Link to='/join'>회원가입</Link>
