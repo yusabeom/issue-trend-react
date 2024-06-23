@@ -28,7 +28,7 @@ const Filter = ({ onTags, agencies }) => {
   });
 
   const { mainKeyword } = useContext(KeywordContext);
-  console.log(mainKeyword);
+  // console.log(mainKeyword);
 
   const optionsRegion = {
     se: '서울',
@@ -60,14 +60,14 @@ const Filter = ({ onTags, agencies }) => {
   const [tags, setTags] = useState([]);
 
   useEffect(() => {
-    console.log('agencies: ', agencies);
+    // console.log('agencies: ', agencies);
     const obj = agencies.reduce((acc, item, index) => {
       acc[index + 1] = item;
       return acc;
     }, {});
 
     setOptionsUploadTime(obj);
-    console.log('obj: ', obj);
+    // console.log('obj: ', obj);
   }, [agencies]);
 
   function isEnglish(str) {
@@ -77,70 +77,72 @@ const Filter = ({ onTags, agencies }) => {
   // 태그에 요소 추가
   const addNewTag = (key) => {
     // filter-tag 태그에 새로운 태그 붙이기
-    console.log('key: ', key);
+    // console.log('key: ', key);
 
     // const content = optionsRegion[key];
     // console.log('content: ', optionsRegion[key]);
 
-    setTags((prevTags) => {
-      if (key.length > 5 && prevTags.some((tag) => tag.length > 5)) {
-        // 정렬은 하나만 추가 가능
+    if (key.length > 5 && tags.some((tag) => tag.length > 5)) {
+      // 정렬은 하나만 추가 가능
+      setTags((prevTags) => [
+        ...prevTags.filter((tag) => tag !== 'recent' && tag !== 'replies'),
+        key,
+      ]);
+      setSubmitTags((prevData) => ({
+        ...prevData,
+        sort: optionsSort[key],
+      }));
+    } else if (key.length === 2 && tags.some((tag) => tag.length === 2)) {
+      // 지역은 하나만 추가 가능
+      setTags((prevTags) => [
+        ...prevTags.filter((tag) => tag.length !== 2),
+        key,
+      ]);
+      setSubmitTags((prevData) => ({
+        ...prevData,
+        region: optionsRegion[key],
+      }));
+    } else if (!isNaN(key) && tags.some((tag) => !isEnglish(tag))) {
+      // 언론사는 하나만 추가 가능
+      setTags((prevTags) => [
+        ...prevTags.filter((tag) => isEnglish(tag)),
+        optionsUploadTime[key],
+      ]);
+      setSubmitTags((prevData) => ({
+        ...prevData,
+        agency: optionsUploadTime[key],
+      }));
+    } else if (!tags.some((tag) => tag === key)) {
+      // 만약 배열에 넣으려는 값이 이미 존재하지 않을 때만 요소를 배열에 추가
+
+      if (key.length > 5) {
+        // 정렬
+        setTags((prevTags) => [...prevTags, key]);
         setSubmitTags((prevData) => ({
           ...prevData,
           sort: optionsSort[key],
         }));
-        return [
-          ...prevTags.filter((tag) => tag !== 'recent' && tag !== 'replies'),
-          key,
-        ];
-      } else if (key.length === 2 && prevTags.some((tag) => tag.length === 2)) {
-        // 지역은 하나만 추가 가능
+      } else if (key.length === 2) {
+        // 지역
+        setTags((prevTags) => [...prevTags, key]);
         setSubmitTags((prevData) => ({
           ...prevData,
           region: optionsRegion[key],
         }));
-        return [...prevTags.filter((tag) => tag.length !== 2), key];
-      } else if (!isNaN(key) && prevTags.some((tag) => !isEnglish(tag))) {
-        // 언론사는 하나만 추가 가능
-        console.log('언론사!');
+      } else if (!isNaN(key)) {
+        // 언론사
+        setTags((prevTags) => [...prevTags, optionsUploadTime[key]]);
         setSubmitTags((prevData) => ({
           ...prevData,
           agency: optionsUploadTime[key],
         }));
-        return [
-          ...prevTags.filter((tag) => isEnglish(tag)),
-          optionsUploadTime[key],
-        ];
-      } else if (!prevTags.some((tag) => tag === key)) {
-        // 만약 배열에 넣으려는 값이 이미 존재하지 않을 때만 요소를 배열에 추가
-        if (key.length > 5) {
-          setSubmitTags((prevData) => ({
-            ...prevData,
-            sort: optionsSort[key],
-          }));
-        } else if (key.length === 2) {
-          setSubmitTags((prevData) => ({
-            ...prevData,
-            region: optionsRegion[key],
-          }));
-        } else if (!isNaN(key)) {
-          setSubmitTags((prevData) => ({
-            ...prevData,
-            agency: optionsUploadTime[key],
-          }));
-        }
-
-        return [...prevTags, key];
       }
-      return [...prevTags];
-    });
-    console.log('tags: ', tags);
+    }
   };
 
   // 태그에 있는 요소 제거
   const removeTag = (e) => {
     const content = e.target.parentElement.dataset.key;
-    console.log('이벤트 발생: ', content);
     setTags((prevTags) => [...prevTags.filter((tag) => tag !== content)]);
   };
 
@@ -163,13 +165,22 @@ const Filter = ({ onTags, agencies }) => {
 
   // 메인화면에서 워드 클라우드 단어를 눌렀을 때
   useEffect(() => {
-    setSearchValue(mainKeyword);
-    setSubmitTags((prevData) => ({
-      ...prevData,
-      keyword: mainKeyword,
-    }));
-    onTags(submitTags);
-  }, [mainKeyword]);
+    console.log('mainKeyword:', mainKeyword);
+    // setSearchValue(mainKeyword);
+    // setSubmitTags((prevData) => ({
+    //   ...prevData,
+    //   keyword: mainKeyword,
+    // }));
+    setTimeout(() => {
+      onTags({
+        region: null,
+        keyword: mainKeyword,
+        sort: null,
+        agency: null,
+      });
+    }, 1000);
+  }, []);
+  console.log('워드클라우드 -> ', submitTags);
 
   // 키워드 검색 input에 키워드 입력 후 엔터키를 누르거나 돋보기 아이콘을 클릭했을 때 핸들러
   const submitFilter = (e) => {
@@ -184,6 +195,10 @@ const Filter = ({ onTags, agencies }) => {
           setOpenAlert(false);
         }, 3000);
         return;
+      }
+
+      if (submitTags.keyword === '' || submitTags.keyword === null) {
+        setSearchValue('');
       }
 
       onTags(submitTags);

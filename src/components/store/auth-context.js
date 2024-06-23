@@ -11,6 +11,7 @@ export const AuthContextProvider = (props) => {
   console.log('App 컴포넌트 실행!');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userEmail, setUserEmail] = useState('');
+  const [userNo, setUserNo] = useState('');
 
   // token, email, loginPath, profileImage, regionName
   const loginHandler = (
@@ -52,6 +53,7 @@ export const AuthContextProvider = (props) => {
         userEmail,
         onLogout: logoutHandler,
         onLogin: loginHandler,
+        userNo,
       }}
     >
       {props.children}
