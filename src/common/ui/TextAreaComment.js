@@ -71,7 +71,9 @@ export default function TextareaComment({ newComment, initialValue, type }) {
           <div className={styles.profile}>
             <img src={profileImage} alt='댓글 작성자 프로필 사진' />
           </div>
-          <span className={styles.loginUser}>서정원</span>
+          <span className={styles.loginUser}>
+            {localStorage.getItem('LOGIN_EMAIL')}
+          </span>
         </FormLabel>
       )}
       {openAlert && (

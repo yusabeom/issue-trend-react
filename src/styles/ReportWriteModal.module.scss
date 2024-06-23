@@ -59,6 +59,35 @@ $buttonPupple: #807aa0;
           align-items: center;
           cursor: pointer;
         }
+
+        .delEdit {
+          display: flex;
+          justify-content: space-evenly;
+          margin-left: 60%;
+          // border: 1px yellow solid;
+          .delButton {
+            width: 30%;
+            margin: 0 auto;
+            padding: 0.5rem;
+            background: #c0c0c0;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+          }
+          .editButton {
+            width: 30%;
+            margin: 0 auto;
+            padding: 0.5rem;
+            background: #807aa0;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+          }
+        }
       }
     }
   }

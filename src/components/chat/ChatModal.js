@@ -1,17 +1,20 @@
 import React, {
   forwardRef,
+  useContext,
   useEffect,
   useImperativeHandle,
   useRef,
   useState,
 } from 'react';
-import { Modal, Box, Button, Slide, Backdrop } from '@mui/material';
+import { Modal, Box, Button, Slide, Backdrop, Snackbar } from '@mui/material';
 import Chat from './Chat';
 import styles from './ChatModal.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faX } from '@fortawesome/free-solid-svg-icons';
 import Profile from './Profile';
 import UserInfo from './UserInfo';
+import AuthContext from '../../components/store/auth-context';
+
 // 모달 안에 넣을 컴포넌트
 
 const boxStyle = {
@@ -26,6 +29,8 @@ const boxStyle = {
 
 const ChatModal = forwardRef((props, ref) => {
   const { headerStyle, chatContents, profile } = styles;
+  const { isLoggedIn, userEmail, regionName, onLogout } =
+    useContext(AuthContext);
 
   const [open, setOpen] = useState(false); // 채팅 모달창을 열었는지 여부
   const [isUserInfoVisible, setIsUserInfoVisible] = useState(false); // 유저 정보창 렌더링 여부
@@ -34,10 +39,27 @@ const ChatModal = forwardRef((props, ref) => {
   const infoWrapperRef = useRef(null);
   const [userList, setUserList] = useState([]); // 서버로부터 받은 채팅방 유저 목록
 
+  // snackBar
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+
   // Profile.js의 특정 user의 이름을 onClick하면 그 user의 이름 정보를 부모 컴포넌트인 ChatModal로 전달
   // 이름과 함께 UserInfo.js를 display 하면서 그 자식 컴포넌트에게 이름을 전달
 
-  const handleOpen = () => setOpen(true);
+  // snackBar 열기
+
+  const handleOpen = () => {
+    // console.log('로그인 했나요?', isLoggedIn);
+    if (!isLoggedIn) {
+      console.log('로그인 안했어요');
+      setSnackbarOpen(true);
+      return;
+    }
+    setOpen(true);
+  };
+
+  // const handleSnackbarClose = () => {
+  //   setState({ ...state, snackbarOpen: false });
+  // };
 
   // 모달 닫기
   const handleClose = () => {
@@ -55,6 +77,7 @@ const ChatModal = forwardRef((props, ref) => {
 
   useEffect(() => {
     document.addEventListener('mousedown', handleOutsideClick);
+    console.log('지역: ', regionName);
     return () => {
       document.removeEventListener('mousedown', handleOutsideClick);
     };
@@ -98,7 +121,8 @@ const ChatModal = forwardRef((props, ref) => {
           <Box sx={boxStyle}>
             <div className={styles.chatWrapper}>
               <h2 id='modal-title' className={headerStyle}>
-                서울 구로구{'    '}
+                {localStorage.getItem('REGION_NAME')}
+                {'    '}
                 <FontAwesomeIcon
                   className={styles.icon}
                   icon={faX}
@@ -123,6 +147,13 @@ const ChatModal = forwardRef((props, ref) => {
           </Box>
         </Slide>
       </Modal>
+      <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        open={snackbarOpen}
+        message='I love snacks'
+        key={'top' + 'center'}
+        sx={{ zIndex: '100' }}
+      />
     </div>
   );
 });

@@ -16,7 +16,7 @@ const Profile = ({ clickName, users }) => {
     <div className={styles.profile}>
       <ul className='userList'>
         {users.map((user) => (
-          <li>
+          <li key={user}>
             <div className={styles.profileImgContainer}>
               <img
                 src='https://i.namu.wiki/i/GQMqb8jtiqpCo6_US7jmWDO30KfPB2MMvbdURVub61Rs6ALKqbG-nUATj-wNk7bXXWIDjiLHJxWYkTELUgybkA.webp'
