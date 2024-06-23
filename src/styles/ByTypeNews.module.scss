@@ -19,14 +19,34 @@
     background-color: $darkBackground;
 
     li {
+       
+        font-size: 20px;
         width: 220px;
         height: 175px;
         border: solid 1px;
-        color: black;
+        color: white;
         background-repeat: no-repeat;
         background-size: cover;
         border-color: transparent;
-    }
+        
+        cursor: pointer;
+
+
+        .hoverContainer {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            align-items: center;
+
+            .hoverText {
+                margin: 0 auto;
+            }
+        }
+        .hoverContainer:hover {
+            background-color: #818181ab;
+        }
+    }  
 }
 
 select {
