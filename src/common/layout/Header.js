@@ -9,7 +9,7 @@ import { Button } from '@mui/material';
 import { API_BASE_URL, USER } from '../../config/host-config';
 
 const Header = () => {
-  const { isLoggedIn, onLogout, userEmail, profileImage, nickname } =
+  const { isLoggedIn, onLogout, userEmail, profileImage, nickname, userNo } =
     useContext(AuthContext);
   const profileRequestURL = `${API_BASE_URL}${USER}/load-profile`;
   const navigate = useNavigate();

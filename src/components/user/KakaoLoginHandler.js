@@ -13,9 +13,24 @@ const KakaoLoginHandler = () => {
     const kakaoLogin = async () => {
       console.log('code: ', code);
       const res = await fetch(REQUEST_URL + '/kakaologin?code=' + code);
-      const { token, email, loginPath, profileImage, regionName } =
-        await res.json();
-      onLogin(token, email, loginPath, profileImage, regionName);
+      const {
+        token,
+        email,
+        loginPath,
+        profileImage,
+        regionName,
+        nickname,
+        userNo,
+      } = await res.json();
+      onLogin(
+        token,
+        email,
+        loginPath,
+        profileImage,
+        regionName,
+        nickname,
+        userNo,
+      );
       redirection('/home');
     };
 
