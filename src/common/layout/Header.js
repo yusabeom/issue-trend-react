@@ -30,6 +30,7 @@ const Header = () => {
   };
 
   const fetchProfileImage = async () => {
+    if (!isLoggedIn) return;
     const res = await fetch(profileRequestURL, {
       method: 'GET',
       headers: {
@@ -37,6 +38,7 @@ const Header = () => {
       },
     });
 
+    /*
     if (
       res.status === 200 &&
       res.headers.get('Content-type').startsWith('image')
@@ -51,6 +53,15 @@ const Header = () => {
       res.status === 200 &&
       res.headers.get('Content-type').startsWith('text')
     ) {
+      const imageUrl = await res.text();
+      setProfileUrl(imageUrl);
+    } else {
+      const err = await res.text();
+      console.log('err: ', err);
+      setProfileUrl(null);
+    }
+      */
+    if (res.status === 200) {
       const imageUrl = await res.text();
       setProfileUrl(imageUrl);
     } else {
