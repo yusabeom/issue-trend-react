@@ -1,8 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Button, Container, Grid, TextField, Typography } from '@mui/material';
+import {
+  Button,
+  Container,
+  Grid,
+  IconButton,
+  InputAdornment,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { API_BASE_URL, USER } from '../../config/host-config';
 import styles from '../../styles/Join.module.scss';
-import { AccessAlarm } from '@mui/icons-material';
+import { AccessAlarm, Visibility, VisibilityOff } from '@mui/icons-material';
 import PinDropIcon from '@mui/icons-material/PinDrop';
 import { Navigate, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -12,7 +20,14 @@ const { kakao } = window;
 
 const Join = () => {
   const navigate = useNavigate();
-  const [nickname, setNickName] = useState('');
+  /*
+  const [showPw, setShowPw] = useState(false);
+  const handleToggleShowPw = (e) => {
+    console.log(showPw);
+    setShowPw((prveShowPw) => !prveShowPw);
+    console.log(showPw);
+  };
+  */
 
   const [userValue, setUserValue] = useState({
     email: '',
@@ -217,7 +232,7 @@ const getNewsList = res.data;
   };
 
   // 핸드폰 번호
-
+  /*
   const [phoneNumber, setPhoneNumber] = useState('');
   const phoneNumberHandler = (e) => {
     const phoneNumberRegex = /(01[016789{1}])-([0-9]{4})-([0-9]{4})$/;
@@ -284,6 +299,7 @@ const getNewsList = res.data;
     return () => clearInterval(timer);
   }, [remainingTime]);
   //------------------------------------------------------
+  */
 
   const [regionName, setRegionName] = useState('');
   // 내 위치 자동설정
@@ -602,6 +618,17 @@ const getNewsList = res.data;
                 id='password-check'
                 autoComplete='check-password'
                 onChange={pwCheckHandler}
+                /*
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position='end'>
+                      <IconButton onClick={handleToggleShowPw} edge='end'>
+                        {showPw ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+                  */
               />
               <span
                 id='check-span'

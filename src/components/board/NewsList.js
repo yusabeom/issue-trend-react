@@ -65,7 +65,7 @@ const NewsList = ({ newsList, page, size, count }) => {
   });
 
   useEffect(() => {
-    console.log('In NewsList, newsList: ', newsList);
+    // console.log('In NewsList, newsList: ', newsList);
     // newsList 업데이트
     dispatch({
       type: 'FETCH',
