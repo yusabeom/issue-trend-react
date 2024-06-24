@@ -27,6 +27,7 @@ import { height } from '@mui/system';
 import TextareaComment from '../../common/ui/TextAreaComment';
 import { API_BASE_URL, USER } from '../../config/host-config';
 import axios from 'axios';
+import ScrapBtn from '../../common/ui/ScrapBtn';
 
 const ARTICLE = API_BASE_URL + USER;
 
@@ -232,6 +233,9 @@ const NewsDetailModal = forwardRef(({ article }, ref) => {
                   <FontAwesomeIcon icon={faLink} />
                   뉴스 보러 가기
                 </a>
+                {localStorage.getItem('USER_NO') && (
+                  <ScrapBtn articleCode={article.articleCode} />
+                )}
               </div>
               <footer className={styles.reply}>
                 <h3>댓글 {replyList.length}</h3>
