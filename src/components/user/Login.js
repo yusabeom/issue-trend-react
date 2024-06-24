@@ -12,12 +12,13 @@ import {
   Typography,
   Link as MuiLink,
 } from '@mui/material';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { API_BASE_URL as BASE, USER } from '../../config/host-config';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthContext from '../store/auth-context';
 import { KAKAO_AUTH_URL } from '../../config/Kakao-config';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import PasswordResetModal from './PasswordResetModal';
 
 const Login = () => {
   // http://localhost:8181/issue-trend/login
@@ -28,9 +29,11 @@ const Login = () => {
   // 모달 상태 관리
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleOpenModal = () => {
+    console.log('모달 열기');
     setIsModalOpen(true);
   };
   const handleCloseModal = () => {
+    console.log('모달 닫기');
     setIsModalOpen(false);
   };
 
@@ -103,6 +106,9 @@ const Login = () => {
     setIsEmailValid(!error); // error가 비어있으면 true, 아니면 false
   };
 
+  const isModalClose = () => {
+    setIsModalOpen(false);
+  };
   return (
     <Container
       component='main'
@@ -118,7 +124,6 @@ const Login = () => {
           </Typography>
         </Grid>
       </Grid>
-
       <form noValidate onSubmit={loginHandler}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
@@ -185,9 +190,13 @@ const Login = () => {
           </Grid>
         </Grid>
       </form>
-
+      <PasswordResetModal
+        isModalOpen={isModalOpen}
+        isModalClose={isModalClose}
+      />
       {/* 비밀번호 찾기 모달 */}
       {/* <Dialog open={isModalOpen}> */}
+      {/*
       <Dialog open={isModalOpen} maxWidth='sm' fullWidth>
         <DialogTitle>비밀번호 찾기</DialogTitle>
         <DialogContent>
@@ -204,17 +213,24 @@ const Login = () => {
           <span style={{ color: 'red' }}>{findPwValue.error}</span>
         </DialogContent>
         <DialogActions>
-          <Button color='primary' onClick={handleCloseModal}>
+          <Button
+            color='primary'
+            onClick={() => {
+              console.log('취소 누름');
+              handleCloseModal();
+            }}
+          >
             취소
           </Button>
           <Button
             color='primary'
-            disabled={!isEmailValid} /*onClick={findPasswordHandler}*/
+            disabled={!isEmailValid} /*onClick={findPasswordHandler}
           >
             전송
           </Button>
         </DialogActions>
       </Dialog>
+      */}
     </Container>
   );
 };
