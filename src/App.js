@@ -16,6 +16,7 @@ import AuthContext, {
 import { useContext, useEffect, useState } from 'react';
 import MyPage from './components/user/mypage/MyPage';
 import ReportWriteModal from './components/board/ReportWriteModal';
+import KakaoLoginHandler from './components/user/KakaoLoginHandler';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path='/news/:id' element={<NewsTemplate />} />
           <Route path='/login' element={<Login />} />
           <Route path='/join' element={<Join />} />
+          <Route path='/oauth/kakao' element={<KakaoLoginHandler />} />
           <Route path='/board' element={<ReportTemplate />} />
           <Route path='/board/:id' element={<ReportTemplate />} />
           <Route path='/board/detail/:id' element={<ReportDetail />} />

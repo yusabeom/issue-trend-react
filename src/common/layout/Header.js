@@ -9,7 +9,8 @@ import { Button } from '@mui/material';
 import { API_BASE_URL, USER } from '../../config/host-config';
 
 const Header = () => {
-  const { isLoggedIn, onLogout, userEmail } = useContext(AuthContext);
+  const { isLoggedIn, onLogout, userEmail, profileImage, nickname, userNo } =
+    useContext(AuthContext);
   const profileRequestURL = `${API_BASE_URL}${USER}/load-profile`;
   const navigate = useNavigate();
 
@@ -29,6 +30,7 @@ const Header = () => {
   };
 
   const fetchProfileImage = async () => {
+    if (!isLoggedIn) return;
     const res = await fetch(profileRequestURL, {
       method: 'GET',
       headers: {
@@ -36,13 +38,35 @@ const Header = () => {
       },
     });
 
-    if (res.status === 200) {
+    /*
+    if (
+      res.status === 200 &&
+      res.headers.get('Content-type').startsWith('image')
+    ) {
+      // 서버에서는 byte[]로 직렬화된 이미지가 응답되므로
+      // blob()을 통해 전달받아야 한다. (json() xxxxx)
       const profileBlob = await res.blob();
+      // 해당 이미지를 imgUrl로 변경
       const imgUrl = window.URL.createObjectURL(profileBlob);
       setProfileUrl(imgUrl);
+    } else if (
+      res.status === 200 &&
+      res.headers.get('Content-type').startsWith('text')
+    ) {
+      const imageUrl = await res.text();
+      setProfileUrl(imageUrl);
     } else {
       const err = await res.text();
-      console.log('err: ' + err);
+      console.log('err: ', err);
+      setProfileUrl(null);
+    }
+      */
+    if (res.status === 200) {
+      const imageUrl = await res.text();
+      setProfileUrl(imageUrl);
+    } else {
+      const err = await res.text();
+      console.log('err: ', err);
       setProfileUrl(null);
     }
   };
@@ -135,9 +159,13 @@ const Header = () => {
           {isLoggedIn ? (
             <>
               {/*div style={{ display: 'flex' }}*/}
-              <div>{localStorage.getItem('NICK_NAME') + '님 안녕하세요'}</div>
+              <div>{nickname + '님 안녕하세요'}</div>
               <img
-                src={profileUrl || require('../../assets/img/anonymous.jpg')}
+                src={
+                  profileImage ||
+                  // profileUrl ||
+                  require('../../assets/img/anonymous.jpg')
+                }
                 alt='프로필 사진'
                 style={{
                   marginLeft: 20,
