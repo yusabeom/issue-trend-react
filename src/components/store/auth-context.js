@@ -2,7 +2,10 @@ import React, { useEffect, useState } from 'react';
 
 const AuthContext = React.createContext({
   isLoggedIn: false,
+  userNo: '',
   userEmail: '',
+  profileImage: '',
+  nickname: '',
   onLogout: () => {},
   onLogin: () => {},
 });
@@ -11,6 +14,8 @@ export const AuthContextProvider = (props) => {
   console.log('App 컴포넌트 실행!');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userEmail, setUserEmail] = useState('');
+  const [profileImage, setProfileImage] = useState('');
+  const [nickname, setNickname] = useState('');
   const [userNo, setUserNo] = useState('');
 
   // token, email, loginPath, profileImage, regionName
@@ -33,6 +38,9 @@ export const AuthContextProvider = (props) => {
     localStorage.setItem('USER_NO', userNo);
     setIsLoggedIn(true);
     setUserEmail(userEmail);
+    setProfileImage(profileImage);
+    setNickname(nickname);
+    setUserNo(userNo);
   };
   const logoutHandler = () => {
     localStorage.clear();
@@ -43,6 +51,10 @@ export const AuthContextProvider = (props) => {
   useEffect(() => {
     if (localStorage.getItem('ACCESS_TOKEN')) {
       setIsLoggedIn(true);
+      setUserEmail(localStorage.getItem('LOGIN_EMAIL'));
+      setProfileImage(localStorage.getItem('PROFILE_IMAGE'));
+      setNickname(localStorage.getItem('NICK_NAME'));
+      setUserNo(localStorage.getItem('USER_NO'));
     }
   });
 
@@ -51,9 +63,11 @@ export const AuthContextProvider = (props) => {
       value={{
         isLoggedIn,
         userEmail,
+        profileImage,
+        nickname,
+        userNo,
         onLogout: logoutHandler,
         onLogin: loginHandler,
-        userNo,
       }}
     >
       {props.children}
