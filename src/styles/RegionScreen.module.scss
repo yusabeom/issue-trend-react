@@ -1,0 +1,86 @@
+.regionContainer {
+    margin-top: 150px;
+
+
+
+
+    .title {
+        // background-color: red;
+        font-size: 20px;
+        height: 70px;
+        display: flex;
+        align-items: center;
+        // justify-content: center;
+        // border-bottom: 1.5px solid #c2c2c2;
+
+        .icon {
+            color: black;
+        }
+    }
+
+    .tag {
+        display: flex;
+        // background-color: #E6E6E6;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        
+        p {
+            width: 50%;
+            margin: 20px;
+            text-align: center;
+            cursor: pointer;
+            
+            &:hover {
+                color: #b1b1b1; 
+                transition: background-color 0.3s ease, color 0.3s ease; 
+              }
+        }
+    }
+
+    .tagBox {
+        background-color: #006aff79;
+        color: white;
+        font-weight: 500;
+        height: 170px;
+        text-align: center;
+        padding-top: 40px;
+        line-height: 2;
+
+        h2 {
+            font-size: 26px;
+        }
+    }
+
+    .activeDust {
+        background-color: #999999;
+    }
+
+    .activeWeather {
+        background-color: #00a2ff;
+    }
+
+    .activeCrime {
+        background-color: #303030;
+    }
+
+    .activeRestaurant {
+        background-color: #fdc04f;
+    }
+
+
+    .content {
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        height: 700px;
+        text-align: center;
+        padding-top: 70px;
+        
+        p {
+            background-color: #d3d3d379;
+            margin: 0 auto;
+            width: 70%;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            height: 90%;
+            padding: 20px;
+        }
+
+    }
+}

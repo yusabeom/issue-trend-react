@@ -10,9 +10,10 @@ import {
 import React, { useState } from 'react';
 import { API_BASE_URL, USER } from '../../config/host-config';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const PasswordResetModal = ({ isModalOpen, isModalClose }) => {
-  console.log('PasswordResetModal.js 파일로 들어옴');
+  const navigate = useNavigate();
 
   const isModalClickClose = () => {
     isModalClose();
@@ -37,7 +38,10 @@ const PasswordResetModal = ({ isModalOpen, isModalClose }) => {
       console.log(`결과: ${result}`);
 
       if (result) {
-        flag = true;
+        msg = '전송버튼을 누르면 해당 메일로 임시비밀번호가 전송됩니다.';
+        // db에서 확인했을 때 회원 이메일이 있는 것
+        // fetch('', )
+        flag = true; // flag가 true일 때 전송버튼 활성화 시킴
       } else {
         msg = '회원정보가 없습니다. 회원가입을 먼저 해주세요';
       }
@@ -51,6 +55,29 @@ const PasswordResetModal = ({ isModalOpen, isModalClose }) => {
       flag,
     });
   };
+  const [writable, setWritable] = useState(false);
+  const sendPasswordHandler = async (e) => {
+    // 이메일 입력창을 막는다.
+    e.preventDefault();
+    setWritable(true);
+    //issue-trend/send-password
+    const response = await fetch(
+      `${API_BASE_URL}${USER}/send-password?email=${inputEmailState.inputEmail}`,
+    );
+    // .then((res) => console.log(res.text()))
+    // .then((data) => console.log(data))
+    // .catch((err) => console.log(err));
+
+    if (response.ok) {
+      const data = await response.text();
+      alert('이메일로 임시비밀번호를 전송했습니다. 확인후 로그인해주세요.');
+      // navigate('/login');
+      isModalClickClose();
+    } else if (!response.ok) {
+      const error = await response.text();
+      alert('임시비밀번호를 다시 요청해주시기 바랍니다.');
+    }
+  };
 
   const inputSendEmailHandler = async (e) => {
     const inputEmail = e.target.value;
@@ -59,7 +86,7 @@ const PasswordResetModal = ({ isModalOpen, isModalClose }) => {
     let flag = false;
     if (!inputEmail) {
       msg = '이메일 주소 입력은 필수입니다.';
-    } else if (!inputEmailRegEx.test(inputEmailRegEx)) {
+    } else if (!inputEmailRegEx.test(inputEmail)) {
       msg = '이메일 형식이 올바르지 않습니다.';
     } else {
       await fetchDuplicateCheck(inputEmail);
@@ -86,26 +113,36 @@ const PasswordResetModal = ({ isModalOpen, isModalClose }) => {
           label='이메일 주소'
           type='email'
           fullWidth
-          onBlur={inputSendEmailHandler}
-          // onChange={findPasswordEmailHandler}
+          onChange={inputSendEmailHandler}
+          disabled={writable}
         />
-        <span style={{ color: 'red' }}>{/*{findPwValue.femailMsg}*/}</span>
+        <span
+          style={inputEmailState.flag ? { color: 'blue' } : { color: 'red' }}
+        >
+          {inputEmailState.msg}
+        </span>
       </DialogContent>
       <DialogActions>
         <Button color='primary' onClick={isModalClickClose}>
           취소
         </Button>
-        <Button
-          color='primary'
-          // disabled={!isEmailValid}
-          /*onClick={() => {
+        {inputEmailState.flag ? (
+          <Button color='primary' onClick={sendPasswordHandler}>
+            전송
+          </Button>
+        ) : (
+          <Button
+            color='primary'
+            disabled
+            /*onClick={() => {
             findPasswordSenderHandler();
             console.log('이메일 전송 버튼 클릭됨');
           }}
             */
-        >
-          전송
-        </Button>
+          >
+            전송
+          </Button>
+        )}
       </DialogActions>
     </Dialog>
   );
