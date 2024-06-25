@@ -42,6 +42,7 @@ axiosInstance.interceptors.response.use(
 
     // 응답에 에러가 발생하면 실행할 두번째 함수.
     if (error.response.status === 401 && !originalRequest._retry) {
+      console.log(error);
       console.log('응답 상태 401 확인! 토큰 재발급 요청!');
       // _retry 속성은 사용자 정의 속성입니다. 최초 요청에서는 존재하지 않습니다.
       // 만약 재요청 시에도 문제가 발생했다면 (refresh 만료 등), 더 이상 똑같은 요청을 반복해서 무한 루프에 빠지지 않도록
