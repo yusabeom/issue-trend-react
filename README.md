@@ -28,8 +28,12 @@ npm install wordcloud
 npm install chart.js
 npm install react-chartjs-2
 
-
+// 로딩창 스피너
 npm install react-spinners
+// 리액트 아이콘
+npm install react-icons --save
+// 클래스 이름 여러개
+npm install classnames
 ```
 
 #### 3. commit 규칙
