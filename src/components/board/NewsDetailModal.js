@@ -1,5 +1,6 @@
 import React, {
   forwardRef,
+  useContext,
   useEffect,
   useImperativeHandle,
   useRef,
@@ -27,6 +28,9 @@ import { height } from '@mui/system';
 import TextareaComment from '../../common/ui/TextAreaComment';
 import { API_BASE_URL, USER } from '../../config/host-config';
 import axios from 'axios';
+import ScrapBtn from '../../common/ui/ScrapBtn';
+import axiosInstance from '../../config/axios-config';
+import AuthContext from '../store/auth-context';
 
 const ARTICLE = API_BASE_URL + USER;
 
@@ -45,6 +49,9 @@ const boxStyle = {
 };
 
 const NewsDetailModal = forwardRef(({ article }, ref) => {
+  const { isLoggedIn, userEmail, regionName, onLogout, userNo } =
+    useContext(AuthContext);
+
   const {
     headerStyle,
     articleContents,
@@ -77,7 +84,7 @@ const NewsDetailModal = forwardRef(({ article }, ref) => {
       ARTICLE + `/articles/${article.articleCode}/comments`,
     );
 
-    const res = await axios.get(
+    const res = await axiosInstance.get(
       ARTICLE + `/articles/${article.articleCode}/comments`,
     );
 
@@ -113,7 +120,7 @@ const NewsDetailModal = forwardRef(({ article }, ref) => {
     try {
       const res = await axios.post(
         ARTICLE + `/articles/${article.articleCode}/comments`,
-        { userNo: 1, articleCode: article.articleCode, text: input },
+        { userNo, articleCode: article.articleCode, text: input },
       );
       console.log('서버 정상 동작: ', res.data);
       bringReplies();
@@ -135,7 +142,7 @@ const NewsDetailModal = forwardRef(({ article }, ref) => {
     console.log('수정 text: ', editComment);
 
     try {
-      const res = await axios.put(
+      const res = await axiosInstance.put(
         ARTICLE +
           `/articles/${article.articleCode}/comments/${editingCommentId}`,
         { text: editComment },
@@ -157,7 +164,7 @@ const NewsDetailModal = forwardRef(({ article }, ref) => {
       ARTICLE + `/articles/${article.articleCode}/comments/${replyNo}`,
     );
     try {
-      const res = await axios.delete(
+      const res = await axiosInstance.delete(
         ARTICLE + `/articles/${article.articleCode}/comments/${replyNo}`,
       );
       console.log(res.data);
@@ -232,6 +239,9 @@ const NewsDetailModal = forwardRef(({ article }, ref) => {
                   <FontAwesomeIcon icon={faLink} />
                   뉴스 보러 가기
                 </a>
+                {localStorage.getItem('USER_NO') && (
+                  <ScrapBtn articleCode={article.articleCode} />
+                )}
               </div>
               <footer className={styles.reply}>
                 <h3>댓글 {replyList.length}</h3>
@@ -253,13 +263,15 @@ const NewsDetailModal = forwardRef(({ article }, ref) => {
                             <div className={styles.email}>{reply.email}</div>
                           </div>
 
-                          <div className={styles.crud}>
-                            <FontAwesomeIcon
-                              style={{ cursor: 'pointer' }}
-                              onClick={(e) => handleClick(e, reply.commentNo)}
-                              icon={faEllipsisVertical}
-                            />
-                          </div>
+                          {+reply.userNo === +userNo && (
+                            <div className={styles.crud}>
+                              <FontAwesomeIcon
+                                style={{ cursor: 'pointer' }}
+                                onClick={(e) => handleClick(e, reply.commentNo)}
+                                icon={faEllipsisVertical}
+                              />
+                            </div>
+                          )}
 
                           <Popover
                             id={id}

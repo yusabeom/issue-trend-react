@@ -27,7 +27,7 @@ const Filter = ({ onTags, agencies }) => {
     agency: null,
   });
 
-  const { mainKeyword } = useContext(KeywordContext);
+  const { mainKeyword, setMainKeyword } = useContext(KeywordContext);
   // console.log(mainKeyword);
 
   const optionsRegion = {
@@ -211,6 +211,7 @@ const Filter = ({ onTags, agencies }) => {
   // mainKeyword이 변경될 때 inputValue 업데이트
   useEffect(() => {
     setInputValue(mainKeyword);
+    setMainKeyword('');
   }, [mainKeyword]);
 
   return (
