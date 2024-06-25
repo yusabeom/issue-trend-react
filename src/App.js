@@ -17,6 +17,7 @@ import { useContext, useEffect, useState } from 'react';
 import MyPage from './components/user/mypage/MyPage';
 import ReportWriteModal from './components/board/ReportWriteModal';
 import KakaoLoginHandler from './components/user/KakaoLoginHandler';
+import RegionScreen from './components/regionInfo/RegionScreen';
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
           <Route path='/board/:id' element={<ReportTemplate />} />
           <Route path='/board/detail/:id' element={<ReportDetail />} />
           <Route path='/issue-trend/mypage' element={<MyPage />} />
+          <Route path='/region-info' element={<RegionScreen />} />
         </Route>
       </Routes>
     </AuthContextProvider>
