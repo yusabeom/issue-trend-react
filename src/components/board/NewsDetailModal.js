@@ -28,6 +28,7 @@ import TextareaComment from '../../common/ui/TextAreaComment';
 import { API_BASE_URL, USER } from '../../config/host-config';
 import axios from 'axios';
 import ScrapBtn from '../../common/ui/ScrapBtn';
+import axiosInstance from '../../config/axios-config';
 
 const ARTICLE = API_BASE_URL + USER;
 
@@ -78,7 +79,7 @@ const NewsDetailModal = forwardRef(({ article }, ref) => {
       ARTICLE + `/articles/${article.articleCode}/comments`,
     );
 
-    const res = await axios.get(
+    const res = await axiosInstance.get(
       ARTICLE + `/articles/${article.articleCode}/comments`,
     );
 
@@ -136,7 +137,7 @@ const NewsDetailModal = forwardRef(({ article }, ref) => {
     console.log('수정 text: ', editComment);
 
     try {
-      const res = await axios.put(
+      const res = await axiosInstance.put(
         ARTICLE +
           `/articles/${article.articleCode}/comments/${editingCommentId}`,
         { text: editComment },
@@ -158,7 +159,7 @@ const NewsDetailModal = forwardRef(({ article }, ref) => {
       ARTICLE + `/articles/${article.articleCode}/comments/${replyNo}`,
     );
     try {
-      const res = await axios.delete(
+      const res = await axiosInstance.delete(
         ARTICLE + `/articles/${article.articleCode}/comments/${replyNo}`,
       );
       console.log(res.data);
