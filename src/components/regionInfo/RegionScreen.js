@@ -3,9 +3,9 @@ import styles from '../../styles/RegionScreen.module.scss';
 import { BiNews } from 'react-icons/bi';
 import Weather from './Weather';
 import Dust from './Dust';
-import { Restaurant } from '@mui/icons-material';
 import Crime from './Crime';
 import classNames from 'classnames';
+import Restaurant from './Restaurant';
 
 const RegionScreen = () => {
   const {
