@@ -4,9 +4,13 @@ header.header {
 }
 
 ul.scrapList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+
   // 하나의 기사 영역
-  flex-flow: row wrap;
   li.post {
+    width: 45%;
     max-height: 200px;
     margin-top: 50px;
     padding-left: 20px;
@@ -14,10 +18,10 @@ ul.scrapList {
     cursor: pointer;
 
     .imgContainer {
-      width: 45%;
       overflow: hidden;
       position: relative;
       background: #000;
+
       position: relative;
 
       img {
@@ -28,6 +32,35 @@ ul.scrapList {
         transition:
           opacity 0.3s ease,
           transform 0.3s ease;
+      }
+
+      .articleImg {
+        background: #000;
+      }
+
+      .basicImg {
+        background: #fff;
+      }
+
+      button.closeBtn {
+        position: absolute;
+        top: 10%;
+        right: -5%;
+        transform: translate(-50%, -50%);
+        background-color: red;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+        font-size: 16px;
+
+        display: none;
+
+        &:hover {
+          background-color: rgb(102, 0, 0);
+        }
       }
 
       .title {
@@ -53,6 +86,13 @@ ul.scrapList {
         img {
           opacity: 0.6;
           transform: scale(1.2);
+        }
+
+        button.closeBtn {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 100000;
         }
       }
     }
