@@ -71,7 +71,8 @@ const Header = () => {
     }
   };
 
-  const { goLogin, goJoin, goHome, goNews, goBoard } = useNavigation();
+  const { goLogin, goJoin, goHome, goNews, goBoard, goMyPage } =
+    useNavigation();
 
   const {
     header,
@@ -146,6 +147,14 @@ const Header = () => {
           <div className={items} onClick={openChatModal}>
             실시간
           </div>
+          {isLoggedIn ? (
+            <>
+              <div>|</div>
+              <div className={items} onClick={goMyPage}>
+                마이페이지
+              </div>
+            </>
+          ) : null}
           <div style={{ display: 'none' }}>
             <ChatModal ref={childButtonRef} />
           </div>
@@ -158,7 +167,6 @@ const Header = () => {
         >
           {isLoggedIn ? (
             <>
-              {/*div style={{ display: 'flex' }}*/}
               <div>{nickname + '님 안녕하세요'}</div>
               <img
                 src={
@@ -174,9 +182,9 @@ const Header = () => {
                   height: 75,
                 }}
               />
-              <Button className='logout-btn' onClick={logoutHandler}>
+              <div className={`${btn} ${btn1}`} onClick={logoutHandler}>
                 로그아웃
-              </Button>
+              </div>
             </>
           ) : (
             <div>

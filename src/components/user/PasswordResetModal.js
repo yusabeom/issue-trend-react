@@ -64,14 +64,16 @@ const PasswordResetModal = ({ isModalOpen, isModalClose }) => {
     const response = await fetch(
       `${API_BASE_URL}${USER}/send-password?email=${inputEmailState.inputEmail}`,
     );
-    // .then((res) => console.log(res.text()))
-    // .then((data) => console.log(data))
-    // .catch((err) => console.log(err));
+    // .then((res) => return res.text()) // 프라미스를 받아서 텍스트로 변환 했는데,
+    // .then((data) => console.log(data)) // 왜 또 프라미스야 프라미스를 콘솔로 찍으면 찍힌다고? 그럼 프라미스가 찍히는 거야? ---> 근데 undefined가 찍힘
+    // .catch((err) => console.log(err)); // 에러야
 
     if (response.ok) {
+      console.log(`response: ${response}`);
       const data = await response.text();
+      console.log(`data는 프라미스니?: ${data}`);
       alert('이메일로 임시비밀번호를 전송했습니다. 확인후 로그인해주세요.');
-      // navigate('/login');
+      // navigate('/login'); // 이미 로그인 페이지라 모달만 닫아야한다.
       isModalClickClose();
     } else if (!response.ok) {
       const error = await response.text();
