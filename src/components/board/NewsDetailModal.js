@@ -1,5 +1,6 @@
 import React, {
   forwardRef,
+  useContext,
   useEffect,
   useImperativeHandle,
   useRef,
@@ -29,6 +30,7 @@ import { API_BASE_URL, USER } from '../../config/host-config';
 import axios from 'axios';
 import ScrapBtn from '../../common/ui/ScrapBtn';
 import axiosInstance from '../../config/axios-config';
+import AuthContext from '../store/auth-context';
 
 const ARTICLE = API_BASE_URL + USER;
 
@@ -47,6 +49,9 @@ const boxStyle = {
 };
 
 const NewsDetailModal = forwardRef(({ article }, ref) => {
+  const { isLoggedIn, userEmail, regionName, onLogout, userNo } =
+    useContext(AuthContext);
+
   const {
     headerStyle,
     articleContents,
@@ -115,7 +120,7 @@ const NewsDetailModal = forwardRef(({ article }, ref) => {
     try {
       const res = await axios.post(
         ARTICLE + `/articles/${article.articleCode}/comments`,
-        { userNo: 1, articleCode: article.articleCode, text: input },
+        { userNo, articleCode: article.articleCode, text: input },
       );
       console.log('서버 정상 동작: ', res.data);
       bringReplies();
@@ -258,13 +263,15 @@ const NewsDetailModal = forwardRef(({ article }, ref) => {
                             <div className={styles.email}>{reply.email}</div>
                           </div>
 
-                          <div className={styles.crud}>
-                            <FontAwesomeIcon
-                              style={{ cursor: 'pointer' }}
-                              onClick={(e) => handleClick(e, reply.commentNo)}
-                              icon={faEllipsisVertical}
-                            />
-                          </div>
+                          {+reply.userNo === +userNo && (
+                            <div className={styles.crud}>
+                              <FontAwesomeIcon
+                                style={{ cursor: 'pointer' }}
+                                onClick={(e) => handleClick(e, reply.commentNo)}
+                                icon={faEllipsisVertical}
+                              />
+                            </div>
+                          )}
 
                           <Popover
                             id={id}
