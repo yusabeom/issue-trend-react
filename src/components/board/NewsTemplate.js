@@ -11,6 +11,7 @@ import { useSearchParams } from 'react-router-dom';
 import { API_BASE_URL } from '../../config/host-config';
 import axios from 'axios';
 import { Spinner } from 'reactstrap';
+import axiosInstance from '../../config/axios-config';
 
 const NewsTemplate = () => {
   // API_BASE_URL: 백엔드 hostname
@@ -45,13 +46,13 @@ const NewsTemplate = () => {
       try {
         console.log('GET 요청 url: ', NEWS_URL);
         setLoading(true);
-        const res = await axios.get(NEWS_URL);
-        const getNewsList = await res.data; // 페이징이 된 데이터
+        const res = await axiosInstance.get(NEWS_URL);
+        const getNewsList = await res.data;
 
         setNewsList(getNewsList);
       } catch (error) {
         // console.error('Error fetching data: ', error);
-        setError(error.message);
+        setError(error.message + ' 뉴스 기사 전체에서 발생한 에러');
       } finally {
         setLoading(false);
       }
@@ -91,7 +92,7 @@ const NewsTemplate = () => {
           tags,
         );
         setLoading(true);
-        const res = await axios.post(
+        const res = await axiosInstance.post(
           API_BASE_URL + '/issue-trend/filterArticles',
           tags,
         );
@@ -100,7 +101,7 @@ const NewsTemplate = () => {
         setNewsList(getNewsList);
       } catch (error) {
         console.error('Error fetching data: ', error);
-        // setError(error.message);
+        setError(error.message + ' 뉴스 기사 필터에서 발생한 에러');
       } finally {
         setLoading(false);
         setTags({
@@ -127,7 +128,7 @@ const NewsTemplate = () => {
           API_BASE_URL + SEARCH + '?keyword=' + keyword,
         );
         // http://localhost:8181/issue-trend/search?keyword=고속 (requestParam)
-        const res = await axios.get(API_BASE_URL + SEARCH, {
+        const res = await axiosInstance.get(API_BASE_URL + SEARCH, {
           params: { keyword },
         });
         const getNewsList = res.data; // 페이징이 된 데이터
@@ -136,7 +137,7 @@ const NewsTemplate = () => {
         // console.log('From Server, (keyword) newsList: ', newsList);
       } catch (error) {
         // console.error('Error fetching data: ', error);
-        setError(error.message);
+        setError(error.message + ' 뉴스 기사 키워드에서 발생한 에러');
       } finally {
         setLoading(false);
       }

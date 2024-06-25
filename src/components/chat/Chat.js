@@ -10,7 +10,7 @@ import AuthContext from '../../components/store/auth-context';
 const roomSocket = io('http://192.168.0.27:5000');
 
 // 화면에는 유저 이름(userName)을 보여주고, 서버에서는 socket.id로 식별한다.
-const Chat = ({ onUsers }) => {
+const Chat = ({ onUsers, onEnter }) => {
   // AuthContext에서 로그인 상태를 가져옵니다.
   const { isLoggedIn, userEmail, regionName, onLogout } =
     useContext(AuthContext);
@@ -127,6 +127,7 @@ const Chat = ({ onUsers }) => {
   // 로그인을 할 때(submit) 아이디(와 프로필 사진)를 서버에 전송
   const onSubmitHandler = (e) => {
     e.preventDefault();
+    onEnter(true);
     const userEmail2 = localStorage.getItem('LOGIN_EMAIL');
     const region = localStorage.getItem('REGION_NAME');
     const userNo = localStorage.getItem('USER_NO');
@@ -229,7 +230,8 @@ const Chat = ({ onUsers }) => {
       target: privateTarget, // 1:1 채팅 상대방 이메일도 같이 전송
     };
     roomSocket.emit('message', sendData); // 서버에 메세지(아이디, 메세지) 전송
-    setMsgList((prev) => [...prev, { msg, type: 'me', id: userId }]); // 내가 보낸 메세지
+    // 내가 보낸 메세지는 서버에 안보내고 바로 렌더링
+    setMsgList((prev) => [...prev, { msg, type: 'me', id: userId }]);
     setMsg('');
   };
 
