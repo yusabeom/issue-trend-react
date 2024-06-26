@@ -3,6 +3,7 @@
 .changeHeader {
   background-color: #ffffff !important;
   height: 7vh !important;
+  padding-left: 360px !important;
 }
 .changeItem {
   height: 7vh !important;
@@ -10,7 +11,7 @@
 }
 
 .changeBtnGroup {
-  top: 20px !important;
+  height: 5.3vh !important;
 }
 
 .header {
@@ -20,75 +21,104 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   position: fixed;
   top: 0;
-  padding-left: 400px;
+  padding-left: 300px;
+  z-index: 999;
 
-  font-weight: bold;
+  
 
   .headerContainer {
     display: flex;
 
-    // border-bottom: solid 1px gray;
-    // box-shadow: 0 3px 2px -2px rgb(177, 177, 177);
-  }
-
-  .headerItem {
-    display: flex;
-    width: 30%;
-    margin-left: 120px;
-    align-items: end;
-    justify-content: space-between;
-    // background-color: red;
-
-    .items {
-      font-weight: 500;
-      cursor: pointer;
+    .headerItem {
+      display: flex;
+      width: 600px;
+      margin-left: 50px;
+      align-items: end;
+      justify-content: space-around;
+  
+      .items {
+        font-weight: 500;
+        cursor: pointer;
+      }
+  
+      .items:hover {
+        color: grey;
+      }
     }
+  
+    .btnGroup {
+      display: flex;
+      margin-left: 20px;
+      
+  
+      .login {
+        // background-color: orange;
+        width: 450px;
+        display: flex;
+        align-items: end;
+        justify-content: end;
+        margin-right: 40px;
+        
 
-    .items:hover {
-      color: grey;
+        .user {
+
+          img {
+            width: 80px;
+            height: 80px;
+          }
+
+
+          .name {
+            font-size: 15px;
+            font-weight: 400;
+          }
+        }
+      }
+
+     .logout {
+        width: 450px;
+        display: flex;
+        align-items: end;
+        justify-content: center;
+     }
+
+      .btn {
+        width: 70px;
+        height: 33px;
+        text-align: center;
+        padding-top: 9px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-left: 30px;
+      }
+    
+      .btn1 {
+        color: black;
+        background-color: white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+    
+      .btn1:hover {
+        color: gray;
+      }
+    
+      .btn2 {
+        color: white;
+        background-color: $darkBackground;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      .btn2:hover {
+        color: grey;
+      }
     }
+  
+    
+
   }
 
-  .btnGroup {
-    display: flex;
-    position: absolute;
-    top: 30px;
-    right: 10px;
-    padding-right: 400px;
-    height: 10px;
-
-    font-weight: bold;
-  }
-
-  .btn {
-    width: 70px;
-    height: 30px;
-    text-align: center;
-    padding-top: 7px;
-    border-radius: 20px;
-    font-size: 13px;
-    cursor: pointer;
-  }
-
-  .btn1 {
-    color: black;
-    background-color: white;
-    margin-right: 30px;
-
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-
-  .btn1:hover {
-    color: gray;
-  }
-
-  .btn2 {
-    color: white;
-    background-color: $darkBackground;
-  }
-  .btn2:hover {
-    color: grey;
-  }
+  
 }
 
 .loginName {

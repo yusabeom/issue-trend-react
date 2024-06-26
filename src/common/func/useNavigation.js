@@ -14,6 +14,7 @@ const useNavigation = () => {
     goNews: goPage('/news'),
     goBoard: goPage('/board'),
     goMyPage: goPage('/issue-trend/mypage'),
+    goRegionInfo: goPage('/region-info'),
   };
 };
 
