@@ -83,7 +83,10 @@ const RegionScreen = () => {
             {tagChange === 'restaurant' && (
               <>
                 <h2>지역 맛집</h2>
-                <p>지역별 맛집 정보를 확인하실 수 있습니다.(자료 출처: )</p>
+                <p>
+                  지역별 맛집 정보를 확인하실 수 있습니다.(자료 출처: 네이버
+                  지도)
+                </p>
               </>
             )}
             {tagChange === 'crime' && (
@@ -110,7 +113,7 @@ const RegionScreen = () => {
               </p>
             )}
             {tagChange === 'restaurant' && (
-              <div>
+              <div className={styles.restBox}>
                 <Restaurant />
               </div>
             )}
