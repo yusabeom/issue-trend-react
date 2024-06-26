@@ -1,3 +1,40 @@
 .head {
-    text-align: start;
+    display: flex;
+    justify-content: space-between;
+
+
+
+    .grade {
+        display: flex;
+        justify-content: end;
+        font-size: 12px;
+        // background-color: grey;
+        width: 200px;
+        justify-content: space-between;
+        text-align: center;
+    }
+
 }
+.time {
+    display: flex;
+    margin-top: 10px;
+    margin-left: 545px;
+    font-size: 15px;
+    background-color: #cccccc;
+    color: #5a5a5a;
+    width: 220px;
+    padding: 4px;
+    justify-content: center;
+    align-items: center;
+
+    .load {
+        margin-left: 5px;
+        font-size: 19px;
+
+        &:hover {
+            color: #949393;    
+            cursor: pointer;
+        }
+    }
+}
+

@@ -1,5 +1,5 @@
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import React from 'react';
+import { HiChevronDown } from 'react-icons/hi';
 
 const ResionSelect = ({ onInputChange }) => {
   const [region, setResion] = React.useState('');
@@ -31,7 +31,7 @@ const ResionSelect = ({ onInputChange }) => {
   return (
     <div>
       <select
-        style={{ color: 'black' }}
+        style={{ color: 'black', width: '80px', fontSize: '24px' }}
         onChange={handleChange}
         defaultValue='서울'
       >
@@ -41,6 +41,7 @@ const ResionSelect = ({ onInputChange }) => {
           </option>
         ))}
       </select>
+      <HiChevronDown size='24' />
     </div>
   );
 };
