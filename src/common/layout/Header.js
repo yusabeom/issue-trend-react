@@ -8,6 +8,8 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
 import { API_BASE_URL, USER } from '../../config/host-config';
 
+import basicProfile from '../../assets/img/anonymous.jpg';
+
 const Header = () => {
   const { isLoggedIn, onLogout, userEmail, profileImage, nickname, userNo } =
     useContext(AuthContext);
@@ -71,7 +73,7 @@ const Header = () => {
     }
   };
 
-  const { goLogin, goJoin, goHome, goNews, goBoard, goMyPage } =
+  const { goLogin, goJoin, goHome, goNews, goBoard, goMyPage, goRegionInfo } =
     useNavigation();
 
   const {
@@ -87,6 +89,10 @@ const Header = () => {
     section,
     changeItem,
     changeBtnGroup,
+    login,
+    user,
+    name,
+    logout,
   } = styles;
 
   // 스크롤시 헤더 색상 변경
@@ -147,14 +153,11 @@ const Header = () => {
           <div className={items} onClick={openChatModal}>
             실시간
           </div>
-          {isLoggedIn ? (
-            <>
-              <div>|</div>
-              <div className={items} onClick={goMyPage}>
-                마이페이지
-              </div>
-            </>
-          ) : null}
+          <div>|</div>
+          <div className={items} onClick={goRegionInfo}>
+            지역별정보
+          </div>
+
           <div style={{ display: 'none' }}>
             <ChatModal ref={childButtonRef} />
           </div>
@@ -166,28 +169,27 @@ const Header = () => {
           }
         >
           {isLoggedIn ? (
-            <>
-              <div>{nickname + '님 안녕하세요'}</div>
-              <img
-                src={
-                  profileImage ||
-                  // profileUrl ||
-                  require('../../assets/img/anonymous.jpg')
-                }
-                alt='프로필 사진'
-                style={{
-                  marginLeft: 20,
-                  width: 75,
-                  borderRadius: '50%',
-                  height: 75,
-                }}
-              />
+            <div className={login}>
+              <div className={user}>
+                {scrollPosition < 10 ? (
+                  <img
+                    src={profileImage || { basicProfile }}
+                    alt='프로필 사진'
+                  />
+                ) : (
+                  ''
+                )}
+                <div className={name}>{nickname + '님 안녕하세요'}</div>
+              </div>
               <div className={`${btn} ${btn1}`} onClick={logoutHandler}>
                 로그아웃
               </div>
-            </>
+              <div className={`${btn} ${btn2}`} onClick={goMyPage}>
+                마이페이지
+              </div>
+            </div>
           ) : (
-            <div>
+            <div className={logout}>
               <div className={`${btn} ${btn1}`} onClick={goLogin}>
                 로그인
               </div>
@@ -196,13 +198,6 @@ const Header = () => {
               </div>
             </div>
           )}
-          {/*<div>
-              {/* {localStorage.getItem('login-flag')}님 안녕하세요. */}
-          {/* <div className={`${btn} ${btn1}`} onClick={goLogin}></div>
-              <div className={`${btn} ${btn2}`} onClick={goJoin}>
-                회원가입
-              </div>
-            </div> */}
         </div>
       </div>
     </header>
