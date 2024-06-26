@@ -13,6 +13,7 @@ const useNavigation = () => {
     goHome: goPage('/home'),
     goNews: goPage('/news'),
     goBoard: goPage('/board'),
+    goMyPage: goPage('/issue-trend/mypage'),
   };
 };
 

@@ -38,6 +38,7 @@ const ChatModal = forwardRef((props, ref) => {
   const [animate, setAnimate] = useState(false); // 유저 정보창 애니메이션
   const infoWrapperRef = useRef(null);
   const [userList, setUserList] = useState([]); // 서버로부터 받은 채팅방 유저 목록
+  const [enterTransfer, setEnterTransfer] = useState(false); // 입장하면 Profile에게 전달
 
   // snackBar
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -72,6 +73,7 @@ const ChatModal = forwardRef((props, ref) => {
   const handleOutsideClick = (e) => {
     if (infoWrapperRef.current && !infoWrapperRef.current.contains(e.target)) {
       setIsUserInfoVisible(false);
+      setEnterTransfer(false); // 채팅 입장 여부 false
     }
   };
 
@@ -99,6 +101,15 @@ const ChatModal = forwardRef((props, ref) => {
   const onUsers = (usersInRoom) => {
     console.log('In ChatModal, usersInRoom is ', usersInRoom);
     setUserList(usersInRoom);
+    setEnterTransfer(true);
+  };
+
+  // 채팅방에 입장했을 때 이벤트
+  const onEnter = (isEnter) => {
+    if (isEnter) {
+      console.log('on enter!!');
+      setEnterTransfer(true);
+    }
   };
 
   return (
@@ -132,8 +143,12 @@ const ChatModal = forwardRef((props, ref) => {
               </h2>
 
               <div className={chatContents}>
-                <Chat onUsers={onUsers} />
-                <Profile clickName={getUserName} users={userList} />
+                <Chat onUsers={onUsers} onEnter={onEnter} />
+                <Profile
+                  clickName={getUserName}
+                  users={userList}
+                  enterTransfer={enterTransfer}
+                />
               </div>
             </div>
 
