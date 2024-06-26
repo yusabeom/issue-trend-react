@@ -11,7 +11,7 @@ import veryBadImg from '../../assets/img/character_03.png';
 import { useNavigate } from 'react-router-dom';
 
 const Dust = () => {
-  const { head, grade, time, load } = styles;
+  const { dustContainer, head, grade, time, load } = styles;
 
   const [inputRegion, setInputRegion] = useState('서울');
 
@@ -36,7 +36,7 @@ const Dust = () => {
   };
 
   return (
-    <div>
+    <div className={dustContainer}>
       <div className={head}>
         <ResionSelect onInputChange={onInputChange} />
         <div className={grade}>
