@@ -18,7 +18,9 @@ const Graph = () => {
           throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        const topTenWords = data.slice(0, 10); // 상위 10개 항목 추출
+        const topTenWords = data
+          .sort((a, b) => b.frequency - a.frequency)
+          .slice(0, 10); // 상위 10개 항목 추출
 
         setWords(topTenWords);
         // console.log(topTenWords);

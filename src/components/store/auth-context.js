@@ -6,6 +6,7 @@ const AuthContext = React.createContext({
   userEmail: '',
   profileImage: '',
   nickname: '',
+  favoriteKeywords: [],
   onLogout: () => {},
   onLogin: () => {},
 });
@@ -17,6 +18,7 @@ export const AuthContextProvider = (props) => {
   const [profileImage, setProfileImage] = useState('');
   const [nickname, setNickname] = useState('');
   const [userNo, setUserNo] = useState('');
+  const [favoriteKeywords, setFavoriteKeywords] = useState([]);
 
   // token, email, loginPath, profileImage, regionName
   const loginHandler = (
@@ -27,6 +29,7 @@ export const AuthContextProvider = (props) => {
     regionName,
     nickname,
     userNo,
+    favoriteKeywords,
   ) => {
     localStorage.setItem('ACCESS_TOKEN', token.access_token);
     localStorage.setItem('REFRESH_TOKEN', token.refresh_token);
@@ -36,16 +39,23 @@ export const AuthContextProvider = (props) => {
     localStorage.setItem('REGION_NAME', regionName);
     localStorage.setItem('NICK_NAME', nickname);
     localStorage.setItem('USER_NO', userNo);
+
+    localStorage.setItem('FAVORITE_KEYWORDS', favoriteKeywords);
     setIsLoggedIn(true);
     setUserEmail(userEmail);
     setProfileImage(profileImage);
     setNickname(nickname);
     setUserNo(userNo);
+    setFavoriteKeywords(favoriteKeywords);
   };
   const logoutHandler = () => {
     localStorage.clear();
     setIsLoggedIn(false);
     setUserEmail('');
+    setProfileImage('');
+    setNickname('');
+    setUserNo('');
+    setFavoriteKeywords([]);
   };
 
   useEffect(() => {
@@ -55,6 +65,7 @@ export const AuthContextProvider = (props) => {
       setProfileImage(localStorage.getItem('PROFILE_IMAGE'));
       setNickname(localStorage.getItem('NICK_NAME'));
       setUserNo(localStorage.getItem('USER_NO'));
+      setFavoriteKeywords(localStorage.getItem('FAVORITE_KEYWORDS'));
     }
   });
 
@@ -66,6 +77,7 @@ export const AuthContextProvider = (props) => {
         profileImage,
         nickname,
         userNo,
+        favoriteKeywords,
         onLogout: logoutHandler,
         onLogin: loginHandler,
       }}

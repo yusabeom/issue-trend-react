@@ -69,6 +69,7 @@ const Login = () => {
       regionName,
       nickname,
       userNo,
+      favoriteKeywords,
     } = await res.json();
     console.log('token:', token);
     console.log('email:', email);
@@ -76,6 +77,7 @@ const Login = () => {
     console.log('profileImage:', profileImage);
     console.log('regionName:', regionName);
     console.log('nickname:', nickname);
+    console.log('favoriteKeywords:', favoriteKeywords);
     onLogin(
       token,
       email,
@@ -84,6 +86,7 @@ const Login = () => {
       regionName,
       nickname,
       userNo,
+      favoriteKeywords,
     );
     navigate('/home'); // --> 경로를 어디로 지정해야 하나 /home?
   };
