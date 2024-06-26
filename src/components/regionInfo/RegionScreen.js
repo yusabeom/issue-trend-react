@@ -92,7 +92,9 @@ const RegionScreen = () => {
             {tagChange === 'crime' && (
               <>
                 <h2>지역별 범죄현황</h2>
-                <p>지역별 범죄현황을 확인하실 수 있습니다.(자료 출처: )</p>
+                <p>
+                  지역별 범죄현황을 확인하실 수 있습니다.(자료 출처: 경찰청)
+                </p>
               </>
             )}
           </div>
@@ -118,7 +120,7 @@ const RegionScreen = () => {
               </div>
             )}
             {tagChange === 'crime' && (
-              <p>
+              <p style={{ width: '600px', height: '600px' }}>
                 <Crime />
               </p>
             )}

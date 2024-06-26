@@ -55,7 +55,7 @@ const MyPage = () => {
                   height: 75,
                 }}
               />
-              <h2>춘식이님</h2>
+              <h2>{localStorage.getItem('NICK_NAME')}</h2>
             </div>
             <div className={headContent}>
               <ul className={first}>
