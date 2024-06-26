@@ -1,0 +1,81 @@
+header.searchArea {
+  .keywords {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 0.8rem 3rem;
+    align-items: center;
+
+    .searchRegion {
+      color: orange;
+      margin: 2rem;
+      font-size: 1.4em;
+    }
+
+    .searchMenu {
+      color: skyblue;
+      margin: 2rem;
+      font-size: 1.4em;
+    }
+  }
+
+  .searchButton {
+    cursor: pointer;
+    padding: 0.2rem 0 0;
+    &:hover {
+      color: #807aa0;
+    }
+  }
+}
+
+.regionTags {
+  border-top: 1px #b8b8b8 solid;
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+
+  padding-top: 1.5rem;
+  margin: 1.5rem auto;
+
+  .tag {
+    cursor: pointer;
+    padding: 0.5rem 1.4rem;
+    background: orange;
+    color: #fff;
+    border-radius: 20px;
+  }
+}
+
+.foodTags {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 1.5rem auto;
+  flex-wrap: wrap;
+  .tag {
+    margin-top: 0.6rem;
+    cursor: pointer;
+    padding: 0.5rem 1.4rem;
+    background: skyblue;
+    color: #fff;
+    border-radius: 20px;
+  }
+}
+
+main.popularRestContainer {
+  h2 {
+    font-size: 26px;
+  }
+  ul {
+    // 식당 하나 영역
+    li.restaurant {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 1rem auto;
+
+      .title {
+        width: 25%;
+        cursor: pointer;
+      }
+    }
+  }
+}

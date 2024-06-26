@@ -110,9 +110,9 @@ const RegionScreen = () => {
               </p>
             )}
             {tagChange === 'restaurant' && (
-              <p>
+              <div>
                 <Restaurant />
-              </p>
+              </div>
             )}
             {tagChange === 'crime' && (
               <p>
