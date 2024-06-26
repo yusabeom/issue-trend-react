@@ -3,19 +3,24 @@ import { Marker, NaverMap, useNavermaps } from 'react-naver-maps';
 
 function MapComponent({ searchParams, coordX, coordY }) {
   const navermaps = useNavermaps();
-  const [map, setMap] = useState(null);
+  const [map, setMap] = useState(
+    new navermaps.Map('map', {
+      center: new navermaps.LatLng(37.5666805, 126.9784147),
+      setCenter: () => {},
+      zoom: 9,
+    }),
+  );
+
   const center = new navermaps.LatLng(37.5666805, 126.9784147);
 
   useEffect(() => {
+    console.log('coordX: ', coordX);
+    console.log('coordY: ', coordY);
     const jeju = new navermaps.LatLng(coordX, coordY);
-    map.setCenter(jeju);
+    // map.setCenter(jeju);
   }, [coordX]);
 
-  return (
-    <NaverMap defaultCenter={center} defaultZoom={9} ref={setMap}>
-      <Marker defaultPosition={new navermaps.LatLng(37.3595704, 127.105399)} />
-    </NaverMap>
-  );
+  return <NaverMap defaultCenter={center} defaultZoom={9} ref={setMap} />;
 }
 
 export default MapComponent;
