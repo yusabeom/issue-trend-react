@@ -34,11 +34,13 @@ const WordCloud = () => {
             throw new Error('Network response was not ok');
           }
           const data = await response.json();
-          const selectWordData = data.slice(0, 100);
+          const selectWordData = data
+            .sort((a, b) => b.frequency - a.frequency)
+            .slice(0, 100);
           setLoading(false);
           const transformedData = selectWordData.map((element) => [
             element.keyword,
-            element.frequency * 8,
+            element.frequency * 0.01,
           ]);
           setWords(transformedData);
         }, 2000);
