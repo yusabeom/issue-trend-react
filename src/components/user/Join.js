@@ -17,7 +17,6 @@ import axios from 'axios';
 import EmailIcon from '@mui/icons-material/Email';
 
 const { kakao } = window;
-
 const Join = () => {
   const navigate = useNavigate();
   /*
@@ -33,7 +32,6 @@ const Join = () => {
     email: '',
     nickname: '',
     password: '',
-    // phoneNumber: '',
     regionName: '',
   });
 
@@ -42,16 +40,14 @@ const Join = () => {
     nickname: '',
     password: '',
     passwordCheck: '',
-    // phoneNumber: '',
     regionName: '',
   });
 
   const [correct, setCorrect] = useState({
     email: false,
-    nickname: '',
+    nickname: false,
     password: false,
     passwordCheck: false,
-    // phoneNumber: false,
     regionName: false,
   });
 
