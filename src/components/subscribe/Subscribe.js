@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from '../../styles/Subscibe.module.scss';
 import {
   Button,
@@ -10,9 +10,63 @@ import {
 } from '@mui/material';
 import img from '../../assets/img/newspaper.jpg';
 import pay from '../../assets/img/payment.png';
+import axios from 'axios';
 
 const Subscribe = () => {
-  const { head, content, payBox } = styles;
+  const { head, content, payBox, cancel } = styles;
+
+  const [tid, setTid] = useState('');
+  const [userNum, setUserNum] = useState(localStorage.getItem('USER_NO'));
+  const [isSubscribed, setIsSubscribed] = useState(false);
+
+  useEffect(() => {
+    const checkSubscriptionStatus = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8181/payment/subscriptionStatus/${userNum}`,
+        );
+        setIsSubscribed(response.data.isSubscribed);
+      } catch (error) {
+        console.error('Error checking subscription status:', error);
+      }
+    };
+    checkSubscriptionStatus();
+  }, [userNum]);
+
+  const handlePayment = async () => {
+    try {
+      const response = await axios.post('http://localhost:8181/payment/ready', {
+        userNo: userNum,
+        itemName: '구독 서비스',
+        quantity: 1,
+        totalAmount: 9900,
+      });
+      const { nextRedirectPcUrl, tid } = response.data;
+      console.log('RedirectUrl: ', nextRedirectPcUrl);
+      setTid(tid);
+      window.location.href = nextRedirectPcUrl;
+    } catch (error) {
+      console.error('Error preparing payment:', error);
+    }
+  };
+
+  const handleCancelSubscription = async () => {
+    try {
+      await axios.post(
+        `http://localhost:8181/payment/cancelSubscription/${userNum}`,
+      );
+      if (confirm('구독 취소하시겠습니까?')) {
+        alert('구독이 취소되었습니다.\n다음에 또 이용해주세요!');
+      } else {
+        alert('구독이 계속 진행됩니다.');
+        return;
+      }
+      setIsSubscribed(false);
+      window.location.href = 'http://localhost:3000/payment';
+    } catch (error) {
+      console.error('Error cancelling subscription:', error);
+    }
+  };
   return (
     <>
       <div className={head}>
@@ -37,7 +91,19 @@ const Subscribe = () => {
               9,900원
             </Typography>
 
-            <img src={pay} />
+            <div>
+              {userNum ? (
+                isSubscribed ? (
+                  <div className={cancel} onClick={handleCancelSubscription}>
+                    구독취소
+                  </div>
+                ) : (
+                  <img src={pay} onClick={handlePayment} />
+                )
+              ) : (
+                ''
+              )}
+            </div>
           </CardActions>
         </div>
       </Card>
