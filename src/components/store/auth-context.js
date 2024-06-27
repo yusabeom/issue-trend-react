@@ -40,7 +40,7 @@ export const AuthContextProvider = (props) => {
     localStorage.setItem('NICK_NAME', nickname);
     localStorage.setItem('USER_NO', userNo);
 
-    localStorage.setItem('FAVORITE_KEYWORDS', favoriteKeywords);
+    localStorage.setItem('FAVORITE_KEYWORDS', JSON.stringify(favoriteKeywords));
     setIsLoggedIn(true);
     setUserEmail(userEmail);
     setProfileImage(profileImage);

@@ -1,12 +1,33 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import styles from '../../../styles/ChangeInfo.module.scss';
 import { Button, Container, Grid, TextField, Typography } from '@mui/material';
 import { API_BASE_URL, USER } from '../../../config/host-config';
+import PinDropIcon from '@mui/icons-material/PinDrop';
 import axiosInstance from '../../../config/axios-config';
 import axios from 'axios';
 
+const { kakao } = window;
 const ChangeInfo = () => {
-  const { title, inputField, btn } = styles; /*content,*/
+  const favoriteKeywords = JSON.parse(
+    localStorage.getItem('FAVORITE_KEYWORDS'),
+  );
+  console.log(favoriteKeywords); // (2) [{…}, {…}] temp는 배열이다.
+  // temp.forEach((obj) => console.log(obj));
+  // {favoriteNo: 43, favoriteKeyword: 's'}
+  // {favoriteNo: 44, favoriteKeyword: 'sss'}
+  // const arr = [];
+  // favoriteKeywords.forEach((obj) => arr.push(obj.favoriteKeyword));
+  // console.log(arr);
+
+  const [currentKeywords, setCurrentKeywords] = useState(favoriteKeywords);
+  // console.log(`currentKeywords: ${[...currentKeywords]}`);
+  // console.log(`favoriteKeywords ${[...favoriteKeywords]}`);
+  console.log(currentKeywords);
+  console.log(currentKeywords.forEach((k) => console.log(k)));
+
+  // console.log(`arr: ${arr}`);
+  // console.log(`[...arr]: ${[...arr]}`);
+
   const [isCheckPw, setIsCheckPw] = useState(false);
   const [passwordCheck, setPasswordCheck] = useState({
     password: '',
@@ -35,9 +56,7 @@ const ChangeInfo = () => {
         */
     }
     setPasswordCheck({ password: currentPassword, flag, msg });
-    console.log('passwordCheck.password1', passwordCheck.password);
   };
-  console.log('passwordCheck.password2', passwordCheck.password);
 
   const sendCheckPwHandler = async () => {
     // console.log('type: ', typeof passwordCheck.password); String타입
@@ -101,7 +120,7 @@ const ChangeInfo = () => {
   const nickChangeHandler = async (e) => {
     // 2자 이상 16자 이하, 영어 또는 숫자 또는 한글로 구성
     const nickRegex = /^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{2,16}$/;
-    const inputValue = e.target.value.trim();
+    const inputValue = e.target.value;
 
     let msg;
     let flag = false;
@@ -156,7 +175,7 @@ const ChangeInfo = () => {
     setCorrect({ ...correct, passwordCheck: false });
     // 영문자 숫자 조합이 8자 이상
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
-    const inputValue = e.target.value.trim();
+    const inputValue = e.target.value;
 
     let msg;
     let flag = false;
@@ -194,12 +213,227 @@ const ChangeInfo = () => {
     });
   };
 
+  // 지역설정
+  async function getAddr(lat, lng) {
+    let geocoder = new kakao.maps.services.Geocoder();
+    let coord = new kakao.maps.LatLng(lat, lng);
+    let callback = await function (result, status) {
+      if (status === kakao.maps.services.Status.OK) {
+        // console.log(result);
+        const area = result[0].address.region_1depth_name;
+        console.log(area);
+
+        saveInputState({
+          key: 'regionName1',
+          inputValue: area,
+          msg: '지역 설정 완료',
+          flag: true,
+        });
+      }
+      //
+    };
+    geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
+  }
+
+  function getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        function (position) {
+          //getAddr(위도, 경도);
+          getAddr(position.coords.latitude, position.coords.longitude);
+          console.log(position);
+        },
+        function (error) {
+          console.error(error);
+          alert('위치 조회를 차단하셨습니다! 차단 풀어주세요~');
+        },
+        {
+          enableHighAccuracy: false,
+          maximumAge: 0,
+          timeout: Infinity,
+        },
+      );
+    } else {
+      alert('현재 브라우저에서는 geolocation를 지원하지 않습니다');
+    }
+  }
+
+  const addressClickHandler = () => {
+    getLocation();
+  };
+
+  // 키워드
+  const handleKeyDown = (value) => {
+    console.log(value);
+
+    for (const keyword of currentKeywords) {
+      if (keyword.favoriteKeyword === value) {
+        alert('이미 존재하는 키워드입니다.');
+        return;
+      }
+    }
+
+    setCurrentKeywords((prve) => [
+      ...prve,
+      {
+        favoriteNo: currentKeywords[currentKeywords.length - 1].favoriteNo + 1,
+        favoriteKeyword: value,
+      },
+    ]);
+
+    document.getElementById('keyword').value = '';
+  };
+
+  const deleteHandler = (e) => {
+    const value = e.target.textContent;
+    setCurrentKeywords((prve) => {
+      const updatedKeywords = prve.filter((k) => k.favoriteKeyword !== value);
+      return updatedKeywords;
+    });
+  };
+
+  // 프로필 이미지 등록하기
+  const $fileTag = useRef();
+
+  const [imgFile, setImgFile] = useState(localStorage.getItem('PROFILE_IMAGE'));
+  const showThumbnailHandler = (e) => {
+    const file = $fileTag.current.files[0];
+    console.log(`file: ${file}`);
+    const fileExt = file.name.slice(file.name.indexOf('.') + 1).toLowerCase();
+
+    if (
+      fileExt !== 'jpg' &&
+      fileExt !== 'png' &&
+      fileExt !== 'jpeg' &&
+      fileExt !== 'gif'
+    ) {
+      alert('이미지 파일(jpg, png, jpeg, gif)만 등록이 가능합니다.');
+
+      $fileTag.current.value = '';
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      console.log(`reader.result: ${reader.result}`);
+      setImgFile(reader.result);
+    };
+  };
+
+  const isValid = () => {
+    console.log('correct:', correct);
+    for (let key in correct) {
+      if (key === 'passwordCheck') {
+        correct[key] = true;
+      }
+      console.log(key);
+      const flag = correct[key];
+      console.log(flag);
+      if (!flag) return false;
+    }
+    return true;
+  };
+
+  const fetchUpdateMyInfoPost = async () => {
+    console.log('fetchUpdateMyInfoPost 메서드 실행');
+    const { nickname1, password1, regionName1, favoriteKeywords1 } = userValue;
+    const userValue2 = {
+      nickname1,
+      password1,
+      regionName1,
+      favoriteKeywords1: currentKeywords,
+    };
+
+    const keywordArray = [];
+    // currentKeywords.forEach((k) => keywordArray.push(k.favoriteKeyword));
+    currentKeywords.forEach((k) =>
+      console.log(
+        `k.favoriteNo: ${k.favoriteNo} k.favoriteKeyword: ${k.favoriteKeyword}`,
+      ),
+    );
+    console.log(`keywordArray: ${keywordArray}`);
+
+    const user = {
+      nickname: userValue2.nickname1,
+      password: userValue2.password1,
+      regionName: userValue2.regionName1,
+      favoriteKeywords: userValue2.favoriteKeywords1, // JSON 문자열로 전송
+    };
+
+    console.log(user);
+
+    const userJsonBlob = new Blob([JSON.stringify(user)], {
+      type: 'application/json',
+    });
+    console.log(userJsonBlob);
+
+    const userFormData = new FormData();
+    userFormData.append('user', userJsonBlob);
+    userFormData.append('profileImage', $fileTag.current.files[0]);
+
+    const res = await axiosInstance(`${API_BASE_URL}${USER}/update-my-info`, {
+      userFormData,
+    });
+    /*
+    const res = await fetch(API_BASE_URL + USER, {
+      method: 'POST',
+      body: userFormData,
+    });
+
+    if (res.status === 200) {
+      console.log(`res: ${res}`); //----
+      const data = await res.json();
+      alert(`${data.email}님 회원가입에 성공했습니다.`);
+      navigate('/login');
+    } else {
+      console.log(res.text());
+      alert('서버와의 통신이 원활하지 않습니다.');
+    }
+      */
+  };
+
+  const updateMyInfoHandler = (e) => {
+    e.preventDefault();
+
+    if (isValid()) {
+      fetchUpdateMyInfoPost();
+    } else {
+      alert('입력란을 다시 확인해 주세요');
+    }
+  };
+
   return (
     <>
       {isCheckPw ? (
         <>
-          <div className={title}>내정보 변경</div>
+          <div>내정보 변경</div>
           {/*<div className={content}></div>*/}
+          <Grid item xs={12}>
+            <div
+              className='thumbnail-box'
+              onClick={() => {
+                $fileTag.current.click();
+              }}
+            >
+              <img
+                src={imgFile || require('../../../assets/img/anonymous.jpg')}
+                alt='profile'
+              />
+              {/* require 앞에 imgFile 변수 넣어야 함 */}
+            </div>
+            <label className='signup-img-label' htmlFor='profile-img'>
+              프로필 이미지 추가
+            </label>
+            <input
+              id='profile-img'
+              type='file'
+              style={{ display: 'none' }}
+              accept='image/*' /* 자사/소셜 로그인 진행시 DB에 넣을 때 경로문제 발생할 수도 있음 */
+              ref={$fileTag}
+              onChange={showThumbnailHandler}
+            />
+          </Grid>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
@@ -219,6 +453,7 @@ const ChangeInfo = () => {
                 type='text'
                 id='nickname1'
                 autoComplete='nickname1'
+                placeholder={nickname1}
                 onChange={nickChangeHandler}
               />
               <span
@@ -275,10 +510,10 @@ const ChangeInfo = () => {
             <Grid item xs={9}>
               <TextField
                 fullWidth
-                id='regionName'
-                name='regionName'
+                id='regionName1'
+                name='regionName1'
                 inputProps={{ readOnly: true }}
-                value={userValue.regionName}
+                value={userValue.regionName1}
               />
             </Grid>
             <Grid item xs={3}>
@@ -288,8 +523,8 @@ const ChangeInfo = () => {
                 style={{ background: '#38d9a9' }}
                 fullWidth
                 variant='contained'
-                // onClick={addressClickHandler}
-                // startIcon={<PinDropIcon />}
+                onClick={addressClickHandler}
+                startIcon={<PinDropIcon />}
               >
                 내 동네 설정
               </Button>
@@ -301,29 +536,37 @@ const ChangeInfo = () => {
               type='text'
               placeholder='관심 키워드를 입력하고 엔터를 누르세요'
               id='keyword'
-              // onKeyUp={(e) => {
-              //   if (e.key === 'Enter') {
-              //     // handleKeyDown(e.target.value);
-              //   }
-              // }}
+              onKeyUp={(e) => {
+                if (e.key === 'Enter') {
+                  handleKeyDown(e.target.value);
+                }
+              }}
             />
             <Grid item xs={12}>
-              <ul style={{ display: 'flex', justifyContent: '' }}>
-                {/* {keywords.map((keyword) => {
-                    return (
-                      <li
-                        style={{ border: 'solid 1px black' }}
-                        // onClick={deleteHandler}
-                        key={keyword.id}
-                      >
-                        {keyword.value}
-                      </li>
-                    );
-                  })} */}
+              <ul style={{ display: 'flex' }}>
+                {currentKeywords.map((keyword) => {
+                  return (
+                    <li
+                      style={{ border: 'solid 1px black' }}
+                      onClick={deleteHandler}
+                      key={keyword.favoriteNo}
+                    >
+                      {keyword.favoriteKeyword}
+                    </li>
+                  );
+                })}
               </ul>
             </Grid>
             <Grid>
-              <Button className={btn}>회원정보변경하기</Button>
+              <Button
+                type='button'
+                fullWidth
+                variant='contained'
+                style={{ background: '#38d9a9', padding: '1.5%' }}
+                onClick={updateMyInfoHandler}
+              >
+                회원정보변경하기
+              </Button>
             </Grid>
           </Grid>
         </>
