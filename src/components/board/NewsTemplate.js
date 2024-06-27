@@ -12,6 +12,7 @@ import { API_BASE_URL } from '../../config/host-config';
 import axios from 'axios';
 import { Spinner } from 'reactstrap';
 import axiosInstance from '../../config/axios-config';
+import NewsHeader from './NewsHeader';
 
 const NewsTemplate = () => {
   // API_BASE_URL: 백엔드 hostname
@@ -155,7 +156,10 @@ const NewsTemplate = () => {
   if (loading) {
     return (
       <div style={{ margin: '20vh' }}>
-        <Spinner color='danger'>잠시만 기다려주세요...</Spinner>
+        {/* <Spinner color='danger'></Spinner> */}
+        <div className='spinner-border' role='status'>
+          <span className='visually-hidden'>잠시만 기다려주세요...</span>
+        </div>
       </div>
     );
   }
@@ -166,6 +170,7 @@ const NewsTemplate = () => {
 
   return (
     <>
+      <NewsHeader />
       <div className='news-wrapper aspect-ratio'>
         <Filter onTags={getFilterTags} agencies={newsAgencies} />
         <div>
