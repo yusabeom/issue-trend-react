@@ -15,6 +15,11 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   // 요청 보내기 전에 일괄 처리해야 할 내용을 함수로 선언.
   (config) => {
+    // 만약 요청하는 URL이 http://localhost:8181/issue-trend/update-my-info 라면
+    if (config.url === 'http://localhost:8181/issue-trend/update-my-info') {
+      // Content-Type 헤더를 삭제한다.
+      delete config.headers['Content-Type'];
+    }
     const token = localStorage.getItem('ACCESS_TOKEN');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -28,6 +33,8 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => response, // 응답에 문제가 없었다면 그대로 응답 내용 리턴
   async (error) => {
+    console.log(`error: ${error}`);
+
     console.log('response Interceptor가 동작함! 응답 에러 발생!');
 
     // 응답이 실패했는데, 토큰 재발급이 필요하지 않은 상황 (로그인을 하지 않고 요청)

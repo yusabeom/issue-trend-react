@@ -71,10 +71,18 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin: 1rem auto;
+        margin: 2rem auto;
+
+        background-color: orange;
+        color: #fff;
+        height: 60px;
 
         .title {
-          width: 25%;
+          width: 20%;
+          cursor: pointer;
+        }
+        .address {
+          width: 50%;
           cursor: pointer;
         }
       }
