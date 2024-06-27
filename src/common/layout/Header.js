@@ -73,8 +73,16 @@ const Header = () => {
     }
   };
 
-  const { goLogin, goJoin, goHome, goNews, goBoard, goMyPage, goRegionInfo } =
-    useNavigation();
+  const {
+    goLogin,
+    goJoin,
+    goHome,
+    goNews,
+    goBoard,
+    goMyPage,
+    goRegionInfo,
+    goSubscribe,
+  } = useNavigation();
 
   const {
     header,
@@ -156,6 +164,10 @@ const Header = () => {
           <div>|</div>
           <div className={items} onClick={goRegionInfo}>
             지역별정보
+          </div>
+          <div>|</div>
+          <div className={items} onClick={goSubscribe}>
+            구독
           </div>
 
           <div style={{ display: 'none' }}>
