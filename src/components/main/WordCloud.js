@@ -34,13 +34,11 @@ const WordCloud = () => {
             throw new Error('Network response was not ok');
           }
           const data = await response.json();
-          const selectWordData = data
-            .sort((a, b) => b.frequency - a.frequency)
-            .slice(0, 100);
+          const selectWordData = data.slice(0, 100);
           setLoading(false);
           const transformedData = selectWordData.map((element) => [
             element.keyword,
-            element.frequency * 0.01,
+            element.frequency * 2,
           ]);
           setWords(transformedData);
         }, 2000);
@@ -53,6 +51,15 @@ const WordCloud = () => {
     fetchWords();
   }, []);
 
+  // 현재 시간
+  const today = new Date();
+
+  const dateString = today.toLocaleDateString('ko-KR', {
+    year: 'numeric',
+    month: 'long',
+    day: '2-digit',
+  });
+
   return (
     <>
       <div className={wordCloudContainer}>
@@ -61,7 +68,7 @@ const WordCloud = () => {
           <div className={subheading}>오늘의 사회뉴스 키워드</div>
         </div>
         <div className={boxContainer}>
-          <div className={time}>2024년 06월 11일 18시 기준</div>
+          <div className={time}>{dateString} 기준</div>
           {loading ? (
             <div className={loadContainer}>
               <DotLoader color='#413F42' size={70} speedMultiplier={1.5} />
