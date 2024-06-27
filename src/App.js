@@ -19,6 +19,7 @@ import ReportWriteModal from './components/board/ReportWriteModal';
 import KakaoLoginHandler from './components/user/KakaoLoginHandler';
 import RegionScreen from './components/regionInfo/RegionScreen';
 import PayTest from './payTest';
+import NaverMapApi from './components/regionInfo/NaverMapApi';
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
           <Route path='/issue-trend/mypage' element={<MyPage />} />
           <Route path='/region-info' element={<RegionScreen />} />
           <Route path='/payment' element={<PayTest />} />
+          <Route path='/map-test' element={<NaverMapApi />} />
         </Route>
       </Routes>
     </AuthContextProvider>

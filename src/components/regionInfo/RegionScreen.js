@@ -3,9 +3,9 @@ import styles from '../../styles/RegionScreen.module.scss';
 import { BiNews } from 'react-icons/bi';
 import Weather from './Weather';
 import Dust from './Dust';
-import { Restaurant } from '@mui/icons-material';
 import Crime from './Crime';
 import classNames from 'classnames';
+import Restaurant from './Restaurant';
 
 const RegionScreen = () => {
   const {
@@ -83,7 +83,10 @@ const RegionScreen = () => {
             {tagChange === 'restaurant' && (
               <>
                 <h2>지역 맛집</h2>
-                <p>지역별 맛집 정보를 확인하실 수 있습니다.(자료 출처: )</p>
+                <p>
+                  지역별 맛집 정보를 확인하실 수 있습니다.(자료 출처: 네이버
+                  지도)
+                </p>
               </>
             )}
             {tagChange === 'crime' && (
@@ -112,9 +115,9 @@ const RegionScreen = () => {
               </p>
             )}
             {tagChange === 'restaurant' && (
-              <p>
+              <div className={styles.restBox}>
                 <Restaurant />
-              </p>
+              </div>
             )}
             {tagChange === 'crime' && (
               <p style={{ width: '600px', height: '600px' }}>

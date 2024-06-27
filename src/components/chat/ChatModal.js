@@ -6,7 +6,15 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { Modal, Box, Button, Slide, Backdrop, Snackbar } from '@mui/material';
+import {
+  Modal,
+  Box,
+  Button,
+  Slide,
+  Backdrop,
+  Snackbar,
+  Alert,
+} from '@mui/material';
 import Chat from './Chat';
 import styles from './ChatModal.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -14,6 +22,7 @@ import { faX } from '@fortawesome/free-solid-svg-icons';
 import Profile from './Profile';
 import UserInfo from './UserInfo';
 import AuthContext from '../../components/store/auth-context';
+import { useNavigate } from 'react-router-dom';
 
 // 모달 안에 넣을 컴포넌트
 
@@ -47,12 +56,16 @@ const ChatModal = forwardRef((props, ref) => {
   // 이름과 함께 UserInfo.js를 display 하면서 그 자식 컴포넌트에게 이름을 전달
 
   // snackBar 열기
+  const navigate = useNavigate();
 
   const handleOpen = () => {
     // console.log('로그인 했나요?', isLoggedIn);
     if (!isLoggedIn) {
       console.log('로그인 안했어요');
       setSnackbarOpen(true);
+      setTimeout(() => {
+        navigate('/login');
+      }, 3000);
       return;
     }
     setOpen(true);
@@ -61,6 +74,13 @@ const ChatModal = forwardRef((props, ref) => {
   // const handleSnackbarClose = () => {
   //   setState({ ...state, snackbarOpen: false });
   // };
+
+  const handleSnackBarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
 
   // 모달 닫기
   const handleClose = () => {
@@ -162,13 +182,21 @@ const ChatModal = forwardRef((props, ref) => {
           </Box>
         </Slide>
       </Modal>
+
       <Snackbar
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         open={snackbarOpen}
-        message='I love snacks'
-        key={'top' + 'center'}
-        sx={{ zIndex: '100' }}
-      />
+        autoHideDuration={3000}
+        onClose={handleSnackBarClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert
+          onClose={handleSnackBarClose}
+          severity='error'
+          sx={{ width: '100%' }}
+        >
+          로그인 후에 이용할 수 있습니다
+        </Alert>
+      </Snackbar>
     </div>
   );
 });
