@@ -180,6 +180,7 @@ const Header = () => {
             scrollPosition < 10 ? btnGroup : `${btnGroup} ${changeBtnGroup}`
           }
         >
+          {/*<div>{localStorage.getItem('NICK_NAME') + '님 안녕하세요'}</div> */}
           {isLoggedIn ? (
             <div className={login}>
               <div className={user}>
