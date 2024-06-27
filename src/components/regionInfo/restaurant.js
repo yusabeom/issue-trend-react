@@ -210,7 +210,6 @@ const Restaurant = () => {
               />
               <div>{rest.category}</div>
               <div
-                className={styles.address}
                 onClick={() => clickCoord({ mapx: rest.mapx, mapy: rest.mapy })}
               >
                 {rest.roadAddress}
