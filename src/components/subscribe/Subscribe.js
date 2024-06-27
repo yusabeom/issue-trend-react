@@ -11,6 +11,7 @@ import {
 import img from '../../assets/img/newspaper.jpg';
 import pay from '../../assets/img/payment.png';
 import axios from 'axios';
+import useNavigation from '../../common/func/useNavigation';
 
 const Subscribe = () => {
   const { head, content, payBox, cancel } = styles;
@@ -18,6 +19,8 @@ const Subscribe = () => {
   const [tid, setTid] = useState('');
   const [userNum, setUserNum] = useState(localStorage.getItem('USER_NO'));
   const [isSubscribed, setIsSubscribed] = useState(false);
+
+  const { goLogin } = useNavigation();
 
   useEffect(() => {
     const checkSubscriptionStatus = async () => {
@@ -67,12 +70,14 @@ const Subscribe = () => {
       console.error('Error cancelling subscription:', error);
     }
   };
+
   return (
     <>
       <div className={head}>
         <h1>구독하기</h1>
         <h2>
-          구독하시면 등록한 관심키워드 관련 기사를 이메일로 받을 수 있습니다.
+          로그인 후 구독하시면 등록한 관심키워드 관련 기사를 이메일로 받을 수
+          있습니다.
         </h2>
       </div>
       <Card sx={{ maxWidth: 500, margin: '0 auto' }}>
@@ -101,7 +106,9 @@ const Subscribe = () => {
                   <img src={pay} onClick={handlePayment} />
                 )
               ) : (
-                ''
+                <div className={cancel} onClick={goLogin}>
+                  로그인을 해주세요
+                </div>
               )}
             </div>
           </CardActions>
