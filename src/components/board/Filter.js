@@ -21,10 +21,10 @@ const Filter = ({ onTags, agencies }) => {
   const [openAlert, setOpenAlert] = useState(false); // 검색어 alert 메세지 여부
   const [submitTags, setSubmitTags] = useState({
     // 서버에 제출할 태그
-    region: null,
-    keyword: null,
-    sort: null,
-    agency: null,
+    region: '',
+    keyword: '',
+    sort: '',
+    agency: '',
   });
 
   const { mainKeyword, setMainKeyword } = useContext(KeywordContext);
@@ -163,24 +163,10 @@ const Filter = ({ onTags, agencies }) => {
 
   // tags = ['in', 'se', 'today'];
 
-  // 메인화면에서 워드 클라우드 단어를 눌렀을 때
   useEffect(() => {
     console.log('mainKeyword:', mainKeyword);
-    // setSearchValue(mainKeyword);
-    // setSubmitTags((prevData) => ({
-    //   ...prevData,
-    //   keyword: mainKeyword,
-    // }));
-    setTimeout(() => {
-      onTags({
-        region: null,
-        keyword: mainKeyword,
-        sort: null,
-        agency: null,
-      });
-    }, 1000);
+    setTimeout(() => {}, 1000);
   }, []);
-  console.log('워드클라우드 -> ', submitTags);
 
   // 키워드 검색 input에 키워드 입력 후 엔터키를 누르거나 돋보기 아이콘을 클릭했을 때 핸들러
   const submitFilter = (e) => {
@@ -188,7 +174,7 @@ const Filter = ({ onTags, agencies }) => {
       // console.log('submitted tags: ', tags);
       // console.log('submitted keyword: ', searchValue);
 
-      // 태그와 키워드가 비워져 있으면
+      // 태그와 키워드가 비워져 있으면 -> alert 알림
       if (inputValue.trim() === '' && tags.length === 0) {
         setOpenAlert(true);
         setTimeout(() => {
@@ -197,12 +183,15 @@ const Filter = ({ onTags, agencies }) => {
         return;
       }
 
+      // 키워드 없이 오직 필터만 설정
       if (submitTags.keyword === '' || submitTags.keyword === null) {
         setSearchValue('');
       }
 
+      // 상위 컴포넌트에 전달 (서버에 전달)
       onTags(submitTags);
 
+      // 키워드 입력창 비우기
       setInputValue('');
       setKeywordMsg('0');
     }
@@ -211,6 +200,12 @@ const Filter = ({ onTags, agencies }) => {
   // mainKeyword이 변경될 때 inputValue 업데이트
   useEffect(() => {
     setInputValue(mainKeyword);
+    onTags({
+      region: '',
+      keyword: mainKeyword,
+      sort: '',
+      agency: '',
+    });
     setMainKeyword('');
   }, [mainKeyword]);
 

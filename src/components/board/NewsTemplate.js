@@ -24,10 +24,10 @@ const NewsTemplate = () => {
   const [totalPages, setTotalPages] = useState(0); // 전체 페이지 수
   const [pageNewsList, setPageNewsList] = useState([]); // 현재 페이지의 뉴스 기사
   const [tags, setTags] = useState({
-    region: null,
+    region: '',
     keyword: '',
-    sort: null,
-    agency: null,
+    sortOption: '',
+    newsAgency: '',
   });
   const [keyword, setKeyword] = useState('');
   const [loading, setLoading] = useState(true);
@@ -62,7 +62,13 @@ const NewsTemplate = () => {
   }, []);
 
   const getFilterTags = (tagObject) => {
-    setTags(tagObject);
+    // setTags(tagObject);
+    setTags({
+      region: tagObject.region,
+      keyword: tagObject.keyword,
+      sortOption: tagObject.sort,
+      newsAgency: tagObject.agency,
+    });
     console.log('tagObject:', tagObject);
   };
   useEffect(() => {
@@ -77,10 +83,10 @@ const NewsTemplate = () => {
     // 서버에 요청하기
     const fetchRegionData = async () => {
       if (
-        tags.agency === null &&
+        tags.newsAgency === '' &&
         (tags.keyword === '' || tags.keyword === null) &&
-        tags.region === null &&
-        tags.sort === null
+        tags.region === '' &&
+        tags.sortOption === ''
       )
         return;
       try {
@@ -104,12 +110,12 @@ const NewsTemplate = () => {
         setError(error.message + ' 뉴스 기사 필터에서 발생한 에러');
       } finally {
         setLoading(false);
-        setTags({
-          region: null,
-          keyword: '',
-          sort: null,
-          agency: null,
-        });
+        // setTags({
+        //   region: null,
+        //   keyword: '',
+        //   sortOption: null,
+        //   newsAgency: null,
+        // });
         setFetch(false);
       }
     };
