@@ -12,7 +12,7 @@ import { API_BASE_URL } from '../../config/host-config';
 import axios from 'axios';
 import { Spinner } from 'reactstrap';
 import axiosInstance from '../../config/axios-config';
-import NewsHeader from './NewsHeader';
+// import NewsHeader from './NewsHeader';
 
 const NewsTemplate = () => {
   // API_BASE_URL: 백엔드 hostname
@@ -170,7 +170,7 @@ const NewsTemplate = () => {
 
   return (
     <>
-      <NewsHeader />
+      {/* <NewsHeader /> */}
       <div className='news-wrapper aspect-ratio'>
         <Filter onTags={getFilterTags} agencies={newsAgencies} />
         <div>

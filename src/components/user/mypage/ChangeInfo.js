@@ -77,6 +77,8 @@ const ChangeInfo = () => {
   };
 
   // 내 정보 변경 페이지
+  // const userNo = localStorage.getItem('USER_NO');
+  // console.log(userNo);
   const [userValue, setUserValue] = useState({
     nickname1: localStorage.getItem('NICK_NAME'),
     password1: '',
@@ -352,13 +354,19 @@ const ChangeInfo = () => {
         `k.favoriteNo: ${k.favoriteNo} k.favoriteKeyword: ${k.favoriteKeyword}`,
       ),
     );
-    console.log(`keywordArray: ${keywordArray}`);
+    // console.log(`keywordArray: ${keywordArray}`);
+
+    const array = [];
+    for (let i = 0; i < userValue2.favoriteKeywords1.length; i++) {
+      array.push(userValue2.favoriteKeywords1[i].favoriteKeyword);
+    }
+    // console.log('array: ', array);
 
     const user = {
       nickname: userValue2.nickname1,
       password: userValue2.password1,
       regionName: userValue2.regionName1,
-      favoriteKeywords: userValue2.favoriteKeywords1, // JSON 문자열로 전송
+      favoriteKeywords: array, // JSON 문자열로 전송
     };
 
     console.log(user);
