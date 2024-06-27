@@ -4,7 +4,8 @@ import { Bar, Pie } from 'react-chartjs-2';
 
 const Crime = () => {
   const [chartData, setChartData] = useState(null);
-  const regionName = localStorage.getItem('REGION_NAME');
+  let regionName = localStorage.getItem('REGION_NAME');
+  if (regionName === null) regionName = '경기';
 
   useEffect(() => {
     const fetchData = () => {
