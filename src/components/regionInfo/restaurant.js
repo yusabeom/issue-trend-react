@@ -151,7 +151,7 @@ const Restaurant = () => {
 
       <div className={styles.regionTags}>
         {myDowntown.map((downtown) => (
-          <div className={styles.tag} onClick={onSelectRegion}>
+          <div key={downtown} className={styles.tag} onClick={onSelectRegion}>
             {downtown}
           </div>
         ))}
