@@ -372,6 +372,9 @@ const ChangeInfo = () => {
     userFormData.append('user', userJsonBlob);
     userFormData.append('profileImage', $fileTag.current.files[0]);
 
+    const res = await axiosInstance(`${API_BASE_URL}${USER}/update-my-info`, {
+      userFormData,
+    });
     /*
     const res = await fetch(API_BASE_URL + USER, {
       method: 'POST',
