@@ -208,12 +208,12 @@ const Restaurant = () => {
                   __html: DOMPurify.sanitize(rest.title),
                 }}
               />
-              <p>{rest.category}</p>
-              <p
+              <div>{rest.category}</div>
+              <div
                 onClick={() => clickCoord({ mapx: rest.mapx, mapy: rest.mapy })}
               >
                 {rest.roadAddress}
-              </p>
+              </div>
             </li>
           ))}
         </ul>
