@@ -32,13 +32,14 @@ const Restaurant = () => {
 
   const [myDowntown, setMyDowntown] = useState([]);
   const [errMsg, setErrMsg] = useState('');
-  const [restList, setRestList] = useState([]);
+  const [restList, setRestList] = useState([]); // 검색 결과 식당 리스트
 
   const [selectedRegion, setSelectedRegion] = useState(''); // 선택한 하위 지역
   const [selectedMenu, setSelectedMenu] = useState(''); // 선택한 메뉴
 
   const [findX, setFindX] = useState(37.5139138); // x좌표 37.3595704
   const [findY, setFindY] = useState(127.105399); // y좌표 127.105399
+  const [coordList, setCoordList] = useState([]); // 검색한 식당의 좌표 리스트
 
   const [dishImgs, setDishImgs] = useState([]); // 메뉴 이미지
 
@@ -101,6 +102,22 @@ const Restaurant = () => {
     setMyDowntown(localDowntown[myRegion]);
     console.log('내 지역 번화가: ', myDowntown);
   }, [myDowntown]);
+
+  useEffect(() => {
+    if (restList.length > 0) {
+      restList.forEach((rest) => {
+        setCoordList((prev) => [
+          ...prev,
+          { x: rest.mapx / 1e7, y: rest.mapy / 1e7 },
+        ]);
+      });
+    }
+  }, [restList]);
+
+  useEffect(() => {
+    if (dishImgs.length > 0)
+      console.log('이미지 링크: ', dishImgs[0].thumbnail);
+  }, [dishImgs]);
 
   // useEffect(() => {
   //   console.log('cliend id is ', process.env.NAVER_MAP_API_KEY);
@@ -211,6 +228,9 @@ const Restaurant = () => {
         <div className={styles.tag} onClick={onSelectMenu}>
           조개구이
         </div>
+        <div className={styles.tag} onClick={onSelectMenu}>
+          삼겹살
+        </div>
       </div>
       <main className={styles.popularRestContainer}>
         <h2>
@@ -222,7 +242,7 @@ const Restaurant = () => {
               key={naverKey++}
               className={styles.restaurant}
               style={{
-                backgroundImage: `url(${dishImgs[naverKey % 5].thumbnail})`,
+                backgroundImage: `url(${dishImgs.length > 0 ? dishImgs[naverKey % 5].thumbnail : ''})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
@@ -239,6 +259,7 @@ const Restaurant = () => {
               />
               <div>{rest.category}</div>
               <div
+                className={styles.address}
                 onClick={() => clickCoord({ mapx: rest.mapx, mapy: rest.mapy })}
               >
                 {rest.roadAddress}
@@ -248,7 +269,7 @@ const Restaurant = () => {
         </ul>
         {/* <div id='map' style={{ width: '100%', height: '400px' }}></div> */}
       </main>
-      <NaverMapApi coordX={findX} coordY={findY} />
+      <NaverMapApi coordX={findX} coordY={findY} coordList={coordList} />
     </div>
   );
 };
