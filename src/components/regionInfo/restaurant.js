@@ -99,12 +99,18 @@ const Restaurant = () => {
   };
 
   useEffect(() => {
-    setMyDowntown(localDowntown[myRegion]);
+    if (!myRegion) {
+      // 로그인 안한 유저
+      setMyDowntown(localDowntown['전국']);
+    } else {
+      setMyDowntown(localDowntown[myRegion]);
+    }
     console.log('내 지역 번화가: ', myDowntown);
   }, [myDowntown]);
 
   useEffect(() => {
     if (restList.length > 0) {
+      setCoordList([]);
       restList.forEach((rest) => {
         setCoordList((prev) => [
           ...prev,
@@ -187,11 +193,12 @@ const Restaurant = () => {
       </header>
 
       <div className={styles.regionTags}>
-        {myDowntown.map((downtown) => (
-          <div key={downtown} className={styles.tag} onClick={onSelectRegion}>
-            {downtown}
-          </div>
-        ))}
+        {myDowntown.length > 0 &&
+          myDowntown.map((downtown) => (
+            <div key={downtown} className={styles.tag} onClick={onSelectRegion}>
+              {downtown}
+            </div>
+          ))}
       </div>
 
       <div className={styles.foodTags}>
@@ -251,7 +258,7 @@ const Restaurant = () => {
               <div
                 className={styles.title}
                 onClick={() => {
-                  navigate(rest.link);
+                  window.location.href = rest.link;
                 }}
                 dangerouslySetInnerHTML={{
                   __html: DOMPurify.sanitize(rest.title),
