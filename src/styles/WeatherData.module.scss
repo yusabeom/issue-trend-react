@@ -1,0 +1,67 @@
+.weatherContainer {
+    display: flex;
+    justify-content: space-between;
+
+    .currentWeather {
+      width: 50%;
+      padding: 20px;
+      border-right: 2px solid #ccc;
+
+      h2 {
+        margin-bottom: 10px;
+      }
+
+      h3, p {
+        margin-bottom: 5px;
+      }
+    }
+
+    .temperatureGraph {
+      width: 50%;
+      padding: 20px;
+      overflow: auto;
+
+      h2 {
+        text-align: center;
+      }
+
+      .graphContainer {
+        display: flex;
+        flex-direction: column;
+        height: 300px; // 컨테이너 높이 증가
+      }
+
+      svg {
+        margin-bottom: 20px; // SVG와 시간 라벨 간의 간격
+      }
+
+      .timeBlock {
+        width: 50px;
+        margin: 0 5px; // 좌우 마진 조정
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .temperatureLabel {
+          color: black;
+          position: absolute; // 온도 라벨을 상단에 고정
+          top: -20px; // 곡선 그래프 위로 올림
+        }
+
+        .temperatureBar {
+          width: 5px; // 막대 폭 조정
+          background: rgb(135, 135, 135);
+          color: white;
+          display: flex;
+          align-items: flex-end;
+          justify-content: center;
+          padding: 5px;
+        }
+
+        .timeLabel {
+          margin-top: 220px; // 시간 라벨을 막대 그래프 아래로 이동
+        }
+      }
+    }
+  }
