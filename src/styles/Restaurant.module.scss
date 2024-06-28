@@ -73,7 +73,9 @@
         align-items: center;
         margin: 2rem auto;
 
-        background-color: orange;
+        background-color: rgba(0, 0, 0, 0.5);
+        background-blend-mode: darken;
+
         color: #fff;
         height: 60px;
 

@@ -37,8 +37,10 @@ const Restaurant = () => {
   const [selectedRegion, setSelectedRegion] = useState(''); // 선택한 하위 지역
   const [selectedMenu, setSelectedMenu] = useState(''); // 선택한 메뉴
 
-  const [findX, setFindX] = useState(37.3595704); // x좌표
-  const [findY, setFindY] = useState(127.105399); // y좌표
+  const [findX, setFindX] = useState(37.5139138); // x좌표 37.3595704
+  const [findY, setFindY] = useState(127.105399); // y좌표 127.105399
+
+  const [dishImgs, setDishImgs] = useState([]); // 메뉴 이미지
 
   let naverKey = 0;
 
@@ -57,6 +59,9 @@ const Restaurant = () => {
   // 검색하기
   const submitKeywords = () => {
     fetchRestaurant();
+
+    // 이미지 불러오기
+    fetchDishImg();
   };
 
   // 식당 검색 불러오기
@@ -72,6 +77,20 @@ const Restaurant = () => {
       const restaurants = await res.data;
       console.log('restaurants: ', restaurants);
       setRestList(restaurants);
+    } catch (error) {
+      console.log(error);
+      setErrMsg(error);
+    }
+  };
+
+  // 이미지 불러오기
+  const fetchDishImg = async () => {
+    try {
+      console.log('GET url: ', NAVER_API + '/image/' + selectedMenu);
+      const res = await axiosInstance.get(NAVER_API + '/image/' + selectedMenu);
+      const getDishImgs = await res.data;
+      console.log('getDishImgs: ', getDishImgs);
+      setDishImgs(getDishImgs);
     } catch (error) {
       console.log(error);
       setErrMsg(error);
@@ -124,6 +143,7 @@ const Restaurant = () => {
     console.log('coords: ', clickedX, clickedY);
     setFindX(clickedX);
     setFindY(clickedY);
+    console.log('set: ', findX, findY);
   };
 
   return (
@@ -198,7 +218,16 @@ const Restaurant = () => {
         </h2>
         <ul>
           {restList.map((rest) => (
-            <li key={naverKey++} className={styles.restaurant}>
+            <li
+              key={naverKey++}
+              className={styles.restaurant}
+              style={{
+                backgroundImage: `url(${dishImgs[naverKey % 5].thumbnail})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+              }}
+            >
               <div
                 className={styles.title}
                 onClick={() => {
