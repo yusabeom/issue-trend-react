@@ -1,67 +1,48 @@
 .weatherContainer {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
+  background: #f1f1f1; // 전체 컨테이너에 대한 밝은 배경
+  padding: 20px;
+  border-radius: 8px; // 모서리를 둥글게
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1); // 섬세한 그림자
 
-    .currentWeather {
-      width: 50%;
-      padding: 20px;
-      border-right: 2px solid #ccc;
-
-      h2 {
-        margin-bottom: 10px;
-      }
-
-      h3, p {
-        margin-bottom: 5px;
-      }
+  .currentWeather {
+    width: 35%; // 더 많은 초점을 맞추기 위해 너비 조정
+    background: transparent; // 배경을 투명하게 설정
+    padding: 20px;
+    margin-right: 20px; // 현재 날씨와 그래프 사이의 공간
+    border-radius: 8px; // 모서리 둥글게
+    box-shadow: none; // 박스 그림자 제거
+    border: none; // 테두리 제거
+    
+    h2, h3, p {
+      color: #333; // 밝은 배경에서 텍스트가 보이도록
+      background: transparent; // 텍스트 배경을 투명하게
+      padding: 0; // 텍스트 주변의 패딩 제거
+      margin: 5px 0; // 깔끔한 간격을 위한 일관된 마진
+      border: none; // 텍스트 주변의 테두리 없음
+      box-shadow: none; // 텍스트 주변의 그림자 없음
     }
 
-    .temperatureGraph {
-      width: 50%;
-      padding: 20px;
-      overflow: auto;
+    .wea {
+      display: flex;
+      align-items: center;
+      justify-content: start;
 
-      h2 {
-        text-align: center;
+      img {
+        margin-right: 10px; // 아이콘과 온도 사이의 공간
       }
 
-      .graphContainer {
-        display: flex;
-        flex-direction: column;
-        height: 300px; // 컨테이너 높이 증가
-      }
-
-      svg {
-        margin-bottom: 20px; // SVG와 시간 라벨 간의 간격
-      }
-
-      .timeBlock {
-        width: 50px;
-        margin: 0 5px; // 좌우 마진 조정
-        text-align: center;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-
-        .temperatureLabel {
-          color: black;
-          position: absolute; // 온도 라벨을 상단에 고정
-          top: -20px; // 곡선 그래프 위로 올림
-        }
-
-        .temperatureBar {
-          width: 5px; // 막대 폭 조정
-          background: rgb(135, 135, 135);
-          color: white;
-          display: flex;
-          align-items: flex-end;
-          justify-content: center;
-          padding: 5px;
-        }
-
-        .timeLabel {
-          margin-top: 220px; // 시간 라벨을 막대 그래프 아래로 이동
-        }
+      p {
+        font-size: 1.2em; // 온도 폰트 사이즈를 약간 크게
       }
     }
   }
+
+  
+    svg {
+      position: relative;
+      left: 100px;
+    }
+  }
+
