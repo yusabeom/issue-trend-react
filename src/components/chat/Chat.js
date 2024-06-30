@@ -12,7 +12,7 @@ const roomSocket = io('http://192.168.0.27:5000');
 // 화면에는 유저 이름(userName)을 보여주고, 서버에서는 socket.id로 식별한다.
 const Chat = ({ onUsers, onEnter }) => {
   // AuthContext에서 로그인 상태를 가져옵니다.
-  const { isLoggedIn, userEmail, regionName, onLogout } =
+  const { isLoggedIn, userEmail, regionName, onLogout, nickname } =
     useContext(AuthContext);
 
   const messagesEndRef = useRef(null);
@@ -24,6 +24,7 @@ const Chat = ({ onUsers, onEnter }) => {
   const [privateTarget, setPrivateTarget] = useState(''); // 1:1 대화 상대 아이디
   const [newMessages, setNewMessages] = useState([]); // 새 메세지
   const [roomNumber, setRoomNumber] = useState(regionName); // 선택한 방 번호
+  const [passNoHistoryStop, setPassNoHistoryStop] = useState(false); // 이 값이 true면 통과
 
   /* ================ 1. useEffect : 최초 렌더링 시 발생하는 이벤트 (서버로부터 리시브) ================ */
   // 이벤트 리스너 (from server) : sMessage - 서버로부터 받은 메세지
@@ -54,11 +55,13 @@ const Chat = ({ onUsers, onEnter }) => {
     };
   }, []);
 
-  // 로그인을 할 때 아이디를 받기 : sLogin - 아이디
+  // 1. 로그인을 할 때 아이디를 받기 : sLogin - 아이디
   useEffect(() => {
     if (!roomSocket) return;
+    // 메세지 히스토리가 없고 원래 없는 것이 아니라면(DB에는 존재) 중지
+    if (msgList.length === 0) return;
 
-    console.log('두번째 useEffect 실행!');
+    console.log('입장 메세지 useEffect!!');
     function sLoginCallback(id) {
       console.log('sLoginCallback 실행!', id);
 
@@ -82,11 +85,11 @@ const Chat = ({ onUsers, onEnter }) => {
     };
   }, []);
 
-  // 로그인을 할 때 접속 유저를 받기 : currentUsers - 같은 방에 접속 중인 유저
+  // 2. 로그인을 할 때 접속 유저를 받기 : currentUsers - 같은 방에 접속 중인 유저
   useEffect(() => {
     if (!roomSocket) return;
 
-    console.log('세번째 useEffect 실행!');
+    console.log('프로필 업데이트를 위한 접속 유저 useEffect!!');
     const currentUsersCallback = (usersInRoom) => {
       console.log('현재 접속 중인 사용자들:', usersInRoom);
       onUsers(usersInRoom);
@@ -95,6 +98,32 @@ const Chat = ({ onUsers, onEnter }) => {
     roomSocket.on('currentUsers', currentUsersCallback);
     return () => {
       roomSocket.off('currentUsers', currentUsersCallback);
+    };
+  }, []);
+
+  // 3. 로그인을 할 때 기존 채팅을 받기 : history - 채팅 히스토리
+  useEffect(() => {
+    console.log('채팅 히스토리 받기 useEffect!!');
+    // 기존의 채팅 내역(DB) 수신
+    roomSocket.on('chatHistory', (history) => {
+      setMsgList((prev) => [
+        ...prev,
+        ...history.map((eachMsg) => ({
+          msg: eachMsg.text,
+          // target에 따른 스타일 적용
+          type: eachMsg.nickname === nickname ? 'me' : 'other',
+          id: eachMsg.nickname,
+        })),
+      ]);
+
+      // 기존 채팅 내역이 없는 경우
+      setPassNoHistoryStop(true);
+
+      console.log('채팅 내역:', msgList);
+    });
+
+    return () => {
+      roomSocket.off('chatHistory');
     };
   }, []);
 
@@ -218,20 +247,35 @@ const Chat = ({ onUsers, onEnter }) => {
   //   setUserId(e.target.value); // 값을 상태값에 저장
   // };
 
+  // 필터링 할 단어 목록
+  const dirtyWord = ['거지', '새끼', '멍청이', '똥개', '바보'];
+
   // 채팅 전송 이벤트 핸들러 (form)
   const onSendSubmitHandler = (e) => {
     e.preventDefault();
 
     if (msg.trim() === '') return;
 
+    // 욕설을 필터링 하기
+    const filteredMsg = dirtyWord.reduce((acc, substring) => {
+      const regex = new RegExp(`(${substring})`, 'g'); // 각 substring 찾기
+      return acc.replace(regex, (match) => {
+        return match[0] + '*'.repeat(match.length - 1); // 첫글자를 제외하고 '*'로 가리기
+      });
+    }, msg);
+
     const sendData = {
-      data: msg,
+      data: filteredMsg,
       id: userId,
       target: privateTarget, // 1:1 채팅 상대방 이메일도 같이 전송
     };
     roomSocket.emit('message', sendData); // 서버에 메세지(아이디, 메세지) 전송
+
     // 내가 보낸 메세지는 서버에 안보내고 바로 렌더링
-    setMsgList((prev) => [...prev, { msg, type: 'me', id: userId }]);
+    setMsgList((prev) => [
+      ...prev,
+      { msg: filteredMsg, type: 'me', id: userId },
+    ]);
     setMsg('');
   };
 
@@ -258,42 +302,43 @@ const Chat = ({ onUsers, onEnter }) => {
           <div className='chat-box'>
             <ul className='chat'>
               {/* 서버로부터 받은 메세지들 */}
-              {msgList.map((v, i) =>
-                // 입장 메세지
-                /*
+              {msgList.length > 0 &&
+                msgList.map((v, i) =>
+                  // 입장 메세지
+                  /*
                 v = { msg: data, type: 'other', id }
                 i =
                 */
 
-                v.type === 'welcome' ? (
-                  // 입장 메세지
-                  <li className='welcome' key={i}>
-                    <div className='line' />
-                    <div>{v.msg}</div>
-                    <div className='line' />
-                  </li>
-                ) : (
-                  // 일반 메세지, className : me or other / private
-                  <li
-                    className={`${v.type} ${newMessages.includes(v) ? 'new-message' : ''}`}
-                    key={`${i}_li`}
-                    name={v.id}
-                    data-id={v.id}
-                  >
-                    <div
-                      className={`clickButton ${v.id === privateTarget ? 'private-user' : 'userId'}`}
-                      data-id={v.id}
+                  v.type === 'welcome' ? (
+                    // 입장 메세지
+                    <li className='welcome' key={i}>
+                      <div className='line' />
+                      <div>{v.msg}</div>
+                      <div className='line' />
+                    </li>
+                  ) : (
+                    // 일반 메세지, className : me or other / private
+                    <li
+                      className={`${v.type} ${newMessages.includes(v) ? 'new-message' : ''}`}
+                      key={`${i}_li`}
                       name={v.id}
-                      onClick={onSetPrivateTarget}
+                      data-id={v.id}
                     >
-                      {v.id}
-                    </div>
-                    <div className={v.type} data-id={v.id} name={v.id}>
-                      {v.msg}
-                    </div>
-                  </li>
-                ),
-              )}
+                      <div
+                        className={`clickButton ${v.id === privateTarget ? 'private-user' : 'userId'}`}
+                        data-id={v.id}
+                        name={v.id}
+                        onClick={onSetPrivateTarget}
+                      >
+                        {v.id}
+                      </div>
+                      <div className={v.type} data-id={v.id} name={v.id}>
+                        {v.msg}
+                      </div>
+                    </li>
+                  ),
+                )}
               <li ref={messagesEndRef} />
             </ul>
             {/* 채팅 입력창 */}
