@@ -355,6 +355,11 @@ const ChangeInfo = () => {
       ),
     );
     // console.log(`keywordArray: ${keywordArray}`);
+    // console.log(
+    //   `userValue2.favoriteKeywords1: ${userValue2.favoriteKeywords1[0]}`,
+    // );
+
+    // console.log(`keywordArray: ${keywordArray}`);
 
     const array = [];
     for (let i = 0; i < userValue2.favoriteKeywords1.length; i++) {
@@ -370,6 +375,12 @@ const ChangeInfo = () => {
     };
 
     console.log(user);
+    console.log(
+      `user.favoriteKeywords[0].favoriteKeyword: ${user.favoriteKeywords[0].favoriteKeyword}`,
+    );
+    console.log(
+      `user.favoriteKeywords[0].favoriteKeyword: ${user.favoriteKeywords[0].favoriteKeyword}`,
+    );
 
     const userJsonBlob = new Blob([JSON.stringify(user)], {
       type: 'application/json',
@@ -387,6 +398,7 @@ const ChangeInfo = () => {
 
     const data = await res.data;
     console.log(data);
+
     /*
     const res = await fetch(API_BASE_URL + USER, {
       method: 'POST',
