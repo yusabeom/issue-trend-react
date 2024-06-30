@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { NAVER_MAP_URL } from '../../config/Naver-config';
 import { Container as MapDiv, NavermapsProvider } from 'react-naver-maps';
 import NaverMapApi from './NaverMapApi';
-import { localDowntown } from './localDowntownInfo';
+import { localDowntown, menu } from './localDowntownInfo';
 
 const NAVER_API = API_BASE_URL + '/restaurant';
 
@@ -202,42 +202,11 @@ const Restaurant = () => {
       </div>
 
       <div className={styles.foodTags}>
-        <div className={styles.tag} onClick={onSelectMenu}>
-          돈가스
-        </div>
-        <div className={styles.tag} onClick={onSelectMenu}>
-          냉면
-        </div>
-        <div className={styles.tag} onClick={onSelectMenu}>
-          짜장면
-        </div>
-        <div className={styles.tag} onClick={onSelectMenu}>
-          김치찌개
-        </div>
-        <div className={styles.tag} onClick={onSelectMenu}>
-          마라탕
-        </div>
-        <div className={styles.tag} onClick={onSelectMenu}>
-          햄버거
-        </div>
-        <div className={styles.tag} onClick={onSelectMenu}>
-          해물찜
-        </div>
-        <div className={styles.tag} onClick={onSelectMenu}>
-          막국수
-        </div>
-        <div className={styles.tag} onClick={onSelectMenu}>
-          닭갈비
-        </div>
-        <div className={styles.tag} onClick={onSelectMenu}>
-          육개장
-        </div>
-        <div className={styles.tag} onClick={onSelectMenu}>
-          조개구이
-        </div>
-        <div className={styles.tag} onClick={onSelectMenu}>
-          삼겹살
-        </div>
+        {menu.map((dish) => (
+          <div className={styles.tag} key={dish} onClick={onSelectMenu}>
+            {dish}
+          </div>
+        ))}
       </div>
       <main className={styles.popularRestContainer}>
         <h2>
