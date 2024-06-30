@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Marker, NaverMap, useNavermaps } from 'react-naver-maps';
 
-function MapComponent({ searchParams, coordX, coordY }) {
+function MapComponent({ searchParams, coordX, coordY, coordList }) {
   const navermaps = useNavermaps();
-  const [map, setMap] = useState(null);
-  const [latLng, setLatLng] = useState({ rat: 32.5670182, lng: 126.9815009 });
+  const mapRef = useRef(null);
+  const markerRef = useRef(null);
 
   // let map = new navermaps.Map('map', {
   //   center: new navermaps.LatLng(37.3595316, 127.1052133),
@@ -12,22 +12,49 @@ function MapComponent({ searchParams, coordX, coordY }) {
   //   mapTypeControl: true,
   // });
 
-  const center = new navermaps.LatLng(latLng.rat, latLng.lng);
-
-  // const center = new navermaps.LatLng(37.5666805, 126.9784147);
-  let jeju;
   useEffect(() => {
-    // console.log(map);
-    jeju = new navermaps.LatLng(coordX, coordY);
-    // const jeju = new navermaps.LatLng(33.3590628, 126.534361);
-    // navermaps.setCenter(jeju);
-    console.log('작동!');
-    setLatLng({ rat: coordX, lng: coordY });
+    const newCenter = new navermaps.LatLng(coordY, coordX);
 
-    console.log('center: ', center);
+    console.log('좌표: ', coordX, coordY);
+    mapRef.current.setCenter(newCenter);
+
+    console.log('center: ', newCenter);
   }, [coordX]);
 
-  return <NaverMap center={center} defaultZoom={16} />;
+  useEffect(() => {
+    if (coordList.length > 0) {
+      console.log('검색된 모든 주소의 좌표값: ', coordList);
+      const newCenter = new navermaps.LatLng(coordList[0].y, coordList[0].x);
+      mapRef.current.setCenter(newCenter);
+    }
+  }, [coordList]);
+
+  return (
+    <NaverMap
+      defaultCenter={
+        coordList.length > 0
+          ? new navermaps.LatLng(coordList[0].y, coordList[0].x)
+          : new navermaps.LatLng(37.5139138, 127.105399) // 잠실
+      }
+      center={
+        coordList.length > 0
+          ? new navermaps.LatLng(coordY, coordX)
+          : new navermaps.LatLng(37.5139138, 127.105399) // 잠실
+      }
+      defaultZoom={16}
+      zoomControl={true}
+      ref={mapRef}
+    >
+      {coordList.length > 0 &&
+        coordList.map((coordinate) => {
+          return (
+            <Marker
+              position={new navermaps.LatLng(coordinate.y, coordinate.x)}
+            />
+          );
+        })}
+    </NaverMap>
+  );
 }
 
 export default MapComponent;
