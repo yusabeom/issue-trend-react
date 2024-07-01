@@ -182,7 +182,7 @@ const WeatherData = ({ weather }) => {
                 href={getWeatherIcon(
                   Object.values(weather)[i].SKY,
                   Object.values(weather)[i].PTY,
-                  parseInt(Object.keys(weather)[i], 10),
+                  parseInt(Object.keys(weather)[i].slice(0, 2), 10),
                 )}
                 x='-25'
                 y={200}
