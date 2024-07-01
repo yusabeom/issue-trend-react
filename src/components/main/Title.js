@@ -14,7 +14,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/scrollbar';
 
 const Title = () => {
-  const { background, title } = styles;
+  const { container, head, background, title } = styles;
   const [imgData, setImgData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -45,13 +45,17 @@ const Title = () => {
 
   return (
     <>
-      <div className={title}>이슈 트렌드의 최신 뉴스를 만나보세요</div>
+      <div className={head}></div>
+      <div className={title}>
+        <h1>여러분들의 제보, 참여가 이슈트렌드를 만듭니다.</h1>
+        <p>이슈 트렌드의 최신 뉴스를 만나보세요.</p>
+      </div>
       <div className={background}>
         <Swiper
           modules={[Navigation, Pagination, Scrollbar, Autoplay]}
           spaceBetween={20}
           slidesPerView={8}
-          autoplay={{ delay: 3000 }}
+          autoplay={{ delay: 2000 }}
           loop
         >
           {imgData.map((data) => (
