@@ -5,7 +5,7 @@ import ChatModal from '../../components/chat/ChatModal';
 import useNavigation from '../func/useNavigation';
 import AuthContext from '../../components/store/auth-context';
 import { useNavigate } from 'react-router-dom';
-import { Button } from '@mui/material';
+import { Button, Snackbar, Alert } from '@mui/material';
 import { API_BASE_URL, USER } from '../../config/host-config';
 
 import basicProfile from '../../assets/img/anonymous.jpg';
@@ -114,6 +114,21 @@ const Header = () => {
     childButtonRef.current.handleOpen();
   };
 
+  // 스낵바 상태변수
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  // 스낵바 이벤트 핸들러
+  const onOpenSnackbar = (opensn) => {
+    setSnackbarOpen(opensn);
+  };
+
+  const handleSnackBarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
+
   useEffect(() => {
     if (isLoggedIn) fetchProfileImage();
   }, [isLoggedIn]);
@@ -167,7 +182,24 @@ const Header = () => {
           </div>
 
           <div style={{ display: 'none' }}>
-            <ChatModal ref={childButtonRef} />
+            <ChatModal ref={childButtonRef} setSnackbarOpen={onOpenSnackbar} />
+          </div>
+
+          <div>
+            <Snackbar
+              open={snackbarOpen}
+              autoHideDuration={3000}
+              onClose={handleSnackBarClose}
+              anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            >
+              <Alert
+                onClose={handleSnackBarClose}
+                severity='error'
+                sx={{ width: '100%', zIndex: '100' }}
+              >
+                로그인 후에 입장할 수 있습니다
+              </Alert>
+            </Snackbar>
           </div>
         </div>
 

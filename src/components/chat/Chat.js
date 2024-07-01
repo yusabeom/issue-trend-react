@@ -124,7 +124,7 @@ const Chat = ({ onUsers, onEnter, OnExit }) => {
 
     return () => {
       roomSocket.off('chatHistory');
-      roomSocket.disconnect();
+      // roomSocket.disconnect();
     };
   }, []);
 
@@ -155,7 +155,7 @@ const Chat = ({ onUsers, onEnter, OnExit }) => {
   useEffect(() => {
     if (OnExit) {
       // 채팅방 나가기
-      roomSocket.disconnect();
+      // roomSocket.disconnect();
     }
   }, [OnExit]);
 

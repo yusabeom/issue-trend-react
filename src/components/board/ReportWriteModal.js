@@ -106,9 +106,10 @@ const ReportWriteModal = forwardRef((props, ref) => {
   const handleOpen = () => {
     if (!isLoggedIn) {
       console.log('로그인이 안됐어요!');
-      setSnackbarOpen(true);
+      props.setSnackbarOpen(true);
       setTimeout(() => {
         navigate('/login');
+        props.setSnackbarOpen(false);
       }, 3000);
 
       return;
@@ -128,16 +129,6 @@ const ReportWriteModal = forwardRef((props, ref) => {
   useImperativeHandle(ref, () => ({
     handleOpen,
   }));
-
-  // snackbar 버튼 상태변수
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-
-  const handleSnackBarClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setSnackbarOpen(false);
-  };
 
   // 첨부한 파일이 바뀔 때 이벤트 핸들러
   const handleFileChange = (event) => {
@@ -407,21 +398,6 @@ const ReportWriteModal = forwardRef((props, ref) => {
           </Box>
         </Slide>
       </Modal>
-
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={3000}
-        onClose={handleSnackBarClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      >
-        <Alert
-          onClose={handleSnackBarClose}
-          severity='error'
-          sx={{ width: '100%', zIndex: '100' }}
-        >
-          로그인 후 제보해주세요
-        </Alert>
-      </Snackbar>
     </div>
   );
 });

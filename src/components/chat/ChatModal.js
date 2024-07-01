@@ -63,9 +63,10 @@ const ChatModal = forwardRef((props, ref) => {
     // console.log('로그인 했나요?', isLoggedIn);
     if (!isLoggedIn) {
       console.log('로그인 안했어요');
-      setSnackbarOpen(true);
+      props.setSnackbarOpen(true);
       setTimeout(() => {
         navigate('/login');
+        props.setSnackbarOpen(false);
       }, 3000);
       return;
     }
@@ -76,13 +77,6 @@ const ChatModal = forwardRef((props, ref) => {
   // const handleSnackbarClose = () => {
   //   setState({ ...state, snackbarOpen: false });
   // };
-
-  const handleSnackBarClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setSnackbarOpen(false);
-  };
 
   // 모달 닫기
   const handleClose = () => {
@@ -185,21 +179,6 @@ const ChatModal = forwardRef((props, ref) => {
           </Box>
         </Slide>
       </Modal>
-
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={3000}
-        onClose={handleSnackBarClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      >
-        <Alert
-          onClose={handleSnackBarClose}
-          severity='error'
-          sx={{ width: '100%' }}
-        >
-          로그인 후에 이용할 수 있습니다
-        </Alert>
-      </Snackbar>
     </div>
   );
 });

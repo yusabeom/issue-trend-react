@@ -4,6 +4,7 @@ import IssueReport from './IssueReport';
 import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import { API_BASE_URL, USER } from '../../config/host-config';
+import axiosInstance from '../../config/axios-config';
 
 const ARTICLE = API_BASE_URL + USER;
 
@@ -19,20 +20,24 @@ const ReportTemplate = () => {
 
   const fetchData = async () => {
     try {
-      console.log('GET 요청 url: ', ARTICLE + '/search-post');
-      const res = await axios.get(ARTICLE + '/search-post');
+      console.log('GET 요청 url: ', ARTICLE + '/page-post/' + page);
+      const res = await axiosInstance.get(ARTICLE + '/page-post/' + page);
       const getBoardList = await res.data;
 
       setBoardList(getBoardList);
-      filterData(getBoardList);
+      // console.log('boardList:', boardList);
       // console.log('getBoardList: ', getBoardList);
+      const totalPageCount = Math.ceil(getBoardList.length / size);
+      setTotalPages(totalPageCount);
+      console.log('totalPageCount: ', totalPageCount);
     } catch (error) {
       // console.error('Error fetching data: ', error);
       console.error(error);
     }
   };
 
-  const filterData = (boardList) => {
+  /* 
+  const filterData = async (boardList) => {
     // 전체 페이지 수 = 전체 게시물 수 / 페이지 당 게시물 수
     const totalPageCount = Math.ceil(boardList.length / size);
     setTotalPages(totalPageCount);
@@ -56,6 +61,7 @@ const ReportTemplate = () => {
     }
     console.log('pageBoardList: ', pageBoardList);
   };
+  */
 
   useEffect(() => {
     fetchData();
@@ -65,7 +71,7 @@ const ReportTemplate = () => {
     <div>
       <IssueReport />
       <ReportList
-        boardList={pageBoardList}
+        boardList={boardList}
         size={size}
         count={totalPages}
         page={page}

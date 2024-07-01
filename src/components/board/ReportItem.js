@@ -11,14 +11,16 @@ const ReportItem = ({ board }) => {
   };
 
   return (
-    <tr className={styles.oneItem}>
-      <td className={styles.boardNo}>{board.postNo}</td>
-      <td className={styles.boardTitle} onClick={goToDetail}>
-        {board.title}
-      </td>
-      <td className={styles.boardWriter}>{board.email}</td>
-      <td className={styles.boardDate}>{board.formatDate}</td>
-    </tr>
+    <tbody>
+      <tr className={styles.oneItem}>
+        <td className={styles.boardNo}>{board.postNo}</td>
+        <td className={styles.boardTitle} onClick={goToDetail}>
+          {board.title}
+        </td>
+        <td className={styles.boardWriter}>{board.email}</td>
+        <td className={styles.boardDate}>{board.formatDate}</td>
+      </tr>
+    </tbody>
   );
 };
 
