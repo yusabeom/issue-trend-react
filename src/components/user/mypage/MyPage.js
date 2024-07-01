@@ -25,6 +25,7 @@ const {
 } = styles;
 
 const MyPage = () => {
+  const { profileImage } = useContext(AuthContext);
   const [activeComponent, setActiveComponent] = useState('');
 
   const handleComponentChange = (componentName) => {
@@ -64,7 +65,7 @@ const MyPage = () => {
           <div className={head}>
             <div className={headTitle}>
               <img
-                src={require('../../../assets/img/anonymous.jpg')}
+                src={profileImage}
                 alt='프로필 사진'
                 style={{
                   width: 75,

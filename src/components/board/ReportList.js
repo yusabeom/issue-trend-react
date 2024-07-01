@@ -10,11 +10,18 @@ import { useNavigate } from 'react-router-dom';
 const ReportList = ({ boardList, size, count, page }) => {
   return (
     <div className={styles.reportListWrapper}>
-      <ul>
+      <table>
+        <tr className={styles.boardHead}>
+          <th className={styles.boardNo}>번호</th>
+          <th className={styles.boardTitle}>제목</th>
+          <th className={styles.boardWriter}>작성자</th>
+          <th className={styles.boardDate}>작성일</th>
+        </tr>
         {boardList.map((board) => (
           <ReportItem key={board.postNo} board={board} />
         ))}
-      </ul>
+      </table>
+
       <div className={styles.pagination}>
         {count > 1 && (
           <Paging size={size} count={count} curPage={page} type={'board'} />
