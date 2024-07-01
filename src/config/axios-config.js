@@ -16,7 +16,10 @@ axiosInstance.interceptors.request.use(
   // 요청 보내기 전에 일괄 처리해야 할 내용을 함수로 선언.
   (config) => {
     // 만약 요청하는 URL이 http://localhost:8181/issue-trend/update-my-info 라면
-    if (config.url === 'http://localhost:8181/issue-trend/update-my-info') {
+    if (
+      config.url === 'http://localhost:8181/issue-trend/update-my-info' ||
+      config.url === 'http://localhost:8181/issue-trend/load-profile'
+    ) {
       // Content-Type 헤더를 삭제한다.
       delete config.headers['Content-Type'];
     }

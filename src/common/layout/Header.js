@@ -9,6 +9,7 @@ import { Button } from '@mui/material';
 import { API_BASE_URL, USER } from '../../config/host-config';
 
 import basicProfile from '../../assets/img/anonymous.jpg';
+import axiosInstance from '../../config/axios-config';
 
 const Header = () => {
   const { isLoggedIn, onLogout, userEmail, profileImage, nickname, userNo } =
@@ -33,12 +34,7 @@ const Header = () => {
 
   const fetchProfileImage = async () => {
     if (!isLoggedIn) return;
-    const res = await fetch(profileRequestURL, {
-      method: 'GET',
-      headers: {
-        Authorization: 'Bearer ' + localStorage.getItem('ACCESS_TOKEN'),
-      },
-    });
+    const res = await axiosInstance.get(profileRequestURL);
 
     /*
     if (
@@ -64,10 +60,10 @@ const Header = () => {
     }
       */
     if (res.status === 200) {
-      const imageUrl = await res.text();
+      const imageUrl = await res.data;
       setProfileUrl(imageUrl);
     } else {
-      const err = await res.text();
+      const err = await res.data;
       console.log('err: ', err);
       setProfileUrl(null);
     }
@@ -188,6 +184,7 @@ const Header = () => {
                   <img
                     src={profileImage || { basicProfile }}
                     alt='프로필 사진'
+                    onClick={() => navigate('/issue-trend/mypage')}
                   />
                 ) : (
                   ''
