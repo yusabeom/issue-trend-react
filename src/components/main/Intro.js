@@ -3,7 +3,8 @@ import styles from '../../styles/Intro.module.scss';
 import { useNavigate } from 'react-router-dom';
 
 const Intro = ({ onClick }) => {
-  const { background, introContent, shadow, backContainer, homeBtn } = styles;
+  const { background, introContent, shadow, backContainer, homeBtn, css } =
+    styles;
 
   const navigate = useNavigate();
 

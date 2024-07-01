@@ -3,18 +3,45 @@
 
   // border: 1px yellow solid;
 
-  ul {
+  table {
     margin: 3rem auto;
     width: 50%;
 
     // position: absolute;
     // left: 50%;
     // transform: translate(-50%, -50%);
+
+    tr.boardHead {
+      //   border: 1px green solid;
+      padding: 1rem 2.5rem;
+      display: flex;
+      justify-content: space-evenly;
+
+      th {
+        font-weight: 700;
+        &.boardNo {
+          width: 7%;
+        }
+
+        &.boardTitle {
+          width: 27%;
+        }
+
+        &.boardWriter {
+          width: 20%;
+        }
+
+        &.boardDate {
+          width: 20%;
+        }
+      }
+      border-bottom: 1px #000 solid;
+    }
   }
 
   .pagination {
-    // width: 100%;
-    // display: flex;
-    // justify-content: center;
+    width: 100%;
+    display: flex;
+    justify-content: center;
   }
 }

@@ -85,6 +85,17 @@
       }
     }
   }
+
+  .moveToOthers {
+    margin: 3rem;
+    .prevBoard {
+      margin-bottom: 0.7rem;
+      cursor: pointer;
+    }
+    .nextBoard {
+      cursor: pointer;
+    }
+  }
 }
 
 .profile {

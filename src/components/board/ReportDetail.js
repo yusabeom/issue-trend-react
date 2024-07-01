@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useReducer, useRef, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import styles from '../../styles/ReportDetail.module.scss';
 import { Button } from '@mui/material';
@@ -14,6 +14,19 @@ import axios from 'axios';
 import ReportWriteModal from './ReportWriteModal';
 
 const ARTICLE = API_BASE_URL + USER;
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'PREV':
+      return +state - 1;
+
+    case 'NEXT':
+      return +state + 1;
+
+    default:
+      return +state;
+  }
+};
 
 const ReportDetail = () => {
   const [openReply, setOpenReply] = useState(false); // 댓글창 열기
@@ -41,6 +54,8 @@ const ReportDetail = () => {
   // ex) /board/list?page=2&size=10
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+
+  const [state, dispatch] = useReducer(reducer, id);
 
   const page = searchParams.get('page') || 1;
   const size = searchParams.get('size') || 20;
@@ -158,6 +173,23 @@ const ReportDetail = () => {
     }
   };
 
+  const clickOtherBoard = (e) => {
+    console.log('다른 게시물 이동~~');
+    if (e.target.textContent === '이전게시물') {
+      dispatch({
+        type: 'PREV',
+        val: -1,
+      });
+    } else {
+      dispatch({
+        type: 'NEXT',
+        val: 1,
+      });
+    }
+    console.log('이동할 게시물 번호: ' + '/board/detail/' + state);
+    navigate(`/board/detail/${state}`);
+  };
+
   return (
     <div className={`aspect-ratio ${styles.wrapper}`}>
       <h2
@@ -173,10 +205,6 @@ const ReportDetail = () => {
           <header className='boardHeader'>
             <div>
               <p className={styles.title}>{boardDetail.title}</p>
-              <Button variant='outlined'>
-                <FontAwesomeIcon icon={faStar} />
-                &nbsp;스크랩
-              </Button>
             </div>
 
             <div>
@@ -259,6 +287,17 @@ const ReportDetail = () => {
           </div>
         </div>
       )}
+
+      <div className={styles.moveToOthers}>
+        <div className={styles.prevBoard} onClick={clickOtherBoard}>
+          {' '}
+          <FontAwesomeIcon icon={faCaretUp} /> &nbsp; 이전게시물
+        </div>
+        <div className={styles.nextBoard} onClick={clickOtherBoard}>
+          {' '}
+          <FontAwesomeIcon icon={faCaretDown} /> &nbsp; 다음게시물
+        </div>
+      </div>
 
       <div style={{ display: 'none' }}>
         <ReportWriteModal

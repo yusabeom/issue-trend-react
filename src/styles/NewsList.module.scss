@@ -7,4 +7,19 @@
     left: 90%;
     transform: translate(-50%, -90%);
   }
+
+  // 뉴스 기사 목록
+  ul.sNewsList {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    // 하나의 기사
+  }
+
+  .loadBtn {
+    margin: 4rem auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }

@@ -106,6 +106,10 @@ const ReportWriteModal = forwardRef((props, ref) => {
   const handleOpen = () => {
     if (!isLoggedIn) {
       console.log('로그인이 안됐어요!');
+      setSnackbarOpen(true);
+      setTimeout(() => {
+        navigate('/login');
+      }, 3000);
 
       return;
     }
@@ -126,25 +130,13 @@ const ReportWriteModal = forwardRef((props, ref) => {
   }));
 
   // snackbar 버튼 상태변수
-  const [state, setState] = React.useState({
-    openSnackbar: false,
-    vertical: 'top',
-    horizontal: 'center',
-  });
-  const { vertical, horizontal, openSnackbar } = state;
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
-  // snackbar 버튼 이벤트
-  const handleClick = (newState) => () => {
-    setState({ ...newState, openSnackbar: true });
-    setTimeout(() => {
-      setState({ ...newState, openSnackbar: false });
-      console.log('로그인 페이지로 이동하기');
-      navigate('/login');
-    }, 3000);
-  };
-
-  const handleSnackBarClose = () => {
-    setState({ ...state, openSnackbar: false });
+  const handleSnackBarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
   };
 
   // 첨부한 파일이 바뀔 때 이벤트 핸들러
@@ -265,9 +257,7 @@ const ReportWriteModal = forwardRef((props, ref) => {
       <Button variant='contained' color='primary' onClick={handleOpen}>
         Open Modal
       </Button>
-      <Button onClick={handleClick({ vertical: 'top', horizontal: 'center' })}>
-        Top-Center
-      </Button>
+
       <Modal
         open={open}
         onClose={handleClose}
@@ -418,16 +408,20 @@ const ReportWriteModal = forwardRef((props, ref) => {
         </Slide>
       </Modal>
 
-      <Box sx={{ width: 500 }}>
-        <Snackbar
-          anchorOrigin={{ vertical, horizontal }}
-          open={openSnackbar}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={handleSnackBarClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert
           onClose={handleSnackBarClose}
-          message='로그인 후 제보해주세요'
-          key={vertical + horizontal}
-          ref={$snackbarRef}
-        />
-      </Box>
+          severity='error'
+          sx={{ width: '100%', zIndex: '100' }}
+        >
+          로그인 후 제보해주세요
+        </Alert>
+      </Snackbar>
     </div>
   );
 });

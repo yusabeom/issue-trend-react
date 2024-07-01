@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axiosInstance from '../../config/axios-config';
 import { ImBaffled, ImCool, ImCrying, ImHappy } from 'react-icons/im';
+import { HashLoader } from 'react-spinners';
 import styles from '../../styles/DustData.module.scss';
 
 import goodImg from '../../assets/img/character_01.png';
@@ -9,7 +10,7 @@ import badImg from '../../assets/img/character_02.png';
 import veryBadImg from '../../assets/img/character_03.png';
 import classNames from 'classnames';
 
-const { icon, grade, average, good, normal, bad, veryBad } = styles;
+const { icon, grade, average, good, normal, bad, veryBad, load } = styles;
 
 const DustData = ({ inputRegion }) => {
   const API_URL = `http://localhost:8181/dustInfo/dustApi/${inputRegion}`;
@@ -39,7 +40,9 @@ const DustData = ({ inputRegion }) => {
   return (
     <>
       {loading ? (
-        <div className={styles.loading}>Loading...</div>
+        <div className={load}>
+          <HashLoader color='#0066ff' size={70} />
+        </div>
       ) : (
         <>
           <div className={icon}>

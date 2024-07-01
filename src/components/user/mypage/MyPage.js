@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import styles from '../../../styles/MyPage.module.scss';
 import ChangeInfo from './ChangeInfo';
 import RecentPost from './RecentPost';
 import WritePost from './WritePost';
 import ScrapPost from './ScrapPost';
+import axiosInstance from '../../../config/axios-config';
+import { API_BASE_URL, USER } from '../../../config/host-config';
+import AuthContext from '../../store/auth-context';
 
 const {
   mypageContainer,
@@ -22,10 +25,25 @@ const {
 } = styles;
 
 const MyPage = () => {
+  const { profileImage } = useContext(AuthContext);
   const [activeComponent, setActiveComponent] = useState('');
 
   const handleComponentChange = (componentName) => {
     setActiveComponent(componentName);
+  };
+
+  // const {  } = useContext(AuthContext);
+  const handleDeleteUser = async () => {
+    try {
+      if (confirm('정말 탈퇴하시겠어요?')) {
+        const res = await axiosInstance.delete(`${API_BASE_URL}${USER}/delete`);
+        if (res.status === 200) {
+          alert('그동안 저희 사이트를 사랑해주셔서 감사합니다.');
+        }
+      }
+    } catch (error) {
+      console.error('탈퇴 요청 중 오류 발생: ', error);
+    }
   };
 
   return (
@@ -40,14 +58,14 @@ const MyPage = () => {
             <li onClick={() => handleComponentChange('write')}>작성글</li>
             <li onClick={() => handleComponentChange('scrap')}>스크랩</li>
             <li onClick={() => handleComponentChange('change')}>내정보변경</li>
-            <li>회원탈퇴</li>
+            <li onClick={handleDeleteUser}>회원탈퇴</li>
           </ul>
         </div>
         <div className={mainContainer}>
           <div className={head}>
             <div className={headTitle}>
               <img
-                src={require('../../../assets/img/anonymous.jpg')}
+                src={profileImage}
                 alt='프로필 사진'
                 style={{
                   width: 75,

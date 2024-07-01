@@ -11,7 +11,7 @@ const IssueReport = () => {
     childButtonRef.current.handleOpen();
   };
   return (
-    <div className={`${background} aspect-ratio`}>
+    <div className={background}>
       <div className={content}>
         <h2>이슈 트렌드는 여러분의 제보를 기다립니다.</h2>
         <h3>이메일 issuetrend@naver.com</h3>

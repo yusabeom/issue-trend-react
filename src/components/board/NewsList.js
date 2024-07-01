@@ -14,6 +14,8 @@ import Paging from '../../common/ui/Paging';
 /*
 newsList : 현재 페이지의 뉴스 기사
 */
+// 한 페이지 당 기사 개수
+const ONEPAGE_ARTICLE_NO = 10;
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -27,14 +29,17 @@ const reducer = (state, action) => {
       return {
         ...state,
         loading: false,
-        restPage: state.restPage - 5,
-        hasMore: state.restPage - 5 > 0,
+        restPage: state.restPage - ONEPAGE_ARTICLE_NO,
+        hasMore: state.restPage - ONEPAGE_ARTICLE_NO > 0,
         components: [
           ...state.components,
           state.newsList
             .slice(
-              state.curPage * 5,
-              Math.min(state.curPage * 5 + 5, state.newsList.length || 0),
+              state.curPage * ONEPAGE_ARTICLE_NO,
+              Math.min(
+                state.curPage * ONEPAGE_ARTICLE_NO + ONEPAGE_ARTICLE_NO,
+                state.newsList.length || 0,
+              ),
             )
             .map((news) => <NewsItem key={news.id} article={news} />),
         ],
@@ -45,11 +50,17 @@ const reducer = (state, action) => {
       return {
         ...state,
         newsList: action.newsList,
-        restPage: action.newsList.length || 0 - 5,
-        hasMore: action.newsList.length || 0 - 5 > 0,
+        restPage: action.newsList.length || 0 - ONEPAGE_ARTICLE_NO,
+        hasMore: action.newsList.length || 0 - ONEPAGE_ARTICLE_NO > 0,
         components: action.newsList
-          .slice(0, Math.min(5, action.newsList.length || 0))
-          .map((news) => <NewsItem key={news.articleCode} article={news} />),
+          .slice(0, Math.min(ONEPAGE_ARTICLE_NO, action.newsList.length || 0))
+          .map((news) => (
+            <NewsItem
+              className={styles.oneArticle}
+              key={news.articleCode}
+              article={news}
+            />
+          )),
       };
   }
 };
@@ -91,9 +102,9 @@ const NewsList = ({ newsList, page, size, count }) => {
 
   return (
     <div className={styles.newsListWrapper}>
-      <ul className='newsLists'>{state.components}</ul>
+      <ul className={styles.sNewsList}>{state.components}</ul>
 
-      <div className='btn'>
+      <div className={styles.loadBtn}>
         {state.hasMore &&
           (state.loading ? (
             <LoadingButton loading variant='outlined' size='large'>
