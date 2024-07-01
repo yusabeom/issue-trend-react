@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import logo from '../../assets/img/logo.png';
+import logo from '../../assets/img/logo2.png';
 import styles from '../../styles/Header.module.scss';
 import ChatModal from '../../components/chat/ChatModal';
 import useNavigation from '../func/useNavigation';
@@ -134,17 +134,6 @@ const Header = () => {
       className={scrollPosition < 10 ? header : `${header} ${changeHeader}`}
     >
       <div className={headerContainer}>
-        {scrollPosition < 10 ? (
-          <img
-            src={logo}
-            height='100'
-            alt='로고이미지'
-            onClick={goHome}
-            style={{ cursor: 'pointer' }}
-          />
-        ) : (
-          ''
-        )}
         <div
           className={
             scrollPosition < 10 ? headerItem : `${headerItem} ${changeItem}`
@@ -158,12 +147,24 @@ const Header = () => {
             게시판{' '}
           </div>
           <div>|</div>
-          <div className={items} onClick={goSubscribe}>
-            구독
-          </div>
-          <div>|</div>
           <div className={items} onClick={goRegionInfo}>
             지역별정보
+          </div>
+          {scrollPosition < 10 ? (
+            <img
+              src={logo}
+              width='190'
+              height='100'
+              alt='로고이미지'
+              onClick={goHome}
+              style={{ cursor: 'pointer' }}
+            />
+          ) : (
+            ''
+          )}
+          {scrollPosition > 10 ? <div>|</div> : ''}
+          <div className={items} onClick={goSubscribe}>
+            구독
           </div>
           <div>|</div>
           <div className={items} onClick={openChatModal}>
