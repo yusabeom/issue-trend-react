@@ -10,7 +10,7 @@ import AuthContext from '../../components/store/auth-context';
 const roomSocket = io('http://192.168.0.27:5000');
 
 // 화면에는 유저 이름(userName)을 보여주고, 서버에서는 socket.id로 식별한다.
-const Chat = ({ onUsers, onEnter }) => {
+const Chat = ({ onUsers, onEnter, OnExit }) => {
   // AuthContext에서 로그인 상태를 가져옵니다.
   const { isLoggedIn, userEmail, regionName, onLogout, nickname } =
     useContext(AuthContext);
@@ -124,6 +124,7 @@ const Chat = ({ onUsers, onEnter }) => {
 
     return () => {
       roomSocket.off('chatHistory');
+      roomSocket.disconnect();
     };
   }, []);
 
@@ -150,6 +151,13 @@ const Chat = ({ onUsers, onEnter }) => {
       // messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
     }
   };
+
+  useEffect(() => {
+    if (OnExit) {
+      // 채팅방 나가기
+      roomSocket.disconnect();
+    }
+  }, [OnExit]);
 
   /* ================ 2. Handler : 이벤트가 발생할 때 서버로 전송 ================ */
 
