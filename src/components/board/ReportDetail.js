@@ -18,10 +18,10 @@ const ARTICLE = API_BASE_URL + USER;
 const reducer = (state, action) => {
   switch (action.type) {
     case 'PREV':
-      return +state - 1;
+      return +state + 1;
 
     case 'NEXT':
-      return +state + 1;
+      return +state - 1;
 
     default:
       return +state;
@@ -187,7 +187,7 @@ const ReportDetail = () => {
       });
     }
     console.log('이동할 게시물 번호: ' + '/board/detail/' + state);
-    navigate(`/board/detail/${state}`);
+    // window.location.href = `/board/detail/${state}`;
   };
 
   return (
@@ -224,16 +224,15 @@ const ReportDetail = () => {
           <hr />
 
           <main className='contentRegion'>
+            <div>
+              <img src={imgUrl} alt='게시물 이미지' />
+            </div>
             <p className={styles.content}>{boardDetail.text}</p>
             {/* <div className={styles.boardTags}>
               <div className={styles.tag}>#범죄</div>
               <div className={styles.tag}>#제보</div>
               <div className={styles.tag}>#경찰</div>
             </div> */}
-
-            <div>
-              <img src={imgUrl} alt='게시물 이미지' />
-            </div>
           </main>
 
           <hr />
