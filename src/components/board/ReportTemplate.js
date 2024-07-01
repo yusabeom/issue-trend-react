@@ -18,7 +18,23 @@ const ReportTemplate = () => {
   const page = +searchParams.get('page') || 1; // 현재 페이지
   const size = +searchParams.get('size') || 20; // amound (페이지 당 게시물 개수)
 
-  const fetchData = async () => {
+  const fetchAllDate = async () => {
+    try {
+      console.log('GET 요청 url: ', ARTICLE + '/search-post');
+      const res = await axiosInstance.get(ARTICLE + '/search-post');
+      const getBoardList = await res.data;
+
+      const totalPageCount = Math.ceil(getBoardList.length / size);
+      setTotalPages(totalPageCount);
+      console.log(
+        `${totalPageCount} (totalPageCount) = ${getBoardList.length} / ${size} `,
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const fetchPageData = async () => {
     try {
       console.log('GET 요청 url: ', ARTICLE + '/page-post/' + page);
       const res = await axiosInstance.get(ARTICLE + '/page-post/' + page);
@@ -27,9 +43,6 @@ const ReportTemplate = () => {
       setBoardList(getBoardList);
       // console.log('boardList:', boardList);
       // console.log('getBoardList: ', getBoardList);
-      const totalPageCount = Math.ceil(getBoardList.length / size);
-      setTotalPages(totalPageCount);
-      console.log('totalPageCount: ', totalPageCount);
     } catch (error) {
       // console.error('Error fetching data: ', error);
       console.error(error);
@@ -64,7 +77,8 @@ const ReportTemplate = () => {
   */
 
   useEffect(() => {
-    fetchData();
+    fetchAllDate();
+    fetchPageData();
   }, []);
 
   return (
