@@ -4,6 +4,7 @@ import IssueReport from './IssueReport';
 import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import { API_BASE_URL, USER } from '../../config/host-config';
+import axiosInstance from '../../config/axios-config';
 
 const ARTICLE = API_BASE_URL + USER;
 
@@ -17,14 +18,31 @@ const ReportTemplate = () => {
   const page = +searchParams.get('page') || 1; // 현재 페이지
   const size = +searchParams.get('size') || 20; // amound (페이지 당 게시물 개수)
 
-  const fetchData = async () => {
+  // 전체 게시물 개수를 구하기 위한 함수
+  const fetchAllDate = async () => {
     try {
       console.log('GET 요청 url: ', ARTICLE + '/search-post');
-      const res = await axios.get(ARTICLE + '/search-post');
+      const res = await axiosInstance.get(ARTICLE + '/search-post');
+      const getBoardList = await res.data;
+
+      const totalPageCount = Math.ceil(getBoardList.length / size);
+      setTotalPages(totalPageCount);
+      console.log(
+        `${totalPageCount} (totalPageCount) = ${getBoardList.length} / ${size} `,
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const fetchPageData = async () => {
+    try {
+      console.log('GET 요청 url: ', ARTICLE + '/page-post/' + page);
+      const res = await axiosInstance.get(ARTICLE + '/page-post/' + page);
       const getBoardList = await res.data;
 
       setBoardList(getBoardList);
-      filterData(getBoardList);
+      // console.log('boardList:', boardList);
       // console.log('getBoardList: ', getBoardList);
     } catch (error) {
       // console.error('Error fetching data: ', error);
@@ -32,7 +50,8 @@ const ReportTemplate = () => {
     }
   };
 
-  const filterData = (boardList) => {
+  /* 
+  const filterData = async (boardList) => {
     // 전체 페이지 수 = 전체 게시물 수 / 페이지 당 게시물 수
     const totalPageCount = Math.ceil(boardList.length / size);
     setTotalPages(totalPageCount);
@@ -56,16 +75,18 @@ const ReportTemplate = () => {
     }
     console.log('pageBoardList: ', pageBoardList);
   };
+  */
 
   useEffect(() => {
-    fetchData();
+    fetchAllDate();
+    fetchPageData();
   }, []);
 
   return (
     <div>
       <IssueReport />
       <ReportList
-        boardList={pageBoardList}
+        boardList={boardList}
         size={size}
         count={totalPages}
         page={page}

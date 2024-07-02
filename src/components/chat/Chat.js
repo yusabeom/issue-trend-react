@@ -5,6 +5,8 @@ import { io } from 'socket.io-client';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import AuthContext from '../../components/store/auth-context';
+import ChatLobby from './ChatLobby';
+import { regionCode } from './regionCode';
 
 // const webSocket = io('http://localhost:5000');
 const roomSocket = io('http://192.168.0.27:5000');
@@ -124,7 +126,7 @@ const Chat = ({ onUsers, onEnter, OnExit }) => {
 
     return () => {
       roomSocket.off('chatHistory');
-      roomSocket.disconnect();
+      // roomSocket.disconnect();
     };
   }, []);
 
@@ -155,7 +157,7 @@ const Chat = ({ onUsers, onEnter, OnExit }) => {
   useEffect(() => {
     if (OnExit) {
       // 채팅방 나가기
-      roomSocket.disconnect();
+      // roomSocket.disconnect();
     }
   }, [OnExit]);
 
@@ -170,80 +172,8 @@ const Chat = ({ onUsers, onEnter, OnExit }) => {
     const userNo = localStorage.getItem('USER_NO');
     const nickname = localStorage.getItem('NICK_NAME');
 
-    let roomNumber;
+    const roomNumber = regionCode[region];
 
-    switch (region) {
-      case '서울':
-        roomNumber = 2;
-        break;
-
-      case '경기':
-        roomNumber = 31;
-        break;
-
-      case '인천':
-        roomNumber = 32;
-        break;
-
-      case '강원':
-        roomNumber = 33;
-        break;
-
-      case '충남':
-        roomNumber = 41;
-        break;
-
-      case '대전':
-        roomNumber = 42;
-        break;
-
-      case '충북':
-        roomNumber = 43;
-        break;
-
-      case '세종':
-        roomNumber = 44;
-        break;
-
-      case '부산':
-        roomNumber = 51;
-        break;
-
-      case '울산':
-        roomNumber = 52;
-        break;
-
-      case '대구':
-        roomNumber = 53;
-        break;
-
-      case '경북':
-        roomNumber = 54;
-        break;
-
-      case '경남':
-        roomNumber = 55;
-        break;
-
-      case '전남':
-        roomNumber = 61;
-        break;
-
-      case '광주':
-        roomNumber = 62;
-        break;
-
-      case '전북':
-        roomNumber = 63;
-        break;
-
-      case '제주':
-        roomNumber = 64;
-        break;
-
-      default:
-        break;
-    }
     setUserId(nickname);
     console.log('userEmail: ', nickname);
     roomSocket.emit('login', { userId: nickname, roomNumber }); // 서버로 아이디 전송 (처음에는 이름으로 전달)
@@ -373,11 +303,6 @@ const Chat = ({ onUsers, onEnter, OnExit }) => {
               <div>IOChat</div>
             </div>
             <form className='login-form' onSubmit={onSubmitHandler}>
-              {/* 방번호 선택 */}
-              <select onChange={onRoomChangeHandler}>
-                <option value={regionName}>{regionName} 방</option>
-                {/* <option value='2'>Room 2</option> */}
-              </select>
               <input
                 // style={{ display: 'none' }}
                 // placeholder={userId}
@@ -386,6 +311,7 @@ const Chat = ({ onUsers, onEnter, OnExit }) => {
               ></input>
               <button type='submit'>입장하기</button>
             </form>
+            <div>{/* <ChatLobby /> */}</div>
           </div>
         )}
       </div>

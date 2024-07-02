@@ -6,6 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { Reset } from 'styled-reset';
 import { AuthContextProvider } from './components/store/auth-context';
 import { KeywordProvider } from './utils/KeywordContext';
+import { MyPageContextProvider } from './utils/MyPageContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -13,7 +14,9 @@ root.render(
     <Reset />
     <BrowserRouter>
       <KeywordProvider>
-        <App />
+        <MyPageContextProvider>
+          <App />
+        </MyPageContextProvider>
       </KeywordProvider>
     </BrowserRouter>
   </AuthContextProvider>,

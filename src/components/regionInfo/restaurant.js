@@ -37,8 +37,8 @@ const Restaurant = () => {
   const [selectedRegion, setSelectedRegion] = useState(''); // 선택한 하위 지역
   const [selectedMenu, setSelectedMenu] = useState(''); // 선택한 메뉴
 
-  const [findX, setFindX] = useState(37.5139138); // x좌표 37.3595704
-  const [findY, setFindY] = useState(127.105399); // y좌표 127.105399
+  const [findX, setFindX] = useState(126.932713);
+  const [findY, setFindY] = useState(37.5551785); // 초기값: 신촌역
   const [coordList, setCoordList] = useState([]); // 검색한 식당의 좌표 리스트
 
   const [dishImgs, setDishImgs] = useState([]); // 메뉴 이미지
