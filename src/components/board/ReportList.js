@@ -11,12 +11,14 @@ const ReportList = ({ boardList, size, count, page }) => {
   return (
     <div className={styles.reportListWrapper}>
       <table>
-        <tr className={styles.boardHead}>
-          <th className={styles.boardNo}>번호</th>
-          <th className={styles.boardTitle}>제목</th>
-          <th className={styles.boardWriter}>작성자</th>
-          <th className={styles.boardDate}>작성일</th>
-        </tr>
+        <thead>
+          <tr className={styles.boardHead}>
+            <th className={styles.boardNo}>번호</th>
+            <th className={styles.boardTitle}>제목</th>
+            <th className={styles.boardWriter}>작성자</th>
+            <th className={styles.boardDate}>작성일</th>
+          </tr>
+        </thead>
         {boardList.map((board) => (
           <ReportItem key={board.postNo} board={board} />
         ))}

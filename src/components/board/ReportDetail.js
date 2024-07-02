@@ -18,10 +18,10 @@ const ARTICLE = API_BASE_URL + USER;
 const reducer = (state, action) => {
   switch (action.type) {
     case 'PREV':
-      return +state - 1;
+      return +state + 1;
 
     case 'NEXT':
-      return +state + 1;
+      return +state - 1;
 
     default:
       return +state;
@@ -95,7 +95,8 @@ const ReportDetail = () => {
       // console.log('imgUrl: ', imgUrl);
     } catch (error) {
       // console.error('Error fetching data: ', error);
-      console.error(error);
+      console.log(error);
+      setImgUrl('');
     }
   };
 
@@ -187,124 +188,130 @@ const ReportDetail = () => {
       });
     }
     console.log('이동할 게시물 번호: ' + '/board/detail/' + state);
-    navigate(`/board/detail/${state}`);
+    // window.location.href = `/board/detail/${state}`;
   };
 
   return (
-    <div className={`aspect-ratio ${styles.wrapper}`}>
-      <h2
-        style={{ cursor: 'pointer' }}
-        onClick={() => {
-          navigate('/board');
-        }}
-      >
-        제보 게시판
-      </h2>
-      {boardDetail && (
-        <div className={styles.board}>
-          <header className='boardHeader'>
-            <div>
-              <p className={styles.title}>{boardDetail.title}</p>
-            </div>
-
-            <div>
-              <div className={styles.writer}>
-                <div className={styles.profile}>
-                  <img src={writerProfile} alt='작성자 프로필 사진' />
-                </div>
-                {boardDetail.email}
-              </div>
+    <div className={styles.outWrapper}>
+      <div className={`aspect-ratio ${styles.wrapper}`}>
+        <h2
+          style={{ cursor: 'pointer' }}
+          onClick={() => {
+            navigate('/board');
+          }}
+        >
+          제보 게시판
+        </h2>
+        {boardDetail && (
+          <div className={styles.board}>
+            <header className='boardHeader'>
               <div>
-                <a href=''>신고하기</a>
-                <p>{boardDetail.formatDate}</p>
+                <p className={styles.title}>{boardDetail.title}</p>
               </div>
-            </div>
-          </header>
 
-          <hr />
+              <div>
+                <div className={styles.writer}>
+                  <div className={styles.profile}>
+                    <img src={writerProfile} alt='작성자 프로필 사진' />
+                  </div>
+                  {boardDetail.email}
+                </div>
+                <div>
+                  <a href=''>신고하기</a>
+                  <p>{boardDetail.formatDate}</p>
+                </div>
+              </div>
+            </header>
 
-          <main className='contentRegion'>
-            <p className={styles.content}>{boardDetail.text}</p>
-            {/* <div className={styles.boardTags}>
+            <hr />
+
+            <main className='contentRegion'>
+              {imgUrl && (
+                <div>
+                  <img src={imgUrl} alt='게시물 이미지' />
+                </div>
+              )}
+              <p className={styles.content}>{boardDetail.text}</p>
+              {/* <div className={styles.boardTags}>
               <div className={styles.tag}>#범죄</div>
               <div className={styles.tag}>#제보</div>
               <div className={styles.tag}>#경찰</div>
             </div> */}
+            </main>
 
-            <div>
-              <img src={imgUrl} alt='게시물 이미지' />
-            </div>
-          </main>
+            <hr />
 
-          <hr />
+            <footer className='replyRegion'>
+              <Button onClick={handleClickReply}>
+                댓글 &nbsp;
+                {openReply ? (
+                  <FontAwesomeIcon icon={faCaretUp} size='1x' />
+                ) : (
+                  <FontAwesomeIcon icon={faCaretDown} size='1x' />
+                )}{' '}
+                &nbsp; | {replyList.length}
+              </Button>
+              {+localStorage.getItem('USER_NO') === +boardDetail.userNo && (
+                <div className={styles.crud}>
+                  <Button variant='outlined' onClick={openModifyModal}>
+                    수정
+                  </Button>
+                  <Button variant='outlined' onClick={deleteRequest}>
+                    삭제
+                  </Button>
+                </div>
+              )}
+            </footer>
+          </div>
+        )}
 
-          <footer className='replyRegion'>
-            <Button onClick={handleClickReply}>
-              댓글 &nbsp;
-              {openReply ? (
-                <FontAwesomeIcon icon={faCaretUp} size='1x' />
-              ) : (
-                <FontAwesomeIcon icon={faCaretDown} size='1x' />
-              )}{' '}
-              &nbsp; | {replyList.length}
-            </Button>
-            {+localStorage.getItem('USER_NO') === +boardDetail.userNo && (
-              <div className={styles.crud}>
-                <Button variant='outlined' onClick={openModifyModal}>
-                  수정
-                </Button>
-                <Button variant='outlined' onClick={deleteRequest}>
-                  삭제
-                </Button>
-              </div>
-            )}
-          </footer>
-        </div>
-      )}
-
-      {openReply && (
-        <div className={styles.reply}>
-          <ul className={styles.replyList}>
-            {replyList &&
-              replyList.map((reply) => (
-                <li key={reply.commentNo}>
-                  <p className={styles.replyWriter}>
-                    <div className={styles.profile}>
-                      <img
-                        src={reply.profileImage}
-                        alt='댓글 작성자 프로필 사진'
-                      />
+        {openReply && (
+          <div className={styles.reply}>
+            <ul className={styles.replyList}>
+              {replyList &&
+                replyList.map((reply) => (
+                  <li key={reply.commentNo}>
+                    <div className={styles.replyWriter}>
+                      <div className={styles.profile}>
+                        <img
+                          src={
+                            reply.profileImage ||
+                            require('../../assets/img/anonymous.jpg')
+                          }
+                          alt='댓글 작성자 프로필 사진'
+                        />
+                      </div>
+                      {reply.email}
                     </div>
-                    {reply.email}
-                  </p>
-                  <p className={styles.replyContent}>{reply.text}</p>
-                  {/* <p className={styles.replyDate}>{reply.replyDate}</p> */}
-                </li>
-              ))}
-          </ul>
-          <div className='replyInput'>
-            <TextareaComment newComment={newComment} type={'insert'} />
+                    <p className={styles.replyContent}>{reply.text}</p>
+                    {/* <p className={styles.replyDate}>{reply.replyDate}</p> */}
+                  </li>
+                ))}
+            </ul>
+            <div className='replyInput'>
+              <TextareaComment newComment={newComment} type={'insert'} />
+            </div>
+          </div>
+        )}
+
+        <div className={styles.moveToOthers}>
+          <div className={styles.prevBoard} onClick={clickOtherBoard}>
+            {' '}
+            <FontAwesomeIcon icon={faCaretUp} /> &nbsp; 이전게시물
+          </div>
+          <div className={styles.nextBoard} onClick={clickOtherBoard}>
+            {' '}
+            <FontAwesomeIcon icon={faCaretDown} /> &nbsp; 다음게시물
           </div>
         </div>
-      )}
 
-      <div className={styles.moveToOthers}>
-        <div className={styles.prevBoard} onClick={clickOtherBoard}>
-          {' '}
-          <FontAwesomeIcon icon={faCaretUp} /> &nbsp; 이전게시물
+        <div style={{ display: 'none' }}>
+          <ReportWriteModal
+            ref={childButtonRef}
+            type={'edit'}
+            object={boardDetail}
+          />
         </div>
-        <div className={styles.nextBoard} onClick={clickOtherBoard}>
-          {' '}
-          <FontAwesomeIcon icon={faCaretDown} /> &nbsp; 다음게시물
-        </div>
-      </div>
-
-      <div style={{ display: 'none' }}>
-        <ReportWriteModal
-          ref={childButtonRef}
-          type={'edit'}
-          object={boardDetail}
-        />
       </div>
     </div>
   );
