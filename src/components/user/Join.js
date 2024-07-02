@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { FaFileImage } from 'react-icons/fa';
 import {
   Button,
   Container,
@@ -6,7 +7,9 @@ import {
   IconButton,
   InputAdornment,
   TextField,
+  ThemeProvider,
   Typography,
+  createTheme,
 } from '@mui/material';
 import { API_BASE_URL, USER } from '../../config/host-config';
 import styles from '../../styles/Join.module.scss';
@@ -14,6 +17,8 @@ import { AccessAlarm, Visibility, VisibilityOff } from '@mui/icons-material';
 import PinDropIcon from '@mui/icons-material/PinDrop';
 import { Navigate, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { Box } from '@mui/system';
+import useNavigation from '../../common/func/useNavigation';
 
 const { kakao } = window;
 const Join = () => {
@@ -513,281 +518,239 @@ const getNewsList = res.data;
 
   console.log('userValue: ', userValue);
 
+  const theme = createTheme({
+    palette: {
+      ochre: {
+        button: '#FFA927',
+      },
+    },
+    typography: {
+      fontSize: 12,
+    },
+  });
+  const { goLogin } = useNavigation();
+
   return (
-    <Container component='main' className={styles.main}>
-      <Container component='div' className='main-inner'></Container>
-      <Container
-        className='main-inner'
-        component='div' // Container가 HTML 태그중 main이 된다.
-        // maxWidth='xs'를 바꿈
-        style={{ margin: '0 auto' }}
-      >
-        <form noValidate>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <Typography component='h1' variant='h5'>
-                회원가입
-              </Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <div
-                className='thumbnail-box'
-                onClick={() => {
-                  $fileTag.current.click();
-                }}
-              >
-                <img
-                  src={
-                    imgFile || require('../../assets/img/anonymous.jpg')
-                  } /**/
-                  alt='profile'
-                />
-                {/* require 앞에 imgFile 변수 넣어야 함 */}
-              </div>
-              <label className='signup-img-label' htmlFor='profile-img'>
-                프로필 이미지 추가
-              </label>
-              <input
-                id='profile-img'
-                type='file'
-                style={{ display: 'none' }}
-                accept='image/*' /* 자사/소셜 로그인 진행시 DB에 넣을 때 경로문제 발생할 수도 있음 */
-                ref={$fileTag}
-                onChange={showThumbnailHandler}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                autoComplete='fname'
-                name='email'
-                variant='outlined'
-                required
-                fullWidth
-                id='email'
-                label='이메일 주소'
-                autoFocus
-                onChange={emailHandler}
-              />
-
-              <span
-                id='check-span'
-                style={correct.email ? { color: 'green' } : { color: 'red' }}
-              >
-                {message.email}
-              </span>
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant='outlined'
-                required
-                fullWidth
-                name='nickname'
-                label='닉네임'
-                type='text'
-                id='nickname'
-                autoComplete='nickname'
-                onChange={nickChangeHandler}
-              />
-              <span
-                id='check-span'
-                style={correct.nickname ? { color: 'green' } : { color: 'red' }}
-              >
-                {message.nickname}
-              </span>
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant='outlined'
-                required
-                fullWidth
-                name='password'
-                label='패스워드'
-                autoComplete='current-password'
-                onChange={passwordHandler}
-              />
-              <span
-                id='check-span'
-                style={correct.password ? { color: 'green' } : { color: 'red' }}
-              >
-                {message.password}
-              </span>
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant='outlined'
-                required
-                fullWidth
-                name='password-check'
-                label='패스워드 확인'
-                type='password'
-                id='password-check'
-                autoComplete='check-password'
-                onChange={pwCheckHandler}
-                /*
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position='end'>
-                      <IconButton onClick={handleToggleShowPw} edge='end'>
-                        {showPw ? <Visibility /> : <VisibilityOff />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-                  */
-              />
-              <span
-                id='check-span'
-                style={
-                  correct.passwordCheck ? { color: 'green' } : { color: 'red' }
-                }
-              >
-                {message.passwordCheck}
-              </span>
-            </Grid>
-            {/* <Grid item xs={9}>
-              <TextField
-                variant='outlined'
-                required
-                fullWidth
-                name='phoneNumber'
-                label='휴대폰 번호'
-                id='phoneNumber'
-                type='text'
-                placeholder="휴대폰 번호 '-' 제외하고 입력"
-                onChange={phoneNumberHandler}
-                value={phoneNumber}
-              />
-              {isTimerOpen && (
-                <span id='remain-time' style={{ color: 'red' }}>
-                  {formatTime(remainingTime)}
-                </span>
-              )}
-              <span
-                id='check-span'
-                style={
-                  correct.phoneNumber ? { color: 'green' } : { color: 'red' }
-                }
-              >
-                {message.phoneNumber}
-              </span>
-            </Grid>
-            <Grid item xs={3}>
-              <Button
-                type='button'
-                fullWidth
-                variant='contained'
-                style={{ background: '#38d9a9' }}
-                sx={{
-                  height: '95%',
-                }}
-                startIcon={<AccessAlarm />}
-                onClick={sendButtonHandler}
-                disabled={!correct.phoneNumber}
-              >
-                인증하기
-              </Button>
-            </Grid>
-
-            <Grid item xs={9}>
-              <TextField
-                variant='outlined'
-                required
-                fullWidth
-                name='mobile-number-check'
-                label='인증번호'
-                type='tel'
-                id='mobile-number-check'
-              />
-              {/* <span id='check-span'>{authNumTimer}</span> 
-            </Grid>
-            <Grid item xs={3}>
-              <Button
-                type='button'
-                fullWidth
-                variant='contained'
-                style={
-                  { background: '#38d9a9' }
-                  /* onclick={checkMobileNumberHandler} 
-                sx={{
-                  height: '95%',
-                }}
-                // disabled={!correct.phoneNumber}
-              >
-                확인
-              </Button>
-            </Grid>{' '}
-            */}
-            <Grid item xs={9}>
-              <TextField
-                fullWidth
-                id='regionName'
-                name='regionName'
-                inputProps={{ readOnly: true }}
-                value={userValue.regionName}
-              />
-            </Grid>
-            <Grid item xs={3}>
-              <Button
-                type='button'
-                sx={{ height: '95%' }}
-                style={{ background: '#38d9a9' }}
-                fullWidth
-                variant='contained'
-                onClick={addressClickHandler}
-                startIcon={<PinDropIcon />}
-              >
-                내 동네 설정
-              </Button>
-            </Grid>
-            <span
-              id='check-span'
-              style={correct.regionName ? { color: 'green' } : { color: 'red' }}
-            >
-              {message.regionName}
-            </span>
-            <Grid item xs={12}>
-              <h6>issue-trend가 맞춤형 뉴스를 제공합니다.</h6>
-            </Grid>
-            <TextField
-              type='text'
-              placeholder='관심 키워드를 입력하고 엔터를 누르세요'
-              id='keyword'
-              onKeyUp={(e) => {
-                if (e.key === 'Enter') {
-                  handleKeyDown(e.target.value);
-                }
-              }}
-            />
-            <Grid item xs={12}>
-              <ul style={{ display: 'flex', justifyContent: '' }}>
-                {keywords.map((keyword) => {
-                  return (
-                    <li
-                      style={{ border: 'solid 1px black' }}
-                      onClick={deleteHandler}
-                      key={keyword.id}
+    <ThemeProvider theme={theme}>
+      <div className={styles.container}>
+        <Container component='main' className={styles.main}>
+          <Container component='div' style={{ margin: '0 auto' }}>
+            <form noValidate>
+              <Grid item sx={12}>
+                <Typography className={styles.head}>회원가입</Typography>
+              </Grid>
+              <Grid container spacing={2} className={styles.contentContainer}>
+                <Grid item xs={6}>
+                  <Box
+                    className={styles.thumbnailBox}
+                    onClick={() => {
+                      $fileTag.current.click();
+                    }}
+                  >
+                    <img
+                      src={
+                        imgFile || require('../../assets/img/anonymous.jpg')
+                      } /**/
+                      alt='profile'
+                      title='프로필 등록하기'
+                    />
+                    {/* require 앞에 imgFile 변수 넣어야 함 */}
+                  </Box>
+                  <label className={styles.imgLabel} htmlFor='profile-img'>
+                    <FaFileImage />
+                    프로필 사진 추가
+                  </label>
+                  <input
+                    id='profile-img'
+                    type='file'
+                    style={{ display: 'none' }}
+                    accept='image/*' /* 자사/소셜 로그인 진행시 DB에 넣을 때 경로문제 발생할 수도 있음 */
+                    ref={$fileTag}
+                    onChange={showThumbnailHandler}
+                  />
+                </Grid>
+                <Grid container xs={6} spacing={2}>
+                  <Grid item xs={12}>
+                    <TextField
+                      autoComplete='fname'
+                      name='email'
+                      variant='outlined'
+                      required
+                      fullWidth
+                      id='email'
+                      label='이메일 주소'
+                      autoFocus
+                      onChange={emailHandler}
+                    />
+                    <span
+                      id='check-span'
+                      style={
+                        correct.email ? { color: 'green' } : { color: 'red' }
+                      }
                     >
-                      {keyword.value}
-                    </li>
-                  );
-                })}
-              </ul>
-            </Grid>
-            <Grid item xs={12}>
-              <Button
-                type='button'
-                fullWidth
-                variant='contained'
-                style={{ background: '#38d9a9', padding: '1.5%' }}
-                onClick={joinButtonClickHandler}
-              >
-                회원가입
-              </Button>
-            </Grid>
-          </Grid>
-        </form>
-      </Container>
-    </Container>
+                      {message.email}
+                    </span>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      variant='outlined'
+                      required
+                      fullWidth
+                      name='nickname'
+                      label='닉네임'
+                      type='text'
+                      id='nickname'
+                      autoComplete='nickname'
+                      onChange={nickChangeHandler}
+                    />
+                    <span
+                      id='check-span'
+                      style={
+                        correct.nickname ? { color: 'green' } : { color: 'red' }
+                      }
+                    >
+                      {message.nickname}
+                    </span>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      variant='outlined'
+                      required
+                      fullWidth
+                      name='password'
+                      label='패스워드'
+                      autoComplete='current-password'
+                      onChange={passwordHandler}
+                    />
+                    <span
+                      id='check-span'
+                      style={
+                        correct.password ? { color: 'green' } : { color: 'red' }
+                      }
+                    >
+                      {message.password}
+                    </span>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      variant='outlined'
+                      required
+                      fullWidth
+                      name='password-check'
+                      label='패스워드 확인'
+                      type='password'
+                      id='password-check'
+                      autoComplete='check-password'
+                      onChange={pwCheckHandler}
+                    />
+                    <span
+                      id='check-span'
+                      style={
+                        correct.passwordCheck
+                          ? { color: 'green' }
+                          : { color: 'red' }
+                      }
+                    >
+                      {message.passwordCheck}
+                    </span>
+                  </Grid>
+                  <Grid item xs={12} className={styles.region}>
+                    <Grid item xs={7}>
+                      <TextField
+                        fullWidth
+                        id='regionName'
+                        name='regionName'
+                        inputProps={{ readOnly: true }}
+                        value={userValue.regionName}
+                      />
+                    </Grid>
+                    <Grid item xs={5}>
+                      <Button
+                        type='button'
+                        sx={{ height: '100%' }}
+                        style={{ background: '#1B1511', marginLeft: '5px' }}
+                        fullWidth
+                        variant='contained'
+                        onClick={addressClickHandler}
+                        startIcon={<PinDropIcon />}
+                      >
+                        내 동네 설정
+                      </Button>
+                    </Grid>
+                  </Grid>
+                  <p
+                    className={styles.regionCorrect}
+                    id='check-span'
+                    style={
+                      correct.regionName ? { color: 'green' } : { color: 'red' }
+                    }
+                  >
+                    {message.regionName}
+                  </p>
+                  <Grid item xs={12} className={styles.keyword}>
+                    <Grid item xs={12} className={styles.keywordTitle}>
+                      <Typography>
+                        Tip! <br></br>
+                        관심키워드를 입력하시면 뉴스레터를 받아보실 수 있습니다.
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        fullWidth
+                        type='text'
+                        placeholder='관심 키워드를 입력하고 엔터를 눌러주세요'
+                        id='keyword'
+                        onKeyUp={(e) => {
+                          if (e.key === 'Enter') {
+                            handleKeyDown(e.target.value);
+                          }
+                        }}
+                      />
+                    </Grid>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <ul style={{ display: 'flex', justifyContent: '' }}>
+                      {keywords.map((keyword) => {
+                        return (
+                          <li
+                            style={{ border: 'solid 1px black' }}
+                            onClick={deleteHandler}
+                            key={keyword.id}
+                          >
+                            {keyword.value}
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Button
+                      type='button'
+                      fullWidth
+                      variant='contained'
+                      style={{ background: '#1B1511', padding: '10px' }}
+                      onClick={joinButtonClickHandler}
+                    >
+                      회원가입
+                    </Button>
+                  </Grid>
+                  <Grid item xs={12} className={styles.login}>
+                    <Typography>이미 회원이신가요?</Typography>
+                    <Typography
+                      onClick={goLogin}
+                      color='#053ffc'
+                      marginLeft='15px'
+                    >
+                      로그인
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </form>
+          </Container>
+        </Container>
+      </div>
+    </ThemeProvider>
   );
 };
 export default Join;
