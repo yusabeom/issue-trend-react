@@ -61,6 +61,7 @@ const Header = () => {
       */
     if (res.status === 200) {
       const imageUrl = await res.data;
+      console.log('imageUrl: ', imageUrl);
       setProfileUrl(imageUrl);
     } else {
       const err = await res.data;
@@ -214,7 +215,7 @@ const Header = () => {
               <div className={user}>
                 {scrollPosition < 10 ? (
                   <img
-                    src={profileImage || { basicProfile }}
+                    src={profileImage}
                     alt='프로필 사진'
                     onClick={() => navigate('/issue-trend/mypage')}
                   />
