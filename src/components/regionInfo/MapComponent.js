@@ -22,6 +22,7 @@ function MapComponent({ searchParams, coordX, coordY, coordList }) {
   }, [coordX]);
 
   useEffect(() => {
+    console.log('coordList: ', coordList);
     if (coordList.length > 0) {
       console.log('검색된 모든 주소의 좌표값: ', coordList);
       const newCenter = new navermaps.LatLng(coordList[0].y, coordList[0].x);
@@ -34,12 +35,12 @@ function MapComponent({ searchParams, coordX, coordY, coordList }) {
       defaultCenter={
         coordList.length > 0
           ? new navermaps.LatLng(coordList[0].y, coordList[0].x)
-          : new navermaps.LatLng(37.5139138, 127.105399) // 잠실
+          : new navermaps.LatLng(37.4820858, 126.881974) // 가산
       }
       center={
         coordList.length > 0
           ? new navermaps.LatLng(coordY, coordX)
-          : new navermaps.LatLng(37.5139138, 127.105399) // 잠실
+          : new navermaps.LatLng(37.4820858, 126.881974) // 가산
       }
       defaultZoom={16}
       zoomControl={true}

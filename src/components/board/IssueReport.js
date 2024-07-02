@@ -1,9 +1,23 @@
 import React, { useEffect, useState, useRef } from 'react';
 import styles from '../../styles/IssueReport.module.scss';
 import ReportWriteModal from './ReportWriteModal.js';
+import { Snackbar, Alert } from '@mui/material';
 
 const IssueReport = () => {
   const { background, content, btn, 'btn-pulse': btnPulse } = styles;
+  // snackbar 버튼 상태변수
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  const onOpenSnackbar = (opensn) => {
+    setSnackbarOpen(opensn);
+  };
+
+  const handleSnackBarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
 
   const childButtonRef = useRef(null);
 
@@ -20,8 +34,28 @@ const IssueReport = () => {
           제보하기
         </div>
         <div style={{ display: 'none' }}>
-          <ReportWriteModal ref={childButtonRef} type={'write'} />
+          <ReportWriteModal
+            ref={childButtonRef}
+            type={'write'}
+            setSnackbarOpen={onOpenSnackbar}
+          />
         </div>
+      </div>
+      <div>
+        <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={3000}
+          onClose={handleSnackBarClose}
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        >
+          <Alert
+            onClose={handleSnackBarClose}
+            severity='error'
+            sx={{ width: '100%', zIndex: '100' }}
+          >
+            로그인 후 제보해주세요
+          </Alert>
+        </Snackbar>
       </div>
     </div>
   );

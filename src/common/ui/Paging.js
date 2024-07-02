@@ -38,7 +38,9 @@ const Paging = ({ size, count, curPage, type }) => {
   // 페이지 버튼 클릭 이벤트 핸들러
   const handlePageChange = (e, value) => {
     // setPage(value); // 해당 버튼 페이지로 이동
-    navigate(`/${type}?page=${value}`);
+    const path = `/${type}?page=${value}`;
+    // navigate(path);
+    window.location.href = path;
   };
 
   return (

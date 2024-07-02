@@ -16,12 +16,16 @@ import styles from '../../styles/TextareaComment.module.scss';
 import profileImage from '../../assets/img/anonymous.jpg';
 import { debounce } from 'lodash';
 import { Alert } from '@mui/material';
+import AuthContext from '../../components/store/auth-context';
 
 // 댓글 UI
 // newComment: 작성 후 submit한 댓글, initialValue: 댓글 초기값, type: 수정(modify) or 작성(insert)여부
 export default function TextareaComment({ newComment, initialValue, type }) {
   // AuthContext에서 로그인 상태를 가져옵니다. (Header.js 참고)
   // userName을 가져오고 프로필 이미지 요청
+
+  const { isLoggedIn, onLogout, userEmail, profileImage, nickname, userNo } =
+    React.useContext(AuthContext);
 
   const [italic, setItalic] = React.useState(false);
   const [fontWeight, setFontWeight] = React.useState('normal');
@@ -64,16 +68,18 @@ export default function TextareaComment({ newComment, initialValue, type }) {
       // scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   };
+
   return (
     <FormControl>
       {type === 'insert' && (
         <FormLabel>
           <div className={styles.profile}>
-            <img src={profileImage} alt='댓글 작성자 프로필 사진' />
+            <img
+              src={profileImage || require('../../assets/img/anonymous.jpg')}
+              alt='댓글 작성자 프로필 사진'
+            />
           </div>
-          <span className={styles.loginUser}>
-            {localStorage.getItem('LOGIN_EMAIL')}
-          </span>
+          <span className={styles.loginUser}>{userEmail}</span>
         </FormLabel>
       )}
       {openAlert && (
