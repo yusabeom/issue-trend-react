@@ -1,3 +1,4 @@
+import { fontWeight } from '@mui/system';
 import React from 'react';
 
 const CircleButton = ({ text, onClickEvent }) => {
@@ -8,10 +9,10 @@ const CircleButton = ({ text, onClickEvent }) => {
     width: '50px',
     height: '50px',
     borderRadius: '50%',
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#FFA927',
     border: 'none',
     cursor: 'pointer',
-    color: 'white',
+    color: '#1B1511',
     fontSize: '24px',
     lineHeight: '24px',
   };
