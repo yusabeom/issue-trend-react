@@ -14,26 +14,38 @@ import axiosInstance from '../../config/axios-config';
 const Header = () => {
   const { isLoggedIn, onLogout, userEmail, profileImage, nickname, userNo } =
     useContext(AuthContext);
+  console.log('profileImage', profileImage);
   const profileRequestURL = `${API_BASE_URL}${USER}/load-profile`;
   const navigate = useNavigate();
 
-  const [profileUrl, setProfileUrl] = useState(null);
+  const [profileUrl, setProfileUrl] = useState(profileImage);
 
   const logoutHandler = async () => {
+    /*
     const res = await fetch(`${API_BASE_URL}${USER}/logout`, {
       method: 'GET',
       headers: {
+        // 'Content-Type': 'application/json', --> logou
         Authorization: 'Bearer ' + localStorage.getItem('ACCESS_TOKEN'),
       },
     });
+    */
 
-    // AuthContext의 onLogout 함수를 호출하여 로그인 상태를 업데이트 합니다.
-    onLogout();
-    navigate('/login');
+    const res = await axiosInstance.get(`${API_BASE_URL}${USER}/logout`);
+    console.log(`res: ${res}`);
+    console.log(`res.data: ${res.data}`);
+
+    if (res.status === 200) {
+      onLogout();
+      navigate('/login');
+    }
   };
 
   const fetchProfileImage = async () => {
+    console.log('fetchProfileImage called!');
+    console.log('isLoggedIn: ', isLoggedIn);
     if (!isLoggedIn) return;
+    console.log('profileImage: ', profileImage);
     const res = await axiosInstance.get(profileRequestURL);
 
     /*
@@ -59,14 +71,16 @@ const Header = () => {
       setProfileUrl(null);
     }
       */
-    if (res.status === 200) {
-      const imageUrl = await res.data;
-      console.log('imageUrl: ', imageUrl);
-      setProfileUrl(imageUrl);
+    const status = res.status;
+    console.log('res: ', res);
+    if (status === 200) {
+      if (res.text === null) {
+        setProfileUrl('../../assets/img/anonymous.jpg');
+      }
+      setProfileUrl(res.data);
     } else {
-      const err = await res.data;
+      const err = res.data;
       console.log('err: ', err);
-      setProfileUrl(null);
     }
   };
 
@@ -116,15 +130,15 @@ const Header = () => {
   };
 
   useEffect(() => {
-    if (isLoggedIn) fetchProfileImage();
-  }, [isLoggedIn]);
-
-  useEffect(() => {
     window.addEventListener('scroll', updateScroll);
     return () => {
       window.removeEventListener('scroll', updateScroll);
     };
   }, []);
+
+  useEffect(() => {
+    if (isLoggedIn) fetchProfileImage();
+  }, [isLoggedIn]);
 
   return (
     <header
@@ -183,9 +197,11 @@ const Header = () => {
               <div className={user}>
                 {scrollPosition < 10 ? (
                   <img
-                    src={profileImage}
-                    alt='프로필 사진'
                     onClick={() => navigate('/issue-trend/mypage')}
+                    src={
+                      profileUrl || require('../../assets/img/anonymous.jpg')
+                    }
+                    alt='프로필 사진'
                   />
                 ) : (
                   ''

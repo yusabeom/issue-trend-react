@@ -14,7 +14,6 @@ import { AccessAlarm, Visibility, VisibilityOff } from '@mui/icons-material';
 import PinDropIcon from '@mui/icons-material/PinDrop';
 import { Navigate, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import EmailIcon from '@mui/icons-material/Email';
 
 const { kakao } = window;
 const Join = () => {
@@ -389,6 +388,7 @@ const getNewsList = res.data;
   const [imgFile, setImgFile] = useState(null);
   const showThumbnailHandler = (e) => {
     const file = $fileTag.current.files[0];
+
     console.log(`file: ${file}`);
     const fileExt = file.name.slice(file.name.indexOf('.') + 1).toLowerCase();
 
@@ -401,6 +401,11 @@ const getNewsList = res.data;
       alert('이미지 파일(jpg, png, jpeg, gif)만 등록이 가능합니다.');
 
       $fileTag.current.value = '';
+      return;
+    }
+
+    if (!$fileTag.current.files[0]) {
+      setImgFile(require('../../assets/img/anonymous.jpg'));
       return;
     }
 
@@ -476,6 +481,8 @@ const getNewsList = res.data;
 
     const userFormData = new FormData();
     userFormData.append('user', userJsonBlob);
+    console.log('imgFile ', imgFile);
+    console.log('서버에 이미지 보내기 전: ', $fileTag.current.files[0]);
     userFormData.append('profileImage', $fileTag.current.files[0]);
 
     const res = await fetch(API_BASE_URL + USER, {
@@ -530,7 +537,9 @@ const getNewsList = res.data;
                 }}
               >
                 <img
-                  src={imgFile || require('../../assets/img/anonymous.jpg')}
+                  src={
+                    imgFile || require('../../assets/img/anonymous.jpg')
+                  } /**/
                   alt='profile'
                 />
                 {/* require 앞에 imgFile 변수 넣어야 함 */}
