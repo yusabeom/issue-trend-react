@@ -1,28 +1,22 @@
-.title {
-    font-size: 23px;
-    margin: 20px 45px 20px;
-    
-}
-
-.post {
+table {
+  padding: 1.4rem;
+  tr.oneArticle {
+    padding: 1rem 2.5rem;
     display: flex;
-    max-height: 200px;
-    margin-top: 50px;
-    padding-left: 20px;
-    // background-color: red;
-    
-    img {
-        width: 200px;
+    justify-content: space-evenly;
+    border-bottom: 1px #000 solid;
+
+    padding: 0.8rem;
+    font-size: 18px;
+    &:hover {
+      background-color: rgb(255, 244, 230);
     }
-
-    .postContent {
-        padding: 20px;
-
-        li {
-            margin: 10px;
-        }
-
-        
-
+    cursor: pointer;
+    td.newsAgency {
+      width: 16%;
     }
+    td.title {
+      width: 74%;
+    }
+  }
 }

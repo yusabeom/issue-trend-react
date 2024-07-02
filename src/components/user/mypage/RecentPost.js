@@ -8,7 +8,7 @@ import axiosInstance from '../../../config/axios-config';
 
 const BOARD = API_BASE_URL + USER;
 
-const { title, post, postContent } = styles;
+const { oneArticle, title, newsAgency } = styles;
 const RecentPost = () => {
   const { recentInquiry } = useContext(MyPageContext); // 가장 최근에 본 뉴스 기사 (번호)
   const [recentArticle, setRecentArticle] = useState([]); // 가장 최근에 본 뉴스 기사
@@ -30,29 +30,16 @@ const RecentPost = () => {
   }, []);
   return (
     <>
-      <div>
-        {recentArticle.map((article) => (
-          <div>
-            <p>{article.title}</p>
-            <p>{article.truncatedText}</p>
-          </div>
-        ))}
-      </div>
-      <div className={title}>최근의 본글</div>
-      <div className={post}>
-        <img src={img} />
-        <ul className={postContent}>
-          <li>제목</li>
-          <li>내용</li>
-        </ul>
-      </div>
-      <div className={post}>
-        <img src={img} />
-        <ul className={postContent}>
-          <li>제목</li>
-          <li>내용</li>
-        </ul>
-      </div>
+      <table>
+        <tbody>
+          {recentArticle.map((article) => (
+            <tr className={oneArticle}>
+              <td className={newsAgency}>{article.newsAgency}</td>
+              <td className={title}>{article.title}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </>
   );
 };
