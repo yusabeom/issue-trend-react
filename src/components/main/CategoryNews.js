@@ -12,7 +12,7 @@ const CategoryNews = () => {
   };
 
   return (
-    <div className='aspect-ratio'>
+    <div>
       <div className={newsContainer}>
         <div className={newsTitle}>
           <h1>NEWS</h1>

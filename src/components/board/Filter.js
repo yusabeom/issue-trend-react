@@ -274,22 +274,25 @@ const Filter = ({ onTags, agencies }) => {
           onChange={handleChange}
           onKeyDown={submitFilter}
         />
-        <span style={keywordMsg < 20 ? { color: 'green' } : { color: 'red' }}>
+        <div
+          className={styles.count}
+          style={keywordMsg < 20 ? { color: 'green' } : { color: 'red' }}
+        >
           {keywordMsg + '/20'}
-        </span>
+        </div>
+        <div className={styles.searchButton}>
+          <FontAwesomeIcon
+            icon={faMagnifyingGlass}
+            size='2x'
+            onClick={submitFilter}
+          />
+        </div>
       </div>
       {openAlert && (
         <Alert style={{ marginTop: '1rem' }} severity='warning'>
           키워드를 입력해주세요.
         </Alert>
       )}
-      <div className={styles.searchButton}>
-        <FontAwesomeIcon
-          icon={faMagnifyingGlass}
-          size='2x'
-          onClick={submitFilter}
-        />
-      </div>
     </>
   );
 };

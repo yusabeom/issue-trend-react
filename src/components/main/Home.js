@@ -5,10 +5,12 @@ import Footer from '../../common/layout/Footer';
 import WordCloud from './WordCloud';
 import CategoryNews from './CategoryNews';
 import SearchAndGraph from './SearchAndGraph';
+import Title from './Title';
 
 const Home = () => {
   return (
     <>
+      <Title />
       <WordCloud />
       <CategoryNews />
       <SearchAndGraph />

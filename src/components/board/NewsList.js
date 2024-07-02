@@ -117,14 +117,14 @@ const NewsList = ({ newsList, page, size, count }) => {
           ))}
       </div>
 
-      {state.curPage > 1 && (
+      {/* {state.curPage > 1 && (
         <div className={styles.scrollToTop}>
           <CircleButton
             text={<FontAwesomeIcon icon={faChevronUp} />}
             onClickEvent={ScrollToTopHandler}
           ></CircleButton>
         </div>
-      )}
+      )} */}
 
       {!state.hasMore && (
         <Paging size={size} count={count} curPage={page} type={'news'} />

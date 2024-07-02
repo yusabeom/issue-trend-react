@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from '../../styles/ByTypeNews.module.scss';
+import { SlArrowDown } from 'react-icons/sl';
 
 const RegionSelector = ({ onRegionChange }) => {
   const { newsTitle } = styles;
@@ -36,6 +37,7 @@ const RegionSelector = ({ onRegionChange }) => {
           </option>
         ))}
       </select>
+      <SlArrowDown />
     </div>
   );
 };
