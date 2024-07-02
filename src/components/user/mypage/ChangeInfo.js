@@ -295,10 +295,12 @@ const ChangeInfo = () => {
   };
 
   // 프로필 이미지 등록하기
-  const $fileTag = useRef();
+  const $fileTag = useRef(); // 인풋 요소를 참조하는데, 변경이 발생하면 showThumbnailHandler가 작동한다.
 
-  const [imgFile, setImgFile] = useState(localStorage.getItem('PROFILE_IMAGE'));
+  const [imgFile, setImgFile] = useState(localStorage.getItem('PROFILE_IMAGE')); // 로그인하고, 로컬스토리지에서 얻어온 프로파일 이미지를 상태변수로 관리
+  console.log('imgFile변경전: ', imgFile);
   const showThumbnailHandler = (e) => {
+    console.log($fileTag);
     const file = $fileTag.current.files[0];
     console.log(`file: ${file}`);
     const fileExt = file.name.slice(file.name.indexOf('.') + 1).toLowerCase();
@@ -310,7 +312,7 @@ const ChangeInfo = () => {
       fileExt !== 'gif'
     ) {
       alert('이미지 파일(jpg, png, jpeg, gif)만 등록이 가능합니다.');
-
+      console.log('$file.current.value: ', $fileTag.current.value);
       $fileTag.current.value = '';
       return;
     }
@@ -320,6 +322,10 @@ const ChangeInfo = () => {
     reader.onloadend = () => {
       console.log(`reader.result: ${reader.result}`);
       setImgFile(reader.result);
+
+      console.log('$fileTag 셋한 후: ', $fileTag);
+      console.log('imgFile 변경후: ', imgFile);
+      console.log('$file.current.value: ', $fileTag.current.value);
     };
   };
 
@@ -389,7 +395,15 @@ const ChangeInfo = () => {
 
     const userFormData = new FormData();
     userFormData.append('user', userJsonBlob);
-    userFormData.append('profileImage', $fileTag.current.files[0]);
+    console.log(
+      '$fileTag.current.files[0] formData:',
+      $fileTag.current.files[0],
+    );
+
+    console.log('imgFile:', imgFile);
+    if (imgFile !== localStorage.getItem('PROFILE_IMAGE')) {
+      userFormData.append('profileImage', $fileTag.current.files[0]);
+    }
 
     const res = await axiosInstance.post(
       `${API_BASE_URL}${USER}/update-my-info`,
@@ -437,7 +451,7 @@ const ChangeInfo = () => {
             <div
               className='thumbnail-box'
               onClick={() => {
-                $fileTag.current.click();
+                $fileTag.current.click(); // 이 영역을 클릭하면 인풋창이 열린다.
               }}
             >
               <img
@@ -453,7 +467,7 @@ const ChangeInfo = () => {
               id='profile-img'
               type='file'
               style={{ display: 'none' }}
-              accept='image/*' /* 자사/소셜 로그인 진행시 DB에 넣을 때 경로문제 발생할 수도 있음 */
+              accept='image/*'
               ref={$fileTag}
               onChange={showThumbnailHandler}
             />
