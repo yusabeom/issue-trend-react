@@ -164,7 +164,7 @@ const Header = () => {
           )}
           {scrollPosition > 10 ? <div>|</div> : ''}
           <div className={items} onClick={goSubscribe}>
-            구독
+            뉴스레터
           </div>
           <div>|</div>
           <div className={items} onClick={openChatModal}>
