@@ -18,6 +18,7 @@ const ReportTemplate = () => {
   const page = +searchParams.get('page') || 1; // 현재 페이지
   const size = +searchParams.get('size') || 20; // amound (페이지 당 게시물 개수)
 
+  // 전체 게시물 개수를 구하기 위한 함수
   const fetchAllDate = async () => {
     try {
       console.log('GET 요청 url: ', ARTICLE + '/search-post');

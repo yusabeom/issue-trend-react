@@ -152,6 +152,7 @@ const ReportWriteModal = forwardRef((props, ref) => {
     e.preventDefault();
     if (!checked) {
       setOpenAlert(true);
+      return;
     }
 
     const formData = new FormData();
