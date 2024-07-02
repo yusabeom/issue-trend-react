@@ -4,6 +4,7 @@
 
 body {
   font-size: 18px;
+  background-color: #1B1511;
 }
 
 a {
@@ -19,5 +20,4 @@ input {
 .aspect-ratio {
   width: 60%;
   margin: 0 auto;
-  margin-top: 2%;
 }

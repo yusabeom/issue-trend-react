@@ -14,7 +14,7 @@ import axios from 'axios';
 import useNavigation from '../../common/func/useNavigation';
 
 const Subscribe = () => {
-  const { head, content, payBox, cancel } = styles;
+  const { container, head, content, payBox, cancel } = styles;
 
   const [tid, setTid] = useState('');
   const [userNum, setUserNum] = useState(localStorage.getItem('USER_NO'));
@@ -72,12 +72,12 @@ const Subscribe = () => {
   };
 
   return (
-    <>
+    <div className={container}>
       <div className={head}>
-        <h1>구독하기</h1>
+        <h1>뉴스레터</h1>
         <h2>
-          로그인 후 구독하시면 등록한 관심키워드 관련 기사를 이메일로 받을 수
-          있습니다.
+          로그인 후 뉴스레터 결제하시면 등록한 관심키워드 관련 기사를 이메일로
+          받을 수 있습니다.
         </h2>
       </div>
       <Card sx={{ maxWidth: 500, margin: '0 auto' }}>
@@ -114,7 +114,7 @@ const Subscribe = () => {
           </CardActions>
         </div>
       </Card>
-    </>
+    </div>
   );
 };
 

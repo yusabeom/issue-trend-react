@@ -1,22 +1,21 @@
 @import 'styles.scss';
 
 .searchContainer {
-    background-color: $puppleBackground;
-    width: 45%;
-    color: white;
+    width: 50%;
+    color: wheat;
 
 
     .title {
-        width: 70%;
+        width: 40%;
         margin: 0 auto;
         padding: 200px 0 10px;
         text-align: center;
-        font-size: 23px;
+        font-size: 28px;
         font-weight: bold;
         border-bottom: solid 2px;
 
         .date {
-            color: white;
+            color: wheat;
             font-size: 13px;
             font-weight: 400;
             margin-top: 20px;
@@ -31,17 +30,22 @@
         
         li {
             // background-color: red;
-            width: 70%;
+            width: 40%;
+            height: 45px;
             margin: 30px auto;
             display: flex;
+            align-items: center;
+            background-color: wheat;
+            color: #1B1511;
+            border-radius: 10px;
             
             
             p {
                 width: 40px;
                 height: 40px;
-                color: $puppleBackground;
+                color: #1B1511;
                 font-size: 20px;
-                background-color: white;
+                background-color: #ffc875;
                 border-radius: 50%;
                 margin: 0;
                 align-content: center;

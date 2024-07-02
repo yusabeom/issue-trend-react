@@ -1,22 +1,25 @@
 @import 'styles.scss';
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap');
 
 
 .wordCloudContainer {
     width: 60%;
     height: 100vh;
+    color: wheat;
+    margin: 50px auto 0;
+    border-top: 1px solid wheat;
 
-    margin: 200px auto 0;
-    
-    background-image: url(../assets/img/grey.jpg);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+    // background-image: url(../assets/img/grey.jpg);
+    // background-position: center;
+    // background-repeat: no-repeat;
+    // background-size: cover;
 
     
 
 
     .titleContainer {
         // background-color: wheat;
+        
         width: 75%;
         height: 20%;
         padding: 70px;
@@ -28,6 +31,8 @@
 
         .mainTitle {
             font-size: 60px;
+            font-family: "DM Serif Display", serif;
+            font-style: normal;
         }
         
         
@@ -49,7 +54,6 @@
         text-align: end;
         font-size: 13px;
         font-weight: bold;
-        color: black;
         opacity: 0.8;
 
         
@@ -59,10 +63,8 @@
     .cloudContainer {
         width: 70%;
         height: 500px;
-        background: white;
         margin: 0 auto;
         text-align: center;
-        box-shadow: 4px 4px 7px rgba(0, 0, 0, 0.1);
         display: flex;
         justify-content: center;
         overflow: hidden;

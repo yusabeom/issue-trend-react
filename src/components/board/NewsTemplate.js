@@ -171,7 +171,7 @@ const NewsTemplate = () => {
   return (
     <>
       <NewsHeader />
-      <div className='news-wrapper aspect-ratio'>
+      <div className='news-wrapper'>
         <Filter onTags={getFilterTags} agencies={newsAgencies} />
         <div>
           <p style={{ padding: '1rem 0 0' }}>

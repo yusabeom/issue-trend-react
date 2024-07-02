@@ -1,21 +1,25 @@
 @import 'styles.scss';
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap');
 
 
 .newsContainer {
-    height: 120vh;
-    background-color: $darkBackground;
+    height: 110vh;
+    background-color: wheat;
     
 
     .newsTitle {
+        
         text-align: center;
-        padding-top: 100px;
-        color: white;
+        padding-top: 50px;
+        color: #1B1511;
         font-weight: bold;
         line-height: 1.3;
     }
 
     h1 {
         font-size: 60px;
+        font-family: "DM Serif Display", serif;
+        font-style: normal;
     }
 
     h3 {

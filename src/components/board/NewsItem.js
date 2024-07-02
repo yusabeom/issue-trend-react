@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import styles from '../../styles/NewsItem.module.scss';
 import NewsDetailModal from './NewsDetailModal';
-import basicImage from '../../assets/img/logo.png';
+import basicImage from '../../assets/img/logo2.png';
 
 // 뉴스 목록에서 한 뉴스를 나타내는 컴포넌트
 const NewsItem = ({ article }) => {
@@ -35,8 +35,8 @@ const NewsItem = ({ article }) => {
         </div>
         <ul>
           <li className={sTitle}>{title}</li>
-          <li className={sDatetime}>{formattedCreatedDate}</li>
           <li className={sContent}>{truncatedText}</li>
+          <li className={sDatetime}>{formattedCreatedDate}</li>
         </ul>
       </li>
       <div style={{ display: 'none' }}>
