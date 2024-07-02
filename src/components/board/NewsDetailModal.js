@@ -31,6 +31,7 @@ import axios from 'axios';
 import ScrapBtn from '../../common/ui/ScrapBtn';
 import axiosInstance from '../../config/axios-config';
 import AuthContext from '../store/auth-context';
+import MyPageContext from '../../utils/MyPageContext';
 
 const ARTICLE = API_BASE_URL + USER;
 
@@ -51,6 +52,8 @@ const boxStyle = {
 const NewsDetailModal = forwardRef(({ article }, ref) => {
   const { isLoggedIn, userEmail, regionName, onLogout, userNo } =
     useContext(AuthContext);
+
+  const { recentInquiry, setRecentInquiry } = useContext(MyPageContext); // 가장 최근에 본 뉴스 기사 (번호)
 
   const {
     headerStyle,
@@ -96,6 +99,18 @@ const NewsDetailModal = forwardRef(({ article }, ref) => {
   const handleOpen = () => {
     setOpen(true);
     bringReplies();
+
+    // 최근에 본 뉴스 기사 갱신
+    setRecentInquiry((prev) => {
+      if (recentInquiry.length >= 10) {
+        const newArr = [...prev];
+        newArr.shift(); // 첫 번째 요소 제거
+        newArr.push(article.articleCode); // 마지막에 새로운 요소 추가
+        return newArr;
+      } else {
+        return [...prev, article.articleCode];
+      }
+    });
   };
 
   // 모달 닫기
