@@ -1,28 +1,27 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:400,700);
 
 .sArticle {
+  width: 250px;
   margin-top: 4rem;
-  display: flex;
-
-  //   border: #000 1px solid;
-  border-radius: 20px;
-
   overflow: hidden;
   position: relative;
-  box-shadow: 3px 4px 5px 5px rgb(207, 207, 207);
+  background-color: #ffe9c2;
+  // display: flex;
+  // border: #000 1px solid;
+  // box-shadow: 3px 4px 5px 5px rgb(207, 207, 207);
 
   cursor: pointer;
 
   .sImgContainer {
-    width: 245px;
-    height: 140px;
+    width: 250px;
+    height: 200px;
     overflow: hidden;
-    background-color: #fff;
+    
     -webkit-transition: height 0.5s;
     transition: height 0.5s;
 
     img {
-      width: auto;
+      width: 100%;
       height: 100%;
       display: block;
       opacity: 1;
@@ -51,45 +50,52 @@
 
   ul {
     position: relative;
-    width: 185px;
-    padding: 20px;
     -webkit-transition: width 0.5s;
     transition: width 0.5s;
 
     .sTitle {
       font-weight: 700;
+      border-bottom: 1px solid #7575755b;
+      margin: 10px;
+      padding-bottom: 10px;
     }
 
     .sDatetime {
+      text-align: end;
+      font-size: 14px;
+      padding: 10px;
     }
 
     .sContent {
-      position: absolute;
-      left: 20px;
-      right: 20px;
+      margin: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #7575755b;
+      // position: absolute;
+      // left: 20px;
+      // right: 20px;
 
-      margin: 0;
-      padding: 0;
-      color: #666c74;
-      line-height: 27px;
-      opacity: 0;
-      -webkit-transform: translateX(45px);
-      transform: translateX(45px);
-      -webkit-transition:
-        opacity 0.3s,
-        -webkit-transform 0.3s;
-      transition:
-        opacity 0.3s,
-        -webkit-transform 0.3s;
-      transition:
-        opacity 0.3s,
-        transform 0.3s;
-      transition:
-        opacity 0.3s,
-        transform 0.3s,
-        -webkit-transform 0.3s;
-      -webkit-transition-delay: 0s;
-      transition-delay: 0s;
+      // margin: 0;
+      // padding: 0;
+      // color: #666c74;
+      // line-height: 27px;
+      // opacity: 0;
+      // -webkit-transform: translateX(45px);
+      // transform: translateX(45px);
+      // -webkit-transition:
+      //   opacity 0.3s,
+      //   -webkit-transform 0.3s;
+      // transition:
+      //   opacity 0.3s,
+      //   -webkit-transform 0.3s;
+      // transition:
+      //   opacity 0.3s,
+      //   transform 0.3s;
+      // transition:
+      //   opacity 0.3s,
+      //   transform 0.3s,
+      //   -webkit-transform 0.3s;
+      // -webkit-transition-delay: 0s;
+      // transition-delay: 0s;
     }
   }
 
@@ -109,8 +115,8 @@
       transition-delay: 0.2s;
     }
 
-    ul {
-      width: 300px;
-    }
+  //   ul {
+  //     width: 300px;
+  //   }
   }
 }
