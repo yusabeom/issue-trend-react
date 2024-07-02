@@ -1,13 +1,17 @@
-import React, { useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import styles from '../../../styles/ChangeInfo.module.scss';
 import { Button, Container, Grid, TextField, Typography } from '@mui/material';
 import { API_BASE_URL, USER } from '../../../config/host-config';
 import PinDropIcon from '@mui/icons-material/PinDrop';
 import axiosInstance from '../../../config/axios-config';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import AuthContext from '../../store/auth-context';
 
 const { kakao } = window;
 const ChangeInfo = () => {
+  const navigate = useNavigate();
+  const { onLogout, profileImage } = useContext(AuthContext);
   const favoriteKeywords = JSON.parse(
     localStorage.getItem('FAVORITE_KEYWORDS'),
   );
@@ -381,13 +385,6 @@ const ChangeInfo = () => {
     };
 
     console.log(user);
-    console.log(
-      `user.favoriteKeywords[0].favoriteKeyword: ${user.favoriteKeywords[0].favoriteKeyword}`,
-    );
-    console.log(
-      `user.favoriteKeywords[0].favoriteKeyword: ${user.favoriteKeywords[0].favoriteKeyword}`,
-    );
-
     const userJsonBlob = new Blob([JSON.stringify(user)], {
       type: 'application/json',
     });
@@ -401,6 +398,7 @@ const ChangeInfo = () => {
     );
 
     console.log('imgFile:', imgFile);
+    console.log('PROFILE_IMAGE: ', localStorage.getItem('PROFILE_IMAGE'));
     if (imgFile !== localStorage.getItem('PROFILE_IMAGE')) {
       userFormData.append('profileImage', $fileTag.current.files[0]);
     }
@@ -410,8 +408,11 @@ const ChangeInfo = () => {
       userFormData,
     );
 
-    const data = await res.data;
-    console.log(data);
+    if (res.status === 200) {
+      alert('변경된 패스워드로 다시 로그인 해주세요');
+      onLogout();
+      navigate('/login');
+    }
 
     /*
     const res = await fetch(API_BASE_URL + USER, {
@@ -455,9 +456,14 @@ const ChangeInfo = () => {
               }}
             >
               <img
-                src={imgFile || require('../../../assets/img/anonymous.jpg')}
+                src={
+                  imgFile === 'null'
+                    ? require('../../../assets/img/anonymous.jpg')
+                    : imgFile
+                }
                 alt='profile'
               />
+
               {/* require 앞에 imgFile 변수 넣어야 함 */}
             </div>
             <label className='signup-img-label' htmlFor='profile-img'>

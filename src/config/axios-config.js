@@ -17,8 +17,8 @@ axiosInstance.interceptors.request.use(
   (config) => {
     // 만약 요청하는 URL이 http://localhost:8181/issue-trend/update-my-info 라면
     if (
-      config.url === 'http://localhost:8181/issue-trend/update-my-info' ||
-      config.url === 'http://localhost:8181/issue-trend/load-profile'
+      config.url === 'http://localhost:8181/issue-trend/update-my-info'
+      // config.url === 'http://localhost:8181/issue-trend/load-profile'
     ) {
       // Content-Type 헤더를 삭제한다.
       delete config.headers['Content-Type'];
@@ -37,6 +37,7 @@ axiosInstance.interceptors.response.use(
   (response) => response, // 응답에 문제가 없었다면 그대로 응답 내용 리턴
   async (error) => {
     console.log(`error: ${error}`);
+    console.log(error.response.data.message);
 
     console.log('response Interceptor가 동작함! 응답 에러 발생!');
 
