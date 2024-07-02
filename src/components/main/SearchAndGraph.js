@@ -4,7 +4,13 @@ import Graph from './Graph';
 
 const SearchAndGraph = () => {
   return (
-    <div className='aspect-ratio' style={{ display: 'flex', height: '100vh' }}>
+    <div
+      style={{
+        display: 'flex',
+        height: '100vh',
+        margin: '0 auto',
+      }}
+    >
       <Search />
       <Graph />
     </div>

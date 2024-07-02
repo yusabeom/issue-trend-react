@@ -1,10 +1,11 @@
 .news-wrapper {
-  margin-top: 5%;
+  /* margin-top: 5%; */
+  padding: 0 500px;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin-bottom: 20rem;
+  background-color: #faeed7;
 }
 
 .btn {

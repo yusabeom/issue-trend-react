@@ -68,7 +68,7 @@ const Crime = () => {
           marginBottom: '40px',
         }}
       >
-        <div style={{ width: '500px', height: '200px' }}>
+        <div>
           {chartData && (
             <Bar data={chartData} options={{ maintainAspectRatio: false }} />
           )}

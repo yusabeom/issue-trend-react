@@ -44,7 +44,7 @@ const Footer = () => {
         <div className={styles.footerContainer}>
           <Reset />
           <img
-            src={require('../../assets/img/logo.png')}
+            src={require('../../assets/img/logo2.png')}
             alt='로고이미지'
             height='120'
           />

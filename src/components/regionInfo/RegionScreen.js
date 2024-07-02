@@ -39,17 +39,43 @@ const RegionScreen = () => {
 
   return (
     <>
-      <div className='aspect-ratio'>
+      <>
+        <div className={title}>
+          <h1>지역별 정보</h1>
+          <h2>
+            지역별 다양한 정보를 확인 할 수 있습니다. (날씨, 미세먼지, 지역맛집,
+            범죄발생)
+          </h2>
+        </div>
         <div className={regionContainer}>
-          <h1 className={title}>
-            <BiNews className={icon} />
-            ㅤ지역별 정보
-          </h1>
           <div className={tag}>
-            <p onClick={weather}>날씨</p>
-            <p onClick={dust}>미세먼지</p>
-            <p onClick={restaurant}>지역맛집</p>
-            <p onClick={crime}>범죄발생</p>
+            <p
+              onClick={weather}
+              className={classNames({
+                [activeWeather]:
+                  tagChange === 'weather' || tagChange === 'basic',
+              })}
+            >
+              날씨
+            </p>
+            <p
+              onClick={dust}
+              className={tagChange === 'dust' ? activeDust : ''}
+            >
+              미세먼지
+            </p>
+            <p
+              onClick={restaurant}
+              className={tagChange === 'restaurant' ? activeRestaurant : ''}
+            >
+              지역맛집
+            </p>
+            <p
+              onClick={crime}
+              className={tagChange === 'crime' ? activeCrime : ''}
+            >
+              범죄
+            </p>
           </div>
           <div
             className={classNames(tagBox, {
@@ -120,13 +146,13 @@ const RegionScreen = () => {
               </div>
             )}
             {tagChange === 'crime' && (
-              <p style={{ width: '600px', height: '600px' }}>
+              <p>
                 <Crime />
               </p>
             )}
           </div>
         </div>
-      </div>
+      </>
     </>
   );
 };

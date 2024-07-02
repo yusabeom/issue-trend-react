@@ -3,22 +3,23 @@
 
 
 .graphContainer {
-    width: 55%;
-    background-color: $main;
+    width: 50%;
+    background-color: white;
 
     .title {
-        width: 60%;
+        width: 40%;
         margin: 0 auto;
         padding: 200px 0 20px;
-        color: $puppleBackground;
+        color: #1B1511;
         text-align: center;
-        font-size: 23px;
+        font-size: 28px;
         font-weight: bold;
+        padding-bottom: 30px;
         border-bottom: solid 2px;
     }
 
     .graph {
-        width: 70%;
+        width: 40%;
         margin: 50px auto;
     }
 }
