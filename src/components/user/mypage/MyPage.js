@@ -28,6 +28,37 @@ const {
 const MyPage = () => {
   const navigate = useNavigate();
   const { profileImage, onLogout, onLogin } = useContext(AuthContext);
+
+  const [formattedPost, setFormattedPost] = useState([]);
+
+  useEffect(() => {
+    fetchMyPosts();
+  }, []);
+
+  const fetchMyPosts = async () => {
+    try {
+      const response = await axiosInstance.get(
+        `${API_BASE_URL}${USER}/search-post-user`,
+      );
+      if (response.status !== 200) {
+        console.log('Failed to fetch user posts');
+        throw new Error('Failed to fetch user posts');
+      }
+      const data = response.data;
+
+      const formatPosts = data.map((post) => ({
+        title: post.title,
+        text: post.text,
+        formatDate: post.formatDate,
+        postNo: post.postNo,
+      }));
+
+      setFormattedPost(formatPosts);
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+    }
+  };
+
   console.log(`profileImage: `, profileImage); // "null"
 
   const [activeComponent, setActiveComponent] = useState('');
@@ -89,7 +120,9 @@ const MyPage = () => {
             <div className={headContent}>
               <ul className={first}>
                 <li onClick={() => handleComponentChange('recent')}>20</li>
-                <li onClick={() => handleComponentChange('write')}>20</li>
+                <li onClick={() => handleComponentChange('write')}>
+                  {formattedPost.length}
+                </li>
                 <li onClick={() => handleComponentChange('scrap')}>10</li>
               </ul>
               <ul className={second}>
