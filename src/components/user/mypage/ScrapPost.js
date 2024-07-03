@@ -44,7 +44,7 @@ const ScrapPost = () => {
   const fetchScrap = async () => {
     try {
       console.log('GET url: ', SCRAP + `/${userNo}`);
-      const res = await axios.get(SCRAP + `/${userNo}`);
+      const res = await axiosInstance.get(SCRAP + `/${userNo}`);
       const getScrapList = res.data;
       setScrapList(getScrapList);
     } catch (error) {
