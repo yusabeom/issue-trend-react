@@ -20,8 +20,10 @@ import basicImage from '../../assets/img/logo.png';
 import styles from '../../styles/NewsDetailModal.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
+  faCircleExclamation,
   faEllipsisVertical,
   faLink,
+  faRightToBracket,
   faX,
 } from '@fortawesome/free-solid-svg-icons';
 import { height } from '@mui/system';
@@ -335,9 +337,17 @@ const NewsDetailModal = forwardRef(({ article }, ref) => {
                       </li>
                     ))}
                 </ul>
-                {isLoggedIn && (
+                {isLoggedIn ? (
                   <div className='replyInput'>
                     <TextareaComment newComment={newComment} type={'insert'} />
+                  </div>
+                ) : (
+                  <div className={styles.notLoggedInMesage}>
+                    <p>댓글은 로그인 후 작성할 수 있습니다</p>
+                    <a href='/login'>
+                      <FontAwesomeIcon icon={faRightToBracket} />
+                      &nbsp; 로그인하기
+                    </a>
                   </div>
                 )}
               </footer>

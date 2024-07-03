@@ -155,3 +155,16 @@ $buttonPupple: #807aa0;
     cursor: pointer;
   }
 }
+
+.notLoggedInMesage {
+  margin: 2rem;
+  font-size: 1.2em;
+  p {
+    margin: 0.8em auto;
+  }
+  a {
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

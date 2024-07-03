@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCaretDown,
   faCaretUp,
+  faCircleExclamation,
   faEllipsisVertical,
   faPen,
   faRightToBracket,
@@ -42,6 +43,7 @@ const ReportDetail = () => {
     img: '',
     email: '',
     formatDate: '',
+    profileImage: '',
   }); // 게시물 정보
   const [writerProfile, setWriterProfile] = useState(
     'https://i.namu.wiki/i/GQMqb8jtiqpCo6_US7jmWDO30KfPB2MMvbdURVub61Rs6ALKqbG-nUATj-wNk7bXXWIDjiLHJxWYkTELUgybkA.webp',
@@ -80,6 +82,7 @@ const ReportDetail = () => {
         img: getBoardDetail.img,
         email: getBoardDetail.email,
         formatDate: getBoardDetail.formatDate,
+        profileImage: getBoardDetail.profileImage,
       });
     } catch (error) {
       // console.error('Error fetching data: ', error);
@@ -120,6 +123,7 @@ const ReportDetail = () => {
 
   useEffect(() => {
     fetchData();
+    console.log('프로필사진:', boardDetail.profileImage);
   }, []);
 
   useEffect(() => {
@@ -254,9 +258,15 @@ const ReportDetail = () => {
               <div>
                 <div className={styles.writer}>
                   <div className={styles.profile}>
-                    <img src={writerProfile} alt='작성자 프로필 사진' />
+                    <img
+                      src={
+                        boardDetail.profileImage ||
+                        require('../../assets/img/anonymous.jpg')
+                      }
+                      alt='작성자 프로필 사진'
+                    />
                   </div>
-                  {boardDetail.email}
+                  <div className={styles.email}>{boardDetail.email}</div>
                 </div>
                 <div>
                   <p>{boardDetail.formatDate}</p>
