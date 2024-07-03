@@ -5,7 +5,10 @@ import { API_BASE_URL, USER } from '../../config/host-config';
 import axiosInstance from '../../config/axios-config';
 import styles from '../../styles/Restaurant.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import {
+  faLocationDot,
+  faMagnifyingGlass,
+} from '@fortawesome/free-solid-svg-icons';
 import DOMPurify from 'dompurify';
 import { useNavigate } from 'react-router-dom';
 import { NAVER_MAP_URL } from '../../config/Naver-config';
@@ -210,7 +213,9 @@ const Restaurant = () => {
       </div>
       <main className={styles.popularRestContainer}>
         <h2>
-          {myRegion} 맛집 <RestaurantIcon />{' '}
+          <FontAwesomeIcon icon={faLocationDot} />
+          {myRegion}
+          &nbsp; 맛집 <RestaurantIcon />{' '}
         </h2>
         <ul>
           {restList.map((rest) => (
