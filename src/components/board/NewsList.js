@@ -15,7 +15,7 @@ import Paging from '../../common/ui/Paging';
 newsList : 현재 페이지의 뉴스 기사
 */
 // 한 페이지 당 기사 개수
-const ONEPAGE_ARTICLE_NO = 10;
+const ONEPAGE_ARTICLE_NO = 9;
 
 const reducer = (state, action) => {
   switch (action.type) {
