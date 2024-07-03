@@ -16,6 +16,9 @@ const WritePost = () => {
   const [formattedPost, setFormattedPost] = useState([]);
   const [activePage, setActivePage] = useState(1);
   const postsPerPage = 3; // 페이지당 보여줄 게시물 수
+  const indexOfLastPost = activePage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = formattedPost.slice(indexOfFirstPost, indexOfLastPost);
 
   useEffect(() => {
     fetchMyPosts();
@@ -54,10 +57,6 @@ const WritePost = () => {
     console.log(postNo);
     navigate(`/board/detail/${postNo}`);
   };
-
-  const indexOfLastPost = activePage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = formattedPost.slice(indexOfFirstPost, indexOfLastPost);
 
   return (
     <>
