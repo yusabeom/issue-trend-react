@@ -51,6 +51,8 @@ const MyPage = () => {
       console.error('탈퇴 요청 중 오류 발생: ', error);
     }
   };
+
+  //
   return (
     <div className='aspect-ratio'>
       <div className={mypageContainer}>
@@ -86,13 +88,13 @@ const MyPage = () => {
             </div>
             <div className={headContent}>
               <ul className={first}>
-                <li>20</li>
-                <li>10</li>
-                <li>20</li>
+                <li onClick={() => handleComponentChange('recent')}>20</li>
+                <li onClick={() => handleComponentChange('write')}>20</li>
+                <li onClick={() => handleComponentChange('scrap')}>10</li>
               </ul>
               <ul className={second}>
+                <li>최근본 글</li>
                 <li>작성글</li>
-                <li>댓글</li>
                 <li>스크랩</li>
               </ul>
             </div>

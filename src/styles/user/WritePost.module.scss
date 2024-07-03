@@ -1,0 +1,27 @@
+.tableStyle {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.tableStyle table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #ddd;
+}
+
+.tableStyle th,
+.tableStyle td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+}
+
+.tableStyle th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.tableStyle tbody tr:hover {
+  background-color: #f5f5f5;
+  cursor: pointer;
+}
