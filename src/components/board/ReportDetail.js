@@ -315,6 +315,7 @@ const ReportDetail = () => {
           </div>
         )}
 
+        {/* 댓글 영역 */}
         {openReply && (
           <div className={styles.reply}>
             <ul className={styles.replyList}>

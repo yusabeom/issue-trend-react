@@ -60,7 +60,8 @@ const boxStyle = {
 
 const ReportWriteModal = forwardRef((props, ref) => {
   const navigate = useNavigate();
-  const { isLoggedIn, userEmail, onLogout } = useContext(AuthContext);
+  const { isLoggedIn, userEmail, onLogout, profileImage } =
+    useContext(AuthContext);
   const {
     headerStyle,
     articleContents,
