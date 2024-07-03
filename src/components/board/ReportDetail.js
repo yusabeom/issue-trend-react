@@ -14,6 +14,7 @@ import {
   faCaretUp,
   faEllipsisVertical,
   faPen,
+  faRightToBracket,
   faStar,
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
@@ -29,7 +30,7 @@ import AuthContext from '../store/auth-context';
 const ARTICLE = API_BASE_URL + USER;
 
 const ReportDetail = () => {
-  const { userNo } = useContext(AuthContext);
+  const { userNo, isLoggedIn } = useContext(AuthContext);
 
   const [openReply, setOpenReply] = useState(false); // 댓글창 열기
   const [boardDetail, setBoardDetail] = useState({
@@ -367,9 +368,19 @@ const ReportDetail = () => {
                   </li>
                 ))}
             </ul>
-            <div className='replyInput'>
-              <TextareaComment newComment={newComment} type={'insert'} />
-            </div>
+            {isLoggedIn ? (
+              <div className='replyInput'>
+                <TextareaComment newComment={newComment} type={'insert'} />
+              </div>
+            ) : (
+              <div className={styles.notLoggedInMesage}>
+                <p>댓글은 로그인 후 작성할 수 있습니다</p>
+                <a href='/login'>
+                  <FontAwesomeIcon icon={faRightToBracket} />
+                  &nbsp; 로그인하기
+                </a>
+              </div>
+            )}
           </div>
         )}
 

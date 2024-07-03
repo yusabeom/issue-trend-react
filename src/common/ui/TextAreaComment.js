@@ -106,7 +106,7 @@ export default function TextareaComment({
               flex: 'auto',
             }}
           >
-            <div className={styles.buttons}>
+            <div className={styles.bottoms}>
               <div>
                 <IconButton
                   variant='plain'
@@ -150,7 +150,7 @@ export default function TextareaComment({
                   <FormatItalic />
                 </IconButton>
               </div>
-              <div>
+              <div className={styles.buttons}>
                 {type === 'modify' && (
                   <Button
                     color='danger'

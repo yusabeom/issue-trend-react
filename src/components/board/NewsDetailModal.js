@@ -275,7 +275,10 @@ const NewsDetailModal = forwardRef(({ article }, ref) => {
                           <div className={styles.replyWriter}>
                             <div className={styles.profile}>
                               <img
-                                src={reply.profileImage}
+                                src={
+                                  reply.profileImage ||
+                                  require('../../assets/img/anonymous.jpg')
+                                }
                                 alt='댓글 작성자 프로필 사진'
                               />
                             </div>
@@ -332,9 +335,11 @@ const NewsDetailModal = forwardRef(({ article }, ref) => {
                       </li>
                     ))}
                 </ul>
-                <div className='replyInput'>
-                  <TextareaComment newComment={newComment} type={'insert'} />
-                </div>
+                {isLoggedIn && (
+                  <div className='replyInput'>
+                    <TextareaComment newComment={newComment} type={'insert'} />
+                  </div>
+                )}
               </footer>
             </div>
           </Box>

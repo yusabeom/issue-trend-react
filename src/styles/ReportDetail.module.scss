@@ -139,3 +139,14 @@
     max-height: 100%;
   }
 }
+
+.notLoggedInMesage {
+  p {
+    margin: 0.8em auto;
+  }
+  a {
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
