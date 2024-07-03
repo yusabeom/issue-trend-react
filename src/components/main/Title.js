@@ -43,8 +43,17 @@ const Title = () => {
 
   console.log(imgData);
 
+  const clickImg = (e) => {
+    const targetUrl = e.target.getAttribute('data-url');
+    console.log(targetUrl);
+
+    if (targetUrl) {
+      window.open(targetUrl, '_blank');
+    }
+  };
+
   return (
-    <>
+    <div className={container}>
       <div className={head}></div>
       <div className={title}>
         <h1>여러분들의 제보, 참여가 이슈트렌드를 만듭니다.</h1>
@@ -58,14 +67,19 @@ const Title = () => {
           autoplay={{ delay: 2000 }}
           loop
         >
-          {imgData.map((data) => (
-            <SwiperSlide>
-              <img src={data.img} alt='뉴스1' />
+          {imgData.map((data, index) => (
+            <SwiperSlide key={index}>
+              <img
+                src={data.img}
+                data-url={data.articleLink}
+                alt='뉴스1'
+                onClick={clickImg}
+              />
             </SwiperSlide>
           ))}
         </Swiper>
       </div>
-    </>
+    </div>
   );
 };
 
