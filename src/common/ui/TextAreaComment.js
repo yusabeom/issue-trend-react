@@ -20,7 +20,12 @@ import AuthContext from '../../components/store/auth-context';
 
 // 댓글 UI
 // newComment: 작성 후 submit한 댓글, initialValue: 댓글 초기값, type: 수정(modify) or 작성(insert)여부
-export default function TextareaComment({ newComment, initialValue, type }) {
+export default function TextareaComment({
+  newComment,
+  initialValue,
+  type,
+  onCancel,
+}) {
   // AuthContext에서 로그인 상태를 가져옵니다. (Header.js 참고)
   // userName을 가져오고 프로필 이미지 요청
 
@@ -37,13 +42,10 @@ export default function TextareaComment({ newComment, initialValue, type }) {
   const [openAlert, setOpenAlert] = React.useState(false); // 댓글 alert 메세지 여부
   const scrollRef = React.useRef(null);
 
-  // debounce 함수 생성
-  // const debouncedReplyTextHandler = React.useCallback(
-  //   debounce((value) => {
-  //     setReplyComment(value);
-  //   }, 300),
-  //   [],
-  // );
+  // 수정 취소하기
+  const cancelModify = () => {
+    onCancel(true);
+  };
 
   const replyTextHandler = (e) => {
     setReplyComment(e.target.value);
@@ -104,50 +106,65 @@ export default function TextareaComment({ newComment, initialValue, type }) {
               flex: 'auto',
             }}
           >
-            <IconButton
-              variant='plain'
-              color='neutral'
-              onClick={(event) => setAnchorEl(event.currentTarget)}
-            >
-              <FormatBold />
-              <KeyboardArrowDown fontSize='md' />
-            </IconButton>
-            <Menu
-              anchorEl={anchorEl}
-              open={Boolean(anchorEl)}
-              onClose={() => setAnchorEl(null)}
-              size='sm'
-              placement='bottom-start'
-              sx={{ '--ListItemDecorator-size': '24px' }}
-            >
-              {['200', 'normal', 'bold'].map((weight) => (
-                <MenuItem
-                  key={weight}
-                  selected={fontWeight === weight}
-                  onClick={() => {
-                    setFontWeight(weight);
-                    setAnchorEl(null);
-                  }}
-                  sx={{ fontWeight: weight }}
+            <div className={styles.buttons}>
+              <div>
+                <IconButton
+                  variant='plain'
+                  color='neutral'
+                  onClick={(event) => setAnchorEl(event.currentTarget)}
                 >
-                  <ListItemDecorator>
-                    {fontWeight === weight && <Check fontSize='sm' />}
-                  </ListItemDecorator>
-                  {weight === '200' ? 'lighter' : weight}
-                </MenuItem>
-              ))}
-            </Menu>
-            <IconButton
-              variant={italic ? 'soft' : 'plain'}
-              color={italic ? 'primary' : 'neutral'}
-              aria-pressed={italic}
-              onClick={() => setItalic((bool) => !bool)}
-            >
-              <FormatItalic />
-            </IconButton>
-            <Button sx={{ ml: 'auto' }} onClick={replySubmetHandler}>
-              {type === 'modify' ? '수정' : '작성'}
-            </Button>
+                  <FormatBold />
+                  <KeyboardArrowDown fontSize='md' />
+                </IconButton>
+                <Menu
+                  anchorEl={anchorEl}
+                  open={Boolean(anchorEl)}
+                  onClose={() => setAnchorEl(null)}
+                  size='sm'
+                  placement='bottom-start'
+                  sx={{ '--ListItemDecorator-size': '24px' }}
+                >
+                  {['200', 'normal', 'bold'].map((weight) => (
+                    <MenuItem
+                      key={weight}
+                      selected={fontWeight === weight}
+                      onClick={() => {
+                        setFontWeight(weight);
+                        setAnchorEl(null);
+                      }}
+                      sx={{ fontWeight: weight }}
+                    >
+                      <ListItemDecorator>
+                        {fontWeight === weight && <Check fontSize='sm' />}
+                      </ListItemDecorator>
+                      {weight === '200' ? 'lighter' : weight}
+                    </MenuItem>
+                  ))}
+                </Menu>
+                <IconButton
+                  variant={italic ? 'soft' : 'plain'}
+                  color={italic ? 'primary' : 'neutral'}
+                  aria-pressed={italic}
+                  onClick={() => setItalic((bool) => !bool)}
+                >
+                  <FormatItalic />
+                </IconButton>
+              </div>
+              <div>
+                {type === 'modify' && (
+                  <Button
+                    color='danger'
+                    sx={{ ml: 'auto' }}
+                    onClick={cancelModify}
+                  >
+                    취소
+                  </Button>
+                )}
+                <Button sx={{ ml: 'auto' }} onClick={replySubmetHandler}>
+                  {type === 'modify' ? '수정' : '작성'}
+                </Button>
+              </div>
+            </div>
           </Box>
         }
         sx={{

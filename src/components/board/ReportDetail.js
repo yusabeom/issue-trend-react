@@ -211,6 +211,11 @@ const ReportDetail = () => {
     bringReplies();
   };
 
+  // 수정 취소하기
+  const onCancel = (isCancel) => {
+    if (isCancel) setSelectedReply(null);
+  };
+
   // 댓글 삭제하기
   const deleteComment = async (e, replyNo) => {
     try {
@@ -253,7 +258,6 @@ const ReportDetail = () => {
                   {boardDetail.email}
                 </div>
                 <div>
-                  <a href=''>신고하기</a>
                   <p>{boardDetail.formatDate}</p>
                 </div>
               </div>
@@ -263,7 +267,7 @@ const ReportDetail = () => {
 
             <main className='contentRegion'>
               {imgUrl && (
-                <div>
+                <div className={styles.boardImg}>
                   <img src={imgUrl} alt='게시물 이미지' />
                 </div>
               )}
@@ -354,6 +358,7 @@ const ReportDetail = () => {
                         newComment={newEditComment}
                         initialValue={reply.text}
                         type={'modify'}
+                        onCancel={onCancel}
                       />
                     )}
 

@@ -118,6 +118,11 @@ const ReportWriteModal = forwardRef((props, ref) => {
 
     if (props.type === 'edit') {
       console.log('title: ', props.object.title);
+      setTitleInput(props.object.title);
+      setContentInput(props.object.text);
+      console.log('기존에 첨부한 이미지:', props.object.img);
+      setImgFile(props.object.img);
+      setImageSrc(props.object.img);
     }
     setOpen(true);
   };
