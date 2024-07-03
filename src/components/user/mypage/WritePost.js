@@ -1,55 +1,109 @@
-import React, { useContext, useEffect, useState } from 'react';
-import styles from '../../../styles/RecentPost.module.scss';
-import img from '../../../assets/img/news3.jpg';
-import AuthContext from '../../store/auth-context';
+import React, { useEffect, useState } from 'react';
+import axiosInstance from '../../../config/axios-config';
 import { API_BASE_URL, USER } from '../../../config/host-config';
+import styles from '../../../styles/RecentPost.module.scss';
+import { useNavigate } from 'react-router-dom';
+import Pagination from 'react-js-pagination';
+import pageStyle from '../../../styles/user/Pagination.module.scss';
+import table from '../../../styles/user/WritePost.module.scss';
 
-const { title, post, postContent } = styles;
+const { title } = styles;
+const { paginationContainer } = pageStyle;
+const { tableStyle } = table;
 
 const WritePost = () => {
-  const [posts, setPosts] = useState([]);
-  const { userNo } = useContext(AuthContext);
-  // 서버가 응답하는 결과물: List<PostResponseDTO>
-  console.log(`userNo: ${userNo}`); // 30
+  const navigate = useNavigate();
+  const [formattedPost, setFormattedPost] = useState([]);
+  const [activePage, setActivePage] = useState(1);
+  const postsPerPage = 3; // 페이지당 보여줄 게시물 수
+
   useEffect(() => {
-    const fetchMyPosts = async () => {
-      try {
-        const response = await fetch(
-          `${API_BASE_URL}${USER}/search-post-user/${userNo}`,
-        );
-        if (!response.ok) {
-          console.log('Failed to fetch user posts');
-          throw new Error('Failed to fetch user posts');
-        }
-        const data = await response.json();
-        console.log(`data: `, data);
-        setPosts(data);
-      } catch (error) {
-        console.error('Error fetching user posts:', error);
-      }
-    };
     fetchMyPosts();
   }, []);
 
-  console.log(posts);
-  console.log([...posts]);
+  const fetchMyPosts = async () => {
+    try {
+      const response = await axiosInstance.get(
+        `${API_BASE_URL}${USER}/search-post-user`,
+      );
+      if (response.status !== 200) {
+        console.log('Failed to fetch user posts');
+        throw new Error('Failed to fetch user posts');
+      }
+      const data = response.data;
+
+      const formatPosts = data.map((post) => ({
+        title: post.title,
+        text: post.text,
+        formatDate: post.formatDate,
+        postNo: post.postNo,
+      }));
+
+      setFormattedPost(formatPosts);
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+    }
+  };
+
+  const handlePageChange = (pageNumber) => {
+    console.log(pageNumber);
+    setActivePage(pageNumber);
+  };
+
+  const clickPost = (postNo) => {
+    console.log(postNo);
+    navigate(`/board/detail/${postNo}`);
+  };
+
+  const indexOfLastPost = activePage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = formattedPost.slice(indexOfFirstPost, indexOfLastPost);
+
   return (
     <>
-      <div className={title}>내가 작성한 글</div>
-      <div className={post}>
-        <img src={img} />
-        <ul className={postContent}>
-          <li>제목</li>
-          <li>내용</li>
-        </ul>
+      <div className={title}>
+        <h2>내가 작성한 글</h2>
+        {formattedPost.length === 0 ? (
+          <div>작성한 글이 없습니다.</div>
+        ) : (
+          <div className={tableStyle}>
+            <table>
+              <thead>
+                <tr>
+                  <th>포스트 번호</th>
+                  <th>제목</th>
+                  <th>내용</th>
+                  <th>작성일</th>
+                </tr>
+              </thead>
+              <tbody>
+                {currentPosts.map((post, index) => (
+                  <tr key={index} onClick={() => clickPost(post.postNo)}>
+                    <td>{post.postNo}</td>
+                    <td>{post.title}</td>
+                    <td>{post.text}</td>
+                    <td>{post.formatDate}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
-      <div className={post}>
-        <img src={img} />
-        <ul className={postContent}>
-          <li>제목</li>
-          <li>내용</li>
-        </ul>
-      </div>
+      {formattedPost.length > 0 && (
+        <div className={paginationContainer}>
+          <Pagination
+            activePage={activePage}
+            itemsCountPerPage={postsPerPage}
+            totalItemsCount={formattedPost.length}
+            pageRangeDisplayed={5}
+            onChange={handlePageChange}
+            itemClass='page-item'
+            linkClass='page-link'
+            innerClass='pagination justify-content-center'
+          />
+        </div>
+      )}
     </>
   );
 };
