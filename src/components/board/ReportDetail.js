@@ -12,21 +12,11 @@ import TextareaComment from '../../common/ui/TextAreaComment';
 import { API_BASE_URL, USER } from '../../config/host-config';
 import axios from 'axios';
 import ReportWriteModal from './ReportWriteModal';
+import { style } from 'd3';
+import axiosInstance from '../../config/axios-config';
+import Comfirm from '../../common/ui/Confirm';
 
 const ARTICLE = API_BASE_URL + USER;
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case 'PREV':
-      return +state + 1;
-
-    case 'NEXT':
-      return +state - 1;
-
-    default:
-      return +state;
-  }
-};
 
 const ReportDetail = () => {
   const [openReply, setOpenReply] = useState(false); // 댓글창 열기
@@ -45,17 +35,17 @@ const ReportDetail = () => {
   ); // 작성자 프사
   const [replyList, setReplyList] = useState([]); // 댓글 리스트
   const [imgUrl, setImgUrl] = useState(''); // 게시글 첨부 이미지
+  const [openConfirm, setOpenConfirm] = useState(false); // 삭제 확인 메세지
 
   // 경로 상에 붙은 변수 정보(path variable)을 가져오는 방법
   // ex) /board/detail/{data}
   const { id } = useParams();
+  const confirmRef = useRef();
 
   // 요청과 함께 전달된 쿼리스트링을 가져오는 방법.
   // ex) /board/list?page=2&size=10
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-
-  const [state, dispatch] = useReducer(reducer, id);
 
   const page = searchParams.get('page') || 1;
   const size = searchParams.get('size') || 20;
@@ -142,7 +132,7 @@ const ReportDetail = () => {
       ARTICLE + `/post/${boardDetail.postNo}/comments`,
     );
     try {
-      const res = await axios.post(
+      const res = await axiosInstance.post(
         ARTICLE + `/post/${boardDetail.postNo}/comments`,
         {
           userNo: localStorage.getItem('USER_NO'),
@@ -165,30 +155,22 @@ const ReportDetail = () => {
 
   // 삭제 처리하기
   const deleteRequest = async () => {
+    if (confirmRef.current) confirmRef.current.callSubmit();
+  };
+
+  // 삭제 확인 메세지
+  const onConfirm = async (isDelete) => {
+    console.log('isDelete:', isDelete);
+    if (!isDelete) return;
+
     console.log('DELETE 요청 url: ', ARTICLE + `/delete-post/${id}`);
     try {
-      const res = await axios.delete(ARTICLE + ARTICLE + `/delete-post/${id}`);
+      const res = await axiosInstance.delete(ARTICLE + `/delete-post/${id}`);
       console.log('서버 정상 동작: ', res.data);
+      navigate('/board');
     } catch (error) {
       console.log(error);
     }
-  };
-
-  const clickOtherBoard = (e) => {
-    console.log('다른 게시물 이동~~');
-    if (e.target.textContent === '이전게시물') {
-      dispatch({
-        type: 'PREV',
-        val: -1,
-      });
-    } else {
-      dispatch({
-        type: 'NEXT',
-        val: 1,
-      });
-    }
-    console.log('이동할 게시물 번호: ' + '/board/detail/' + state);
-    // window.location.href = `/board/detail/${state}`;
   };
 
   return (
@@ -261,7 +243,17 @@ const ReportDetail = () => {
                   </Button>
                 </div>
               )}
+              <Button
+                variant='outlined'
+                onClick={() => {
+                  navigate('/board');
+                }}
+                style={{ float: 'right' }}
+              >
+                목록
+              </Button>
             </footer>
+            <Comfirm onConfirm={onConfirm} ref={confirmRef} />
           </div>
         )}
 
@@ -293,17 +285,6 @@ const ReportDetail = () => {
             </div>
           </div>
         )}
-
-        <div className={styles.moveToOthers}>
-          <div className={styles.prevBoard} onClick={clickOtherBoard}>
-            {' '}
-            <FontAwesomeIcon icon={faCaretUp} /> &nbsp; 이전게시물
-          </div>
-          <div className={styles.nextBoard} onClick={clickOtherBoard}>
-            {' '}
-            <FontAwesomeIcon icon={faCaretDown} /> &nbsp; 다음게시물
-          </div>
-        </div>
 
         <div style={{ display: 'none' }}>
           <ReportWriteModal

@@ -23,6 +23,7 @@ import {
   Alert,
 } from '@mui/material';
 import basicImage from '../../assets/img/logo.png';
+import axiosInstance from '../../config/axios-config';
 
 import styles from '../../styles/ReportWriteModal.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -177,7 +178,7 @@ const ReportWriteModal = forwardRef((props, ref) => {
     // axios
     console.log('POST url: ', ARTICLE + '/create-post');
     try {
-      const res = await axios.post(ARTICLE + '/create-post', formData, {
+      const res = await axiosInstance.post(ARTICLE + '/create-post', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -196,6 +197,7 @@ const ReportWriteModal = forwardRef((props, ref) => {
     e.preventDefault();
     if (!checked) {
       setOpenAlert(true);
+      return;
     }
 
     const formData = new FormData();
@@ -221,7 +223,7 @@ const ReportWriteModal = forwardRef((props, ref) => {
     // axios
     console.log('PUT url: ', ARTICLE + '/update-post/' + postNo);
     try {
-      const res = await axios.put(
+      const res = await axiosInstance.put(
         ARTICLE + '/update-post/' + postNo,
         formData,
         {
