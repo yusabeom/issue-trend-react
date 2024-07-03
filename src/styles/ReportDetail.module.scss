@@ -66,16 +66,32 @@
         li {
           margin-bottom: 1.2rem;
 
-          p {
+          .replyContent {
             margin: 0.4rem;
+            display: flex;
+
+            p.moddel {
+              margin-left: 1rem;
+
+              .icon {
+                cursor: pointer;
+                &:hover {
+                  color: red;
+                }
+              }
+            }
           }
-          div.replyWriter {
+          .replyWriter {
             font-weight: 700;
             display: flex;
             justify-content: left;
             align-items: center;
             .profile {
               margin-right: 0.8rem;
+            }
+
+            .crud {
+              float: right;
             }
           }
           p.replyContent {

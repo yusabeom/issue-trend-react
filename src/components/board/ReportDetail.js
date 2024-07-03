@@ -1,12 +1,21 @@
-import React, { useEffect, useReducer, useRef, useState } from 'react';
+import React, {
+  useContext,
+  useEffect,
+  useReducer,
+  useRef,
+  useState,
+} from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import styles from '../../styles/ReportDetail.module.scss';
-import { Button } from '@mui/material';
+import { Button, Popover, Typography } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCaretDown,
   faCaretUp,
+  faEllipsisVertical,
+  faPen,
   faStar,
+  faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import TextareaComment from '../../common/ui/TextAreaComment';
 import { API_BASE_URL, USER } from '../../config/host-config';
@@ -15,10 +24,13 @@ import ReportWriteModal from './ReportWriteModal';
 import { style } from 'd3';
 import axiosInstance from '../../config/axios-config';
 import Comfirm from '../../common/ui/Confirm';
+import AuthContext from '../store/auth-context';
 
 const ARTICLE = API_BASE_URL + USER;
 
 const ReportDetail = () => {
+  const { userNo } = useContext(AuthContext);
+
   const [openReply, setOpenReply] = useState(false); // 댓글창 열기
   const [boardDetail, setBoardDetail] = useState({
     postNo: 0,
@@ -35,7 +47,7 @@ const ReportDetail = () => {
   ); // 작성자 프사
   const [replyList, setReplyList] = useState([]); // 댓글 리스트
   const [imgUrl, setImgUrl] = useState(''); // 게시글 첨부 이미지
-  const [openConfirm, setOpenConfirm] = useState(false); // 삭제 확인 메세지
+  const [selectedReply, setSelectedReply] = useState(null); // 수정할 replyNo
 
   // 경로 상에 붙은 변수 정보(path variable)을 가져오는 방법
   // ex) /board/detail/{data}
@@ -173,6 +185,48 @@ const ReportDetail = () => {
     }
   };
 
+  // 댓글 수정하기
+  const modifyComment = async (e, replyNo) => {
+    setSelectedReply(replyNo);
+  };
+
+  const newEditComment = async (editComment) => {
+    console.log('userNo:', userNo);
+    console.log('postNo:', id);
+    console.log('text:', editComment);
+    try {
+      console.log(
+        'PUT 요청 url: ',
+        ARTICLE + `/post/${id}/comments/${selectedReply}`,
+      );
+      const res = await axiosInstance.put(
+        ARTICLE + `/post/${id}/comments/${selectedReply}`,
+        { userNo, text: editComment, postNo: selectedReply },
+      );
+      console.log(res.data);
+    } catch (error) {
+      console.log('댓글수정 에러:', error);
+    }
+    setSelectedReply(null);
+    bringReplies();
+  };
+
+  // 댓글 삭제하기
+  const deleteComment = async (e, replyNo) => {
+    try {
+      console.log(
+        'DELETE 요청 url: ',
+        ARTICLE + `/post/${id}/comments/${replyNo}`,
+      );
+      const res = await axiosInstance.delete(
+        ARTICLE + `/post/${id}/comments/${replyNo}`,
+      );
+    } catch (error) {
+      console.log('댓글삭제 에러:', error);
+    }
+    bringReplies();
+  };
+
   return (
     <div className={styles.outWrapper}>
       <div className={`aspect-ratio ${styles.wrapper}`}>
@@ -275,7 +329,34 @@ const ReportDetail = () => {
                       </div>
                       {reply.email}
                     </div>
-                    <p className={styles.replyContent}>{reply.text}</p>
+                    <div className={styles.replyContent}>
+                      <p>{reply.text}</p>
+
+                      {+reply.userNo === +userNo && (
+                        <p className={styles.moddel}>
+                          <FontAwesomeIcon
+                            icon={faPen}
+                            className={styles.icon}
+                            onClick={(e) => modifyComment(e, reply.commentNo)}
+                          />
+                          &nbsp;&nbsp;
+                          <FontAwesomeIcon
+                            icon={faTrash}
+                            className={styles.icon}
+                            onClick={(e) => deleteComment(e, reply.commentNo)}
+                          />
+                        </p>
+                      )}
+                    </div>
+
+                    {selectedReply === reply.commentNo && (
+                      <TextareaComment
+                        newComment={newEditComment}
+                        initialValue={reply.text}
+                        type={'modify'}
+                      />
+                    )}
+
                     {/* <p className={styles.replyDate}>{reply.replyDate}</p> */}
                   </li>
                 ))}
