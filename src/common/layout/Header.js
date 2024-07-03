@@ -21,16 +21,6 @@ const Header = () => {
   const [profileUrl, setProfileUrl] = useState(profileImage);
 
   const logoutHandler = async () => {
-    /*
-    const res = await fetch(`${API_BASE_URL}${USER}/logout`, {
-      method: 'GET',
-      headers: {
-        // 'Content-Type': 'application/json', --> logou
-        Authorization: 'Bearer ' + localStorage.getItem('ACCESS_TOKEN'),
-      },
-    });
-    */
-
     const res = await axiosInstance.get(`${API_BASE_URL}${USER}/logout`);
     console.log(`res: ${res}`);
     console.log(`res.data: ${res.data}`);
@@ -48,29 +38,6 @@ const Header = () => {
     console.log('profileImage: ', profileImage);
     const res = await axiosInstance.get(profileRequestURL);
 
-    /*
-    if (
-      res.status === 200 &&
-      res.headers.get('Content-type').startsWith('image')
-    ) {
-      // 서버에서는 byte[]로 직렬화된 이미지가 응답되므로
-      // blob()을 통해 전달받아야 한다. (json() xxxxx)
-      const profileBlob = await res.blob();
-      // 해당 이미지를 imgUrl로 변경
-      const imgUrl = window.URL.createObjectURL(profileBlob);
-      setProfileUrl(imgUrl);
-    } else if (
-      res.status === 200 &&
-      res.headers.get('Content-type').startsWith('text')
-    ) {
-      const imageUrl = await res.text();
-      setProfileUrl(imageUrl);
-    } else {
-      const err = await res.text();
-      console.log('err: ', err);
-      setProfileUrl(null);
-    }
-      */
     const status = res.status;
     console.log('res: ', res);
     if (status === 200) {
