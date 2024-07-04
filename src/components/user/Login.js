@@ -91,7 +91,7 @@ const Login = () => {
       userNo,
       favoriteKeywords,
     );
-    navigate('/home'); // --> 경로를 어디로 지정해야 하나 /home?
+    navigate('/home');
   };
 
   const loginHandler = (e) => {
@@ -220,43 +220,6 @@ const Login = () => {
           isModalOpen={isModalOpen}
           isModalClose={isModalClose}
         />
-        {/* 비밀번호 찾기 모달 */}
-        {/* <Dialog open={isModalOpen}> */}
-        {/*
-        <Dialog open={isModalOpen} maxWidth='sm' fullWidth>
-          <DialogTitle>비밀번호 찾기</DialogTitle>
-          <DialogContent>
-            <Typography>이메일을 입력하세요</Typography>
-            <TextField
-              autoFocus
-              margin='dense'
-              id='findPasswordEmail'
-              label='이메일 주소'
-              type='email'
-              fullWidth
-              onChange={findPasswordEmailHandler}
-            />
-            <span style={{ color: 'red' }}>{findPwValue.error}</span>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              color='primary'
-              onClick={() => {
-                console.log('취소 누름');
-                handleCloseModal();
-              }}
-            >
-              취소
-            </Button>
-            <Button
-              color='primary'
-              disabled={!isEmailValid} /*onClick={findPasswordHandler}
-            >
-              전송
-            </Button>
-          </DialogActions>
-        </Dialog>
-        */}
       </Container>
     </div>
   );

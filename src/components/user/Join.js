@@ -23,15 +23,6 @@ import useNavigation from '../../common/func/useNavigation';
 const { kakao } = window;
 const Join = () => {
   const navigate = useNavigate();
-  /*
-  const [showPw, setShowPw] = useState(false);
-  const handleToggleShowPw = (e) => {
-    console.log(showPw);
-    setShowPw((prveShowPw) => !prveShowPw);
-    console.log(showPw);
-  };
-  */
-
   const [userValue, setUserValue] = useState({
     email: '',
     nickname: '',
@@ -79,16 +70,6 @@ const Join = () => {
       const res = await axios.get(`${API_BASE_URL}${USER}/check`, {
         params: { email },
       });
-
-      /*
-      const res = await axios.get(API_BASE_URL + SEARCH, {
-        params: { keyword },
-      });
-const getNewsList = res.data;
-// http://localhost:8181/issue-trend/search?keyword=고속
-*/
-
-      // const result = await res.json();
       const result = res.data;
       console.log(`결과: ${result}`);
 
@@ -129,14 +110,6 @@ const getNewsList = res.data;
       flag,
     });
   };
-
-  // const nickChangeHandler = async (e) => {
-  //   const inputValue = e.target.value;
-  //   let msg = '좋아요';
-  //   let flag = true;
-  //   saveInputState({ key: 'nick', inputValue, msg, flag });
-  // };
-
   const nickChangeHandler = async (e) => {
     // 2자 이상 16자 이하, 영어 또는 숫자 또는 한글로 구성
     const nickRegex = /^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{2,16}$/;
@@ -231,77 +204,7 @@ const getNewsList = res.data;
     });
   };
 
-  // 핸드폰 번호
-  /*
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const phoneNumberHandler = (e) => {
-    const phoneNumberRegex = /(01[016789{1}])-([0-9]{4})-([0-9]{4})$/;
-    const inputValue = e.target.value;
-    let filterPhoneNumber = '';
-
-    let msg;
-    let flag = false;
-    filterPhoneNumber = inputValue
-      .replace(/[^0-9.]/g, '')
-      .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, '$1-$2-$3')
-      .replace(/(-{1,2})$/g, '');
-    console.log(filterPhoneNumber);
-    setPhoneNumber(filterPhoneNumber);
-
-    if (!phoneNumberRegex.test(inputValue)) {
-      msg = '휴대폰 번호를 다시 확인해주세요.';
-    } else {
-      flag = true;
-    }
-
-    saveInputState({
-      key: 'phoneNumber',
-      inputValue,
-      msg,
-      flag,
-    });
-
-    console.log({
-      key: 'phoneNumber',
-      inputValue,
-      msg,
-      flag,
-    });
-  };
-  // console.log(phoneNumber);
-
-  const [remainingTime, setRemainingTime] = useState(0);
-  const [isTimerOpen, setIstimerOpen] = useState(false);
-  const formatTime = (timeInSeconds) => {
-    const minutes = Math.floor(timeInSeconds / 60);
-    const seconds = timeInSeconds % 60;
-    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-  };
-
-  // 인증하기 버튼
-  const sendButtonHandler = (e) => {
-    e.preventDefault();
-    setIstimerOpen(true);
-    setRemainingTime(10);
-  };
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      if (isTimerOpen && remainingTime > 0) {
-        setRemainingTime((prevTime) => prevTime - 1);
-      } else if (isTimerOpen && remainingTime === 0) {
-        clearInterval(timer);
-        alert('dd');
-        setIstimerOpen(false);
-      }
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, [remainingTime]);
-  //------------------------------------------------------
-  */
-
-  const [regionName, setRegionName] = useState('');
+  // const [regionName, setRegionName] = useState('');
   // 내 위치 자동설정
   // let regionName = null;
 
@@ -351,29 +254,6 @@ const getNewsList = res.data;
 
   const addressClickHandler = () => {
     getLocation();
-
-    // let msg;
-    // let flag = false;
-
-    // console.log(regionName);
-    // if (!regionName) {
-    //   msg = '지역설정은 필수값 입니다.';
-
-    //   saveInputState({
-    //     key: 'regionName',
-    //     inputValue: regionName,
-    //     msg,
-    //     flag,
-    //   });
-    // } else {
-    //   flag = true;
-    //   saveInputState({
-    //     key: 'regionName',
-    //     inputValue: regionName,
-    //     msg,
-    //     flag,
-    //   });
-    // }
   };
 
   const isValid = () => {
@@ -426,7 +306,6 @@ const getNewsList = res.data;
   // 입력한 키워드를 저장하는 배열
   const [keywords, setKeywords] = useState([]);
   console.log(typeof keywords);
-  // const [keyword, setKeyword] = useState({ id: '', value: '' });
 
   const handleKeyDown = (value) => {
     console.log(value);
@@ -448,28 +327,23 @@ const getNewsList = res.data;
       ];
     });
 
-    // setKeywords((oldValue) => [...oldValue, { id: keyword.id, value }]);
     document.getElementById('keyword').value = '';
   };
 
-  // console.log(keywords.length);
-  // console.log([...keywords]);
-
   const deleteHandler = (e) => {
-    // console.log(`e.target.textContent: ${e.target.textContent}`);
-    // console.log(`typeof e.target.textContent ${typeof e.target.textContent}`);
     const value = e.target.textContent;
     setKeywords((oldKeywords) => {
       const updatedKeywords = oldKeywords.filter((k) => k.value !== value);
       return updatedKeywords;
     });
-    // console.log(`지운 후: ${keywords}`);
   };
 
   const fetchSignUpPost = async () => {
     const { email, nickname, password, regionName } = userValue;
+    console.log('keywords 순수 관심 키워드 값: ', keywords);
     const keywordArray = [];
     keywords.forEach((k) => keywordArray.push(k.value));
+    console.log('키워드만 담은 값 keywordArray: ', keywordArray);
 
     const user = {
       email,
@@ -548,13 +422,10 @@ const getNewsList = res.data;
                     }}
                   >
                     <img
-                      src={
-                        imgFile || require('../../assets/img/anonymous.jpg')
-                      } /**/
+                      src={imgFile || require('../../assets/img/anonymous.jpg')}
                       alt='profile'
                       title='프로필 등록하기'
                     />
-                    {/* require 앞에 imgFile 변수 넣어야 함 */}
                   </Box>
                   <label className={styles.imgLabel} htmlFor='profile-img'>
                     <FaFileImage />
@@ -564,7 +435,7 @@ const getNewsList = res.data;
                     id='profile-img'
                     type='file'
                     style={{ display: 'none' }}
-                    accept='image/*' /* 자사/소셜 로그인 진행시 DB에 넣을 때 경로문제 발생할 수도 있음 */
+                    accept='image/*'
                     ref={$fileTag}
                     onChange={showThumbnailHandler}
                   />

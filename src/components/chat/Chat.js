@@ -61,14 +61,14 @@ const Chat = ({ onUsers, onEnter, OnExit }) => {
   useEffect(() => {
     if (!roomSocket) return;
     // 메세지 히스토리가 없고 원래 없는 것이 아니라면(DB에는 존재) 중지
-    if (msgList.length === 0) return;
+    // if (msgList.length === 0) return;
 
     console.log('입장 메세지 useEffect!!');
     function sLoginCallback(id) {
       console.log('sLoginCallback 실행!', id);
 
       // console.log(userId);
-      // setTimeout(() => {
+
       setMsgList((prev) => [
         ...prev,
         {
@@ -77,7 +77,6 @@ const Chat = ({ onUsers, onEnter, OnExit }) => {
           id: '',
         },
       ]);
-      // }, 500);
     }
 
     roomSocket.on('sLogin', sLoginCallback);
@@ -167,16 +166,16 @@ const Chat = ({ onUsers, onEnter, OnExit }) => {
   const onSubmitHandler = (e) => {
     e.preventDefault();
     onEnter(true);
-    const userEmail2 = localStorage.getItem('LOGIN_EMAIL');
+
     const region = localStorage.getItem('REGION_NAME');
-    const userNo = localStorage.getItem('USER_NO');
     const nickname = localStorage.getItem('NICK_NAME');
 
     const roomNumber = regionCode[region];
 
     setUserId(nickname);
-    console.log('userEmail: ', nickname);
-    roomSocket.emit('login', { userId: nickname, roomNumber }); // 서버로 아이디 전송 (처음에는 이름으로 전달)
+    roomSocket.emit('login', { userId: nickname, roomNumber });
+    // 서버로 아이디, 지역코드(방번호) 전달
+
     setIsLogin(true);
   };
 

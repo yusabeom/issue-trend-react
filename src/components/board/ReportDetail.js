@@ -1,34 +1,36 @@
-import React, { useEffect, useReducer, useRef, useState } from 'react';
+import React, {
+  useContext,
+  useEffect,
+  useReducer,
+  useRef,
+  useState,
+} from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import styles from '../../styles/ReportDetail.module.scss';
-import { Button } from '@mui/material';
+import { Button, Popover, Typography } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCaretDown,
   faCaretUp,
+  faEllipsisVertical,
+  faPen,
   faStar,
+  faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import TextareaComment from '../../common/ui/TextAreaComment';
 import { API_BASE_URL, USER } from '../../config/host-config';
 import axios from 'axios';
 import ReportWriteModal from './ReportWriteModal';
+import { style } from 'd3';
+import axiosInstance from '../../config/axios-config';
+import Comfirm from '../../common/ui/Confirm';
+import AuthContext from '../store/auth-context';
 
 const ARTICLE = API_BASE_URL + USER;
 
-const reducer = (state, action) => {
-  switch (action.type) {
-    case 'PREV':
-      return +state + 1;
-
-    case 'NEXT':
-      return +state - 1;
-
-    default:
-      return +state;
-  }
-};
-
 const ReportDetail = () => {
+  const { userNo } = useContext(AuthContext);
+
   const [openReply, setOpenReply] = useState(false); // 댓글창 열기
   const [boardDetail, setBoardDetail] = useState({
     postNo: 0,
@@ -45,17 +47,17 @@ const ReportDetail = () => {
   ); // 작성자 프사
   const [replyList, setReplyList] = useState([]); // 댓글 리스트
   const [imgUrl, setImgUrl] = useState(''); // 게시글 첨부 이미지
+  const [selectedReply, setSelectedReply] = useState(null); // 수정할 replyNo
 
   // 경로 상에 붙은 변수 정보(path variable)을 가져오는 방법
   // ex) /board/detail/{data}
   const { id } = useParams();
+  const confirmRef = useRef();
 
   // 요청과 함께 전달된 쿼리스트링을 가져오는 방법.
   // ex) /board/list?page=2&size=10
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-
-  const [state, dispatch] = useReducer(reducer, id);
 
   const page = searchParams.get('page') || 1;
   const size = searchParams.get('size') || 20;
@@ -142,7 +144,7 @@ const ReportDetail = () => {
       ARTICLE + `/post/${boardDetail.postNo}/comments`,
     );
     try {
-      const res = await axios.post(
+      const res = await axiosInstance.post(
         ARTICLE + `/post/${boardDetail.postNo}/comments`,
         {
           userNo: localStorage.getItem('USER_NO'),
@@ -165,30 +167,69 @@ const ReportDetail = () => {
 
   // 삭제 처리하기
   const deleteRequest = async () => {
+    if (confirmRef.current) confirmRef.current.callSubmit();
+  };
+
+  // 삭제 확인 메세지
+  const onConfirm = async (isDelete) => {
+    console.log('isDelete:', isDelete);
+    if (!isDelete) return;
+
     console.log('DELETE 요청 url: ', ARTICLE + `/delete-post/${id}`);
     try {
-      const res = await axios.delete(ARTICLE + ARTICLE + `/delete-post/${id}`);
+      const res = await axiosInstance.delete(ARTICLE + `/delete-post/${id}`);
       console.log('서버 정상 동작: ', res.data);
+      navigate('/board');
     } catch (error) {
       console.log(error);
     }
   };
 
-  const clickOtherBoard = (e) => {
-    console.log('다른 게시물 이동~~');
-    if (e.target.textContent === '이전게시물') {
-      dispatch({
-        type: 'PREV',
-        val: -1,
-      });
-    } else {
-      dispatch({
-        type: 'NEXT',
-        val: 1,
-      });
+  // 댓글 수정하기
+  const modifyComment = async (e, replyNo) => {
+    setSelectedReply(replyNo);
+  };
+
+  const newEditComment = async (editComment) => {
+    console.log('userNo:', userNo);
+    console.log('postNo:', id);
+    console.log('text:', editComment);
+    try {
+      console.log(
+        'PUT 요청 url: ',
+        ARTICLE + `/post/${id}/comments/${selectedReply}`,
+      );
+      const res = await axiosInstance.put(
+        ARTICLE + `/post/${id}/comments/${selectedReply}`,
+        { userNo, text: editComment, postNo: selectedReply },
+      );
+      console.log(res.data);
+    } catch (error) {
+      console.log('댓글수정 에러:', error);
     }
-    console.log('이동할 게시물 번호: ' + '/board/detail/' + state);
-    // window.location.href = `/board/detail/${state}`;
+    setSelectedReply(null);
+    bringReplies();
+  };
+
+  // 수정 취소하기
+  const onCancel = (isCancel) => {
+    if (isCancel) setSelectedReply(null);
+  };
+
+  // 댓글 삭제하기
+  const deleteComment = async (e, replyNo) => {
+    try {
+      console.log(
+        'DELETE 요청 url: ',
+        ARTICLE + `/post/${id}/comments/${replyNo}`,
+      );
+      const res = await axiosInstance.delete(
+        ARTICLE + `/post/${id}/comments/${replyNo}`,
+      );
+    } catch (error) {
+      console.log('댓글삭제 에러:', error);
+    }
+    bringReplies();
   };
 
   return (
@@ -217,7 +258,6 @@ const ReportDetail = () => {
                   {boardDetail.email}
                 </div>
                 <div>
-                  <a href=''>신고하기</a>
                   <p>{boardDetail.formatDate}</p>
                 </div>
               </div>
@@ -227,7 +267,7 @@ const ReportDetail = () => {
 
             <main className='contentRegion'>
               {imgUrl && (
-                <div>
+                <div className={styles.boardImg}>
                   <img src={imgUrl} alt='게시물 이미지' />
                 </div>
               )}
@@ -261,10 +301,21 @@ const ReportDetail = () => {
                   </Button>
                 </div>
               )}
+              <Button
+                variant='outlined'
+                onClick={() => {
+                  navigate('/board');
+                }}
+                style={{ float: 'right' }}
+              >
+                목록
+              </Button>
             </footer>
+            <Comfirm onConfirm={onConfirm} ref={confirmRef} />
           </div>
         )}
 
+        {/* 댓글 영역 */}
         {openReply && (
           <div className={styles.reply}>
             <ul className={styles.replyList}>
@@ -283,7 +334,35 @@ const ReportDetail = () => {
                       </div>
                       {reply.email}
                     </div>
-                    <p className={styles.replyContent}>{reply.text}</p>
+                    <div className={styles.replyContent}>
+                      <p>{reply.text}</p>
+
+                      {+reply.userNo === +userNo && (
+                        <p className={styles.moddel}>
+                          <FontAwesomeIcon
+                            icon={faPen}
+                            className={styles.icon}
+                            onClick={(e) => modifyComment(e, reply.commentNo)}
+                          />
+                          &nbsp;&nbsp;
+                          <FontAwesomeIcon
+                            icon={faTrash}
+                            className={styles.icon}
+                            onClick={(e) => deleteComment(e, reply.commentNo)}
+                          />
+                        </p>
+                      )}
+                    </div>
+
+                    {selectedReply === reply.commentNo && (
+                      <TextareaComment
+                        newComment={newEditComment}
+                        initialValue={reply.text}
+                        type={'modify'}
+                        onCancel={onCancel}
+                      />
+                    )}
+
                     {/* <p className={styles.replyDate}>{reply.replyDate}</p> */}
                   </li>
                 ))}
@@ -293,17 +372,6 @@ const ReportDetail = () => {
             </div>
           </div>
         )}
-
-        <div className={styles.moveToOthers}>
-          <div className={styles.prevBoard} onClick={clickOtherBoard}>
-            {' '}
-            <FontAwesomeIcon icon={faCaretUp} /> &nbsp; 이전게시물
-          </div>
-          <div className={styles.nextBoard} onClick={clickOtherBoard}>
-            {' '}
-            <FontAwesomeIcon icon={faCaretDown} /> &nbsp; 다음게시물
-          </div>
-        </div>
 
         <div style={{ display: 'none' }}>
           <ReportWriteModal

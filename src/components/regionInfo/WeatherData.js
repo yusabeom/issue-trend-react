@@ -11,9 +11,15 @@ import snow from '../../assets/img/snow.png';
 import sr from '../../assets/img/sr.png';
 import turbid from '../../assets/img/turbidity.png';
 import mp from '../../assets/img/mpartlycloudy.png';
+import { HashLoader } from 'react-spinners';
 
 const WeatherData = ({ weather }) => {
-  if (!weather) return <div>Loading...</div>;
+  if (!weather)
+    return (
+      <div className={styles.load}>
+        <HashLoader color='#0066ff' size={70} />
+      </div>
+    );
 
   const temperatures = Object.values(weather).map((details) =>
     parseInt(details.T1H, 10),
