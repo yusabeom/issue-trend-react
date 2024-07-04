@@ -30,6 +30,7 @@ const ScrapPost = () => {
     try {
       axiosInstance.delete(SCRAP + `/delete/${articleCode}`);
       console.log('삭제 완료');
+
       fetchScrap();
       setSnackbarOpen(true);
     } catch (error) {
@@ -49,9 +50,13 @@ const ScrapPost = () => {
     }
   };
 
+  // useEffect(() => {
+  //   fetchScrap();
+  // }, []);
+
   useEffect(() => {
     fetchScrap();
-  }, [scrapList]);
+  }, [snackbarOpen]);
 
   // 스낵바 닫기 이벤트
   const handleCloseSnackbar = (event, reason) => {

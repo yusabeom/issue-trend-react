@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import axiosInstance from '../../../config/axios-config';
 import { API_BASE_URL, USER } from '../../../config/host-config';
-import styles from '../../../styles/RecentPost.module.scss';
+import styles from '../../../styles/user/WritePost.module.scss';
 import { useNavigate } from 'react-router-dom';
 import Pagination from 'react-js-pagination';
 import pageStyle from '../../../styles/user/Pagination.module.scss';
-import table from '../../../styles/user/WritePost.module.scss';
 
 const { title } = styles;
 const { paginationContainer } = pageStyle;
-const { tableStyle } = table;
+const { tableStyle } = styles;
 
 const WritePost = () => {
   const navigate = useNavigate();
@@ -54,7 +53,7 @@ const WritePost = () => {
   };
 
   const clickPost = (postNo) => {
-    console.log(postNo);
+    console.log('active page is:', postNo);
     navigate(`/board/detail/${postNo}`);
   };
 
@@ -69,19 +68,19 @@ const WritePost = () => {
             <table>
               <thead>
                 <tr>
-                  <th>포스트 번호</th>
-                  <th>제목</th>
-                  <th>내용</th>
-                  <th>작성일</th>
+                  <th className={styles.postNo}>포스트 번호</th>
+                  <th className={styles.title}>제목</th>
+                  <th className={styles.content}>내용</th>
+                  <th className={styles.writeDate}>작성일</th>
                 </tr>
               </thead>
               <tbody>
                 {currentPosts.map((post, index) => (
                   <tr key={index} onClick={() => clickPost(post.postNo)}>
-                    <td>{post.postNo}</td>
-                    <td>{post.title}</td>
-                    <td>{post.text}</td>
-                    <td>{post.formatDate}</td>
+                    <td className={styles.postNo}>{post.postNo}</td>
+                    <td className={styles.title}>{post.title}</td>
+                    <td className={styles.content}>{post.text}</td>
+                    <td className={styles.writeDate}>{post.formatDate}</td>
                   </tr>
                 ))}
               </tbody>
@@ -97,9 +96,10 @@ const WritePost = () => {
             totalItemsCount={formattedPost.length}
             pageRangeDisplayed={5}
             onChange={handlePageChange}
-            itemClass='page-item'
-            linkClass='page-link'
-            innerClass='pagination justify-content-center'
+            itemClass={pageStyle.pageItem}
+            linkClass={pageStyle.pageLink}
+            innerClass={pageStyle.pagination}
+            activeClass={pageStyle.active}
           />
         </div>
       )}
