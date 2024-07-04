@@ -27,7 +27,7 @@ const ChangeInfo = () => {
   const [currentKeywords, setCurrentKeywords] = useState(favoriteKeywords);
   // console.log(`currentKeywords: ${[...currentKeywords]}`);
   // console.log(`favoriteKeywords ${[...favoriteKeywords]}`);
-  console.log(currentKeywords);
+  console.log('currentKeywords: ', currentKeywords);
   console.log(currentKeywords.forEach((k) => console.log(k)));
 
   // console.log(`arr: ${arr}`);
@@ -135,7 +135,6 @@ const ChangeInfo = () => {
     } else if (!nickRegex.test(inputValue)) {
       msg = '2자 이상 16자 이하, 영어 또는 숫자 또는 한글로 조합해주세요';
     } else {
-      // 로컬 스토리지에서 꺼내서 현재 닉네임이랑 비교해야 하는건지
       await nickFetchDuplicateCheck(inputValue);
       return;
     }
@@ -281,7 +280,8 @@ const ChangeInfo = () => {
     setCurrentKeywords((prve) => [
       ...prve,
       {
-        favoriteNo: currentKeywords[currentKeywords.length - 1].favoriteNo + 1,
+        favoriteNo:
+          prve.length === 0 ? 1 : prve[prve.length - 1].favoriteNo + 1,
         favoriteKeyword: value,
       },
     ]);
@@ -356,31 +356,25 @@ const ChangeInfo = () => {
       favoriteKeywords1: currentKeywords,
     };
 
+    /* 방금 주석처리한거
     const keywordArray = [];
-    // currentKeywords.forEach((k) => keywordArray.push(k.favoriteKeyword));
     currentKeywords.forEach((k) =>
       console.log(
         `k.favoriteNo: ${k.favoriteNo} k.favoriteKeyword: ${k.favoriteKeyword}`,
       ),
     );
-    // console.log(`keywordArray: ${keywordArray}`);
-    // console.log(
-    //   `userValue2.favoriteKeywords1: ${userValue2.favoriteKeywords1[0]}`,
-    // );
-
-    // console.log(`keywordArray: ${keywordArray}`);
+    */
 
     const array = [];
     for (let i = 0; i < userValue2.favoriteKeywords1.length; i++) {
       array.push(userValue2.favoriteKeywords1[i].favoriteKeyword);
     }
-    // console.log('array: ', array);
 
     const user = {
       nickname: userValue2.nickname1,
       password: userValue2.password1,
       regionName: userValue2.regionName1,
-      favoriteKeywords: array, // JSON 문자열로 전송
+      favoriteKeywords: array,
     };
 
     console.log(user);
@@ -412,23 +406,6 @@ const ChangeInfo = () => {
       onLogout();
       navigate('/login');
     }
-
-    /*
-    const res = await fetch(API_BASE_URL + USER, {
-      method: 'POST',
-      body: userFormData,
-    });
-
-    if (res.status === 200) {
-      console.log(`res: ${res}`); //----
-      const data = await res.json();
-      alert(`${data.email}님 회원가입에 성공했습니다.`);
-      navigate('/login');
-    } else {
-      console.log(res.text());
-      alert('서버와의 통신이 원활하지 않습니다.');
-    }
-      */
   };
 
   const updateMyInfoHandler = (e) => {
