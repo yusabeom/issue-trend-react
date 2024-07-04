@@ -26,15 +26,12 @@ const ScrapPost = () => {
       .toString()
       .padStart(10, '0');
 
-    console.log('DELETE url: ', SCRAP + `/${userNo}/${articleCode}`);
+    console.log('DELETE url: ', SCRAP + `/delete/${articleCode}`);
     try {
-      axiosInstance.delete(SCRAP + `/${userNo}/${articleCode}`);
+      axiosInstance.delete(SCRAP + `/delete/${articleCode}`);
       console.log('삭제 완료');
       fetchScrap();
       setSnackbarOpen(true);
-      setTimeout(() => {
-        navigate('/issue-trend/mypage');
-      }, 3000);
     } catch (error) {
       console.log(error);
     }
@@ -43,8 +40,8 @@ const ScrapPost = () => {
   // 렌더링 할 때 로그인 한 유저의 스크랩 기사 보여주기
   const fetchScrap = async () => {
     try {
-      console.log('GET url: ', SCRAP + `/${userNo}`);
-      const res = await axiosInstance.get(SCRAP + `/${userNo}`);
+      console.log('GET url: ', SCRAP + '/user');
+      const res = await axiosInstance.get(SCRAP + '/user');
       const getScrapList = res.data;
       setScrapList(getScrapList);
     } catch (error) {
@@ -54,7 +51,7 @@ const ScrapPost = () => {
 
   useEffect(() => {
     fetchScrap();
-  }, []);
+  }, [scrapList]);
 
   // 스낵바 닫기 이벤트
   const handleCloseSnackbar = (event, reason) => {
