@@ -1,3 +1,6 @@
+$pageColor: #1b1511;
+$fontColor: #ffa927;
+
 .tableStyle {
   width: 100%;
   margin-top: 20px;
@@ -6,18 +9,17 @@
 .tableStyle table {
   width: 100%;
   border-collapse: collapse;
-  border: 1px solid #ddd;
 }
 
 .tableStyle th,
 .tableStyle td {
-  border: 1px solid #ddd;
   padding: 12px;
   text-align: left;
 }
 
 .tableStyle th {
-  background-color: #f2f2f2;
+  background-color: $pageColor;
+  color: $fontColor;
   font-weight: bold;
 }
 

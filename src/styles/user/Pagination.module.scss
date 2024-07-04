@@ -1,36 +1,45 @@
 // Pagination.module.scss
+$pageColor: #1b1511;
+$fontColor: #ffa927;
 
 .paginationContainer {
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  margin-top: 3rem;
 
   .pagination {
     display: flex;
     list-style: none;
     padding: 0;
 
-    .page-item {
+    .pageItem {
       margin: 0 3px;
       cursor: pointer;
 
-      .page-link {
-        color: #007bff;
-        border: 1px solid #007bff;
-        padding: 6px 12px;
-        border-radius: 4px;
+      .pageLink {
+        color: $pageColor;
+        width: 12px;
+        padding: 4px 10px;
+        border-radius: 50px;
         transition: background-color 0.3s ease;
 
         &:hover {
-          background-color: #007bff;
-          color: white;
+          background-color: $pageColor;
+          color: $fontColor;
         }
 
         &.active {
-          background-color: #007bff;
-          color: white;
-          border-color: #007bff;
+          background-color: $pageColor;
+          color: $fontColor;
+          border-color: $pageColor;
         }
+      }
+
+      &.active .pageLink {
+        width: 12px;
+        background-color: $pageColor;
+        border-color: $pageColor;
+        color: #ffa927;
       }
     }
   }
