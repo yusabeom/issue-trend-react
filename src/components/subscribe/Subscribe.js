@@ -55,15 +55,15 @@ const Subscribe = () => {
 
   const handleCancelSubscription = async () => {
     try {
-      await axios.post(
-        `http://localhost:8181/payment/cancelSubscription/${userNum}`,
-      );
       if (confirm('구독 취소하시겠습니까?')) {
         alert('구독이 취소되었습니다.\n다음에 또 이용해주세요!');
       } else {
         alert('구독이 계속 진행됩니다.');
         return;
       }
+      await axios.post(
+        `http://localhost:8181/payment/cancelSubscription/${userNum}`,
+      );
       setIsSubscribed(false);
       window.location.href = 'http://localhost:3000/payment';
     } catch (error) {
