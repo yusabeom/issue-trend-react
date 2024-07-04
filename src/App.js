@@ -1,6 +1,5 @@
 import NewsTemplate from './components/board/NewsTemplate';
 import Intro from './components/main/Intro';
-import { Route, Router, Routes } from 'react-router-dom';
 import Home from './components/main/Home';
 import Join from './components/user/Join';
 import './App.css';
@@ -21,6 +20,7 @@ import RegionScreen from './components/regionInfo/RegionScreen';
 import PayTest from './payTest';
 import NaverMapApi from './components/regionInfo/NaverMapApi';
 import Subscribe from './components/subscribe/Subscribe';
+import { Route, Routes } from 'react-router-dom';
 
 function App() {
   return (

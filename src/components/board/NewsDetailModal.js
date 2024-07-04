@@ -172,6 +172,10 @@ const NewsDetailModal = forwardRef(({ article }, ref) => {
     }
   };
 
+  const onCancel = (isCancel) => {
+    if (isCancel) setEditingCommentId(null);
+  };
+
   // 댓글 삭제하기
   const handleDelete = async (replyNo) => {
     console.log(
@@ -322,6 +326,7 @@ const NewsDetailModal = forwardRef(({ article }, ref) => {
                             newComment={newEditComment}
                             initialValue={reply.text}
                             type={'modify'}
+                            onCancel={onCancel}
                           />
                         )}
                       </li>

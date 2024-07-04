@@ -35,37 +35,15 @@ const Search = () => {
     };
 
     fetchData();
-
-    const getNextHourTimeout = () => {
-      const now = new Date();
-      const nextHour = new Date(
-        now.getFullYear(),
-        now.getMonth(),
-        now.getDate(),
-        now.getHours() + 1,
-        0,
-        0,
-        0,
-      );
-      return nextHour - now;
-    };
-
-    const initialTimeout = setTimeout(() => {
-      fetchData();
-
-      const intervalId = setInterval(fetchData, 3600000); // 3600000 ms = 1 hour
-
-      return () => clearInterval(intervalId);
-    }, getNextHourTimeout());
-
-    return () => clearTimeout(initialTimeout);
   }, []);
 
   return (
     <div className={searchContainer}>
       <div className={title}>
         <h1>실시간 검색어</h1>
-        <div className={date}>{lastUpdated && <p>{lastUpdated} 기준</p>}</div>
+        <div className={date}>
+          <p>{lastUpdated} 기준</p>
+        </div>
       </div>
 
       <ul className={contentDetail}>

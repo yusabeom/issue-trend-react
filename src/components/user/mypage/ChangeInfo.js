@@ -12,10 +12,11 @@ const { kakao } = window;
 const ChangeInfo = () => {
   const navigate = useNavigate();
   const { onLogout, profileImage } = useContext(AuthContext);
+
   const favoriteKeywords = JSON.parse(
     localStorage.getItem('FAVORITE_KEYWORDS'),
   );
-  console.log(favoriteKeywords); // (2) [{…}, {…}] temp는 배열이다.
+  console.log('로컬에 저장되어 있는 관심 키워드: ', favoriteKeywords); // (2) [{…}, {…}] temp는 배열이다.
   // temp.forEach((obj) => console.log(obj));
   // {favoriteNo: 43, favoriteKeyword: 's'}
   // {favoriteNo: 44, favoriteKeyword: 'sss'}
@@ -40,49 +41,47 @@ const ChangeInfo = () => {
   });
 
   const currentPasswordHandler = (e) => {
-    const currentPassword = e.target.value;
+    console.log('내정보 변경전 입력한 패스워드 ', e.target.value);
     let flag = false;
     let msg;
+
+    const currentPassword = e.target.value;
 
     if (!currentPassword) {
       msg = '현재 비밀번호 입력은 필수 값입니다.';
     } else {
       flag = true;
-
-      /*
-      const res = fetch(`${API_BASE_URL}${USER}/password-check`, {
-        method: 'GET',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(
-          localStorage.getItem('ACCESS-TOKEN'),
-          inputPassword,
-        ),
-        */
     }
     setPasswordCheck({ password: currentPassword, flag, msg });
   };
 
   const sendCheckPwHandler = async () => {
-    // console.log('type: ', typeof passwordCheck.password); String타입
-    const res = await axiosInstance.post(
-      `${API_BASE_URL}${USER}/password-check`,
-      {
-        password: passwordCheck.password,
-      },
-    );
+    try {
+      const res = await axiosInstance.post(
+        `${API_BASE_URL}${USER}/password-check`,
+        {
+          password: passwordCheck.password,
+        },
+      );
 
-    const status = res.status;
-    const data = res.data;
-    if (status === 200) {
-      setIsCheckPw(true);
-    } else {
-      alert(data);
+      const status = res.status;
+      const data = res.data;
+      console.log('res :', res);
+      console.log('비밀번호 틀렸을 때, data: ', data);
+
+      if (status === 200) {
+        setIsCheckPw(true);
+      } else {
+        console.log(data);
+        alert(data);
+      }
+    } catch (error) {
+      console.error('Error checking password:', error);
+      alert('비밀번호를 다시 확인해주세요');
     }
   };
 
   // 내 정보 변경 페이지
-  // const userNo = localStorage.getItem('USER_NO');
-  // console.log(userNo);
   const [userValue, setUserValue] = useState({
     nickname1: localStorage.getItem('NICK_NAME'),
     password1: '',
