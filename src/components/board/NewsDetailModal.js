@@ -104,15 +104,15 @@ const NewsDetailModal = forwardRef(({ article }, ref) => {
 
     // 최근에 본 뉴스 기사 갱신
     setRecentInquiry((prev) => {
+      const newArr = prev.filter((code) => code !== article.articleCode); // 중복 값 제거
+
       if (recentInquiry.length >= 10) {
-        const newArr = [...prev];
         newArr.shift(); // 첫 번째 요소 제거
-        newArr.push(article.articleCode); // 마지막에 새로운 요소 추가
-        return newArr;
-      } else {
-        return [...prev, article.articleCode];
       }
+      newArr.push(article.articleCode); // 마지막에 새로운 요소 추가
+      return newArr;
     });
+    console.log('최근에 본 기사:', recentInquiry);
   };
 
   // 모달 닫기

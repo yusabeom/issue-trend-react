@@ -13,6 +13,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass, faX } from '@fortawesome/free-solid-svg-icons';
 import { SearchRounded } from '@mui/icons-material';
 import { KeywordContext } from '../../utils/KeywordContext';
+import { optionsUploadTime } from './agenciesData';
 
 const Filter = ({ onTags, agencies }) => {
   const [inputValue, setInputValue] = useState(''); // 키워드 검색창에다 입력한 값
@@ -50,8 +51,6 @@ const Filter = ({ onTags, agencies }) => {
     sj: '세종',
   };
 
-  const [optionsUploadTime, setOptionsUploadTime] = useState(null);
-
   const optionsSort = {
     recent: '최신순',
     replies: '댓글순',
@@ -59,6 +58,8 @@ const Filter = ({ onTags, agencies }) => {
 
   const [tags, setTags] = useState([]);
 
+  /*
+  외부에서 언론사 데이터를 가져오는 로직
   useEffect(() => {
     // console.log('agencies: ', agencies);
     const obj = agencies.reduce((acc, item, index) => {
@@ -66,9 +67,10 @@ const Filter = ({ onTags, agencies }) => {
       return acc;
     }, {});
 
-    setOptionsUploadTime(obj);
+    // setOptionsUploadTime(obj);
     // console.log('obj: ', obj);
   }, [agencies]);
+*/
 
   function isEnglish(str) {
     return /^[A-Za-z]+$/.test(str);
@@ -252,7 +254,7 @@ const Filter = ({ onTags, agencies }) => {
         <Select
           className={styles.selection}
           placeholder={'언론사'}
-          options={optionsUploadTime || { 1: '전주일보' }}
+          options={optionsUploadTime || { 1: '전주MBC' }}
           select={addNewTag}
         />
         <br />
