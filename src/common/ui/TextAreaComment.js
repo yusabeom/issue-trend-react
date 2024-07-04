@@ -13,7 +13,7 @@ import FormatItalic from '@mui/icons-material/FormatItalic';
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
 import Check from '@mui/icons-material/Check';
 import styles from '../../styles/TextareaComment.module.scss';
-import profileImage from '../../assets/img/anonymous.jpg';
+import basicImage from '../../assets/img/anonymous.jpg';
 import { debounce } from 'lodash';
 import { Alert } from '@mui/material';
 import AuthContext from '../../components/store/auth-context';
@@ -41,6 +41,10 @@ export default function TextareaComment({
   ); // input창 댓글
   const [openAlert, setOpenAlert] = React.useState(false); // 댓글 alert 메세지 여부
   const scrollRef = React.useRef(null);
+
+  React.useEffect(() => {
+    console.log('댓글에서 profileImage:', profileImage);
+  }, []);
 
   // 수정 취소하기
   const cancelModify = () => {
@@ -77,7 +81,7 @@ export default function TextareaComment({
         <FormLabel>
           <div className={styles.profile}>
             <img
-              src={profileImage || require('../../assets/img/anonymous.jpg')}
+              src={profileImage === 'null' ? basicImage : profileImage}
               alt='댓글 작성자 프로필 사진'
             />
           </div>
@@ -106,7 +110,7 @@ export default function TextareaComment({
               flex: 'auto',
             }}
           >
-            <div className={styles.buttons}>
+            <div className={styles.bottoms}>
               <div>
                 <IconButton
                   variant='plain'
@@ -150,7 +154,7 @@ export default function TextareaComment({
                   <FormatItalic />
                 </IconButton>
               </div>
-              <div>
+              <div className={styles.buttons}>
                 {type === 'modify' && (
                   <Button
                     color='danger'

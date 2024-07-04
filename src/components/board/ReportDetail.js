@@ -12,8 +12,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCaretDown,
   faCaretUp,
+  faCircleExclamation,
   faEllipsisVertical,
   faPen,
+  faRightToBracket,
   faStar,
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
@@ -29,7 +31,7 @@ import AuthContext from '../store/auth-context';
 const ARTICLE = API_BASE_URL + USER;
 
 const ReportDetail = () => {
-  const { userNo } = useContext(AuthContext);
+  const { userNo, isLoggedIn } = useContext(AuthContext);
 
   const [openReply, setOpenReply] = useState(false); // 댓글창 열기
   const [boardDetail, setBoardDetail] = useState({
@@ -41,6 +43,7 @@ const ReportDetail = () => {
     img: '',
     email: '',
     formatDate: '',
+    profileImage: '',
   }); // 게시물 정보
   const [writerProfile, setWriterProfile] = useState(
     'https://i.namu.wiki/i/GQMqb8jtiqpCo6_US7jmWDO30KfPB2MMvbdURVub61Rs6ALKqbG-nUATj-wNk7bXXWIDjiLHJxWYkTELUgybkA.webp',
@@ -79,6 +82,7 @@ const ReportDetail = () => {
         img: getBoardDetail.img,
         email: getBoardDetail.email,
         formatDate: getBoardDetail.formatDate,
+        profileImage: getBoardDetail.profileImage,
       });
     } catch (error) {
       // console.error('Error fetching data: ', error);
@@ -119,6 +123,7 @@ const ReportDetail = () => {
 
   useEffect(() => {
     fetchData();
+    console.log('프로필사진:', boardDetail.profileImage);
   }, []);
 
   useEffect(() => {
@@ -253,9 +258,15 @@ const ReportDetail = () => {
               <div>
                 <div className={styles.writer}>
                   <div className={styles.profile}>
-                    <img src={writerProfile} alt='작성자 프로필 사진' />
+                    <img
+                      src={
+                        boardDetail.profileImage ||
+                        require('../../assets/img/anonymous.jpg')
+                      }
+                      alt='작성자 프로필 사진'
+                    />
                   </div>
-                  {boardDetail.email}
+                  <div className={styles.email}>{boardDetail.email}</div>
                 </div>
                 <div>
                   <p>{boardDetail.formatDate}</p>
@@ -367,9 +378,19 @@ const ReportDetail = () => {
                   </li>
                 ))}
             </ul>
-            <div className='replyInput'>
-              <TextareaComment newComment={newComment} type={'insert'} />
-            </div>
+            {isLoggedIn ? (
+              <div className='replyInput'>
+                <TextareaComment newComment={newComment} type={'insert'} />
+              </div>
+            ) : (
+              <div className={styles.notLoggedInMesage}>
+                <p>댓글은 로그인 후 작성할 수 있습니다</p>
+                <a href='/login'>
+                  <FontAwesomeIcon icon={faRightToBracket} />
+                  &nbsp; 로그인하기
+                </a>
+              </div>
+            )}
           </div>
         )}
 

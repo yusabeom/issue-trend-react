@@ -6,6 +6,7 @@ import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { API_BASE_URL, USER } from '../../config/host-config';
 import axios from 'axios';
 import { Alert, Button } from '@mui/material';
+import axiosInstance from '../../config/axios-config';
 
 const SCRAP = API_BASE_URL + USER + '/scrap'; // '/issue-trend/scrap'
 
@@ -23,7 +24,7 @@ const ScrapBtn = ({ articleCode }) => {
         SCRAP,
         `userNo: ${userNo}, articleCode: ${articleCode}`,
       );
-      const res = await axios.post(SCRAP, { userNo, articleCode });
+      const res = await axiosInstance.post(SCRAP, { userNo, articleCode });
       const result = res.data;
       setOpenOk(true);
     } catch (error) {
