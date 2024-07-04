@@ -3,9 +3,12 @@ import styles from '../../styles/Search.module.scss';
 import { API_BASE_URL, USER } from '../../config/host-config';
 import axios from 'axios';
 import axiosInstance from '../../config/axios-config';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowDown, faArrowUp } from '@fortawesome/free-solid-svg-icons';
 
 const Search = () => {
-  const { searchContainer, title, content, contentDetail, number, date } =
+  const { searchContainer, title, content, contentDetail, number, date, fade } =
     styles;
   const SEARCH_TERM = '/popular';
   const SEARCH_URL = API_BASE_URL + USER + SEARCH_TERM;
@@ -14,27 +17,31 @@ const Search = () => {
   const [lastUpdated, setLastUpdated] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axiosInstance.get(SEARCH_URL);
-        const data = response.data;
-        setSearch(data);
+    const socket = new WebSocket('ws://localhost:4000'); // WebSocket 서버 주소
 
-        const now = new Date();
-        const formattedTime = now.toLocaleString('ko-KR', {
-          hour: '2-digit',
-          month: '2-digit',
-          day: '2-digit',
-          minute: '2-digit',
-          hour12: false,
-        });
-        setLastUpdated(formattedTime);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
+    socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      setSearch(data);
+      console.log(search);
+
+      const now = new Date();
+      const formattedTime = now.toLocaleString('ko-KR', {
+        hour: '2-digit',
+        month: '2-digit',
+        day: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+      });
+      setLastUpdated(formattedTime);
     };
 
-    fetchData();
+    socket.onerror = (error) => {
+      console.error('WebSocket error:', error);
+    };
+
+    return () => {
+      socket.close();
+    };
   }, []);
 
   return (
