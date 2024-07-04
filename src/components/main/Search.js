@@ -1,23 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import styles from '../../styles/Search.module.scss';
 import { API_BASE_URL, USER } from '../../config/host-config';
-import axios from 'axios';
-import axiosInstance from '../../config/axios-config';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowDown, faArrowUp } from '@fortawesome/free-solid-svg-icons';
 
 const Search = () => {
   const { searchContainer, title, content, contentDetail, number, date, fade } =
     styles;
-  const SEARCH_TERM = '/popular';
-  const SEARCH_URL = API_BASE_URL + USER + SEARCH_TERM;
 
   const [search, setSearch] = useState([]);
   const [lastUpdated, setLastUpdated] = useState(null);
 
   useEffect(() => {
-    const socket = new WebSocket('ws://localhost:4000'); // WebSocket 서버 주소
+    const socket = new WebSocket('ws://192.168.0.40:4000'); // WebSocket 서버 주소
 
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
