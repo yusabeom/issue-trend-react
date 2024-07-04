@@ -102,6 +102,8 @@ $buttonPupple: #807aa0;
         }
 
         p.replyContent {
+          margin-top: 0.6rem;
+          min-height: 30px;
         }
 
         // p.replyDate {
@@ -151,5 +153,18 @@ $buttonPupple: #807aa0;
     object-fit: cover;
     object-position: center;
     cursor: pointer;
+  }
+}
+
+.notLoggedInMesage {
+  margin: 2rem;
+  font-size: 1.2em;
+  p {
+    margin: 0.8em auto;
+  }
+  a {
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }

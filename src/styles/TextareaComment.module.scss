@@ -20,7 +20,13 @@ span.loginUser {
   font-size: 16px;
 }
 
-.buttons {
+.bottoms {
+  width: 100%;
   display: flex;
   justify-content: space-between;
+  .buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
 }

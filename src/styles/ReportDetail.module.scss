@@ -21,12 +21,16 @@
 
         p.title {
           font-size: 27px;
+          line-height: 2.2em;
         }
 
-        div.writer {
+        .writer {
           display: flex;
           justify-content: center;
           align-items: center;
+          .email {
+            margin-left: 1rem;
+          }
         }
 
         a {
@@ -137,5 +141,18 @@
   img {
     max-width: 100%;
     max-height: 100%;
+  }
+}
+
+.notLoggedInMesage {
+  margin: 2rem;
+  font-size: 1.2em;
+  p {
+    margin: 0.8em auto;
+  }
+  a {
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }
