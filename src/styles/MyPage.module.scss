@@ -1,10 +1,15 @@
+.backScreen {
+  background-color: #faeed7;
+}
+
 .mypageContainer {
-  margin: 200px auto;
+  margin: 12vh auto 0;
   color: black;
-  background-color: aliceblue;
+  background-color: #faeed7;
   display: flex;
-  height: 70vh;
-  width: 90%;
+  height: 80vh;
+  width: 60%;
+  padding: 4vh 0;
   overflow: auto;
 
   .side {
@@ -24,6 +29,10 @@
         height: fit-content;
         margin-bottom: 60px;
         cursor: pointer;
+
+        &:hover {
+          color: #e6e6e6;
+        }
       }
     }
   }
@@ -79,4 +88,8 @@
       height: 500px;
     }
   }
+}
+
+.activeStyle {
+  font-weight: 700;
 }

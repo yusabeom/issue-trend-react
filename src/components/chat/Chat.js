@@ -225,6 +225,7 @@ const Chat = ({ onUsers, onEnter, OnExit }) => {
   const onSetPrivateTarget = (e) => {
     const { id } = e.target.dataset;
     setPrivateTarget((prev) => (prev === id ? '' : id)); // toggle 방식
+    console.log('귓속말 상대:', privateTarget);
   };
 
   // 방번호를 선택하는 핸들러

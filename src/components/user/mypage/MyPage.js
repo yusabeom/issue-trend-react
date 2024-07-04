@@ -85,17 +85,35 @@ const MyPage = () => {
 
   //
   return (
-    <div className='aspect-ratio'>
+    <div className={styles.backScreen}>
       <div className={mypageContainer}>
         <div className={side}>
           <h1 className={title}>마이페이지</h1>
           <ul className={titleContent}>
-            <li onClick={() => handleComponentChange('recent')}>
+            <li
+              className={activeComponent === 'recent' && styles.activeStyle}
+              onClick={() => handleComponentChange('recent')}
+            >
               최근의 본 글
             </li>
-            <li onClick={() => handleComponentChange('write')}>작성글</li>
-            <li onClick={() => handleComponentChange('scrap')}>스크랩</li>
-            <li onClick={() => handleComponentChange('change')}>내정보변경</li>
+            <li
+              className={activeComponent === 'write' && styles.activeStyle}
+              onClick={() => handleComponentChange('write')}
+            >
+              작성글
+            </li>
+            <li
+              className={activeComponent === 'scrap' && styles.activeStyle}
+              onClick={() => handleComponentChange('scrap')}
+            >
+              스크랩
+            </li>
+            <li
+              className={activeComponent === 'change' && styles.activeStyle}
+              onClick={() => handleComponentChange('change')}
+            >
+              내정보변경
+            </li>
             <li onClick={handleDeleteUser}>회원탈퇴</li>
           </ul>
         </div>

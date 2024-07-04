@@ -19,8 +19,10 @@ const RecentPost = () => {
   const openModal = (article) => {
     setClickArticle(article);
     console.log('click news article Button!');
-    childButtonRef.current.handleOpen();
   };
+  useEffect(() => {
+    if (clickArticle) childButtonRef.current.handleOpen();
+  }, [clickArticle]);
 
   // 최근 본 기사 목록 가져오기
   const fetchRecent10 = async (postNo) => {
@@ -38,21 +40,32 @@ const RecentPost = () => {
   useEffect(() => {
     recentInquiry.map((articleNo) => fetchRecent10(articleNo));
   }, []);
+
+  if (recentArticle.length === 0) {
+    return <div>최근에 본 게시물이 존재하지 않습니다</div>;
+  }
+
   return (
     <>
       <table>
         <tbody>
           {recentArticle.map((article) => (
-            <tr className={oneArticle} onClick={() => openModal(article)}>
+            <tr
+              key={article.articleCode}
+              className={oneArticle}
+              onClick={() => openModal(article)}
+            >
               <td className={newsAgency}>{article.newsAgency}</td>
               <td className={title}>{article.title}</td>
             </tr>
           ))}
         </tbody>
       </table>
-      {/* <div style={{ display: 'none' }}>
-        <NewsDetailModal ref={childButtonRef} article={clickArticle} />
-      </div> */}
+      {clickArticle && (
+        <div style={{ display: 'none' }}>
+          <NewsDetailModal ref={childButtonRef} article={clickArticle} />
+        </div>
+      )}
     </>
   );
 };
