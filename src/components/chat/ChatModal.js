@@ -48,7 +48,7 @@ const ChatModal = forwardRef((props, ref) => {
   const infoWrapperRef = useRef(null);
   const [userList, setUserList] = useState([]); // 서버로부터 받은 채팅방 유저 목록
   const [enterTransfer, setEnterTransfer] = useState(false); // 입장하면 Profile에게 전달
-  const [ExitChat, setExitChat] = useState(true); // 채팅방 나가기
+  const [exitChat, setExitChat] = useState(true); // 채팅방 나가기
 
   // snackBar
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -160,7 +160,7 @@ const ChatModal = forwardRef((props, ref) => {
               </h2>
 
               <div className={chatContents}>
-                <Chat onUsers={onUsers} onEnter={onEnter} OnExit={ExitChat} />
+                <Chat onUsers={onUsers} onEnter={onEnter} OnExit={exitChat} />
                 <Profile
                   clickName={getUserName}
                   users={userList}
