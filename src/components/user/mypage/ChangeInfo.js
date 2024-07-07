@@ -583,15 +583,33 @@ const ChangeInfo = () => {
         </>
       ) : (
         <>
-          <div className='password-check-page'>
-            <Typography>현재 비밀번호를 입력하세요</Typography>
+          <div
+            style={{
+              maxWidth: '400px',
+              margin: '0 auto',
+              padding: '20px',
+              border: '1px solid #ccc',
+              borderRadius: '5px',
+              backgroundColor: '#1B1511', // 배경색
+              color: '#FFA927', // 글자색
+            }}
+          >
+            <Typography variant='body1' gutterBottom>
+              현재 비밀번호를 입력하세요
+            </Typography>
             <TextField
               variant='outlined'
               type='password'
-              placeholder='현재 비밀번호를 입력해주세요'
               fullWidth
               required
               onBlur={currentPasswordHandler}
+              style={{
+                marginBottom: '10px',
+                backgroundColor: '#faeed7', // 밝은색 배경색
+              }}
+              InputProps={{
+                style: { color: '#1B1511' }, // 입력 텍스트의 글자색
+              }}
             ></TextField>
             <span
               style={passwordCheck.flag ? { color: 'blue' } : { color: 'red' }}
@@ -600,8 +618,15 @@ const ChangeInfo = () => {
             </span>
             <Button
               type='button'
+              variant='contained'
+              color='primary'
               disabled={!passwordCheck.flag}
               onClick={sendCheckPwHandler}
+              style={{
+                marginTop: '10px',
+                backgroundColor: '#faeed7',
+                color: '#FFA927',
+              }}
             >
               확인
             </Button>
