@@ -25,12 +25,18 @@ const ChangeInfo = () => {
     flag: false,
   });
 
-  const currentPasswordHandler = (e) => {
-    console.log('내정보 변경전 입력한 패스워드 ', e.target.value);
+  const debounceCurrentPasswordHandler = useCallback(
+    debounce((currentPassword) => {
+      console.log('password debounce called! password: ', currentPassword);
+      currentPasswordHandler(currentPassword);
+    }, 500),
+    [],
+  );
+
+  const currentPasswordHandler = async (currentPassword) => {
+    console.log('내정보 변경전 입력한 패스워드 ', currentPassword);
     let flag = false;
     let msg;
-
-    const currentPassword = e.target.value;
 
     if (!currentPassword) {
       msg = '현재 비밀번호 입력은 필수 값입니다.';
@@ -66,13 +72,18 @@ const ChangeInfo = () => {
     }
   };
 
+  const currentPasswordOnKeyDownHandler = (e) => {
+    if (e.key === 'Enter') {
+      sendCheckPwHandler();
+    }
+  };
+
   // 내 정보 변경 페이지
   const [userValue, setUserValue] = useState({
     nickname1: localStorage.getItem('NICK_NAME'),
     password1: '',
     regionName1: localStorage.getItem('REGION_NAME'),
-    // favoriteKeywords1: JSON.parse(localStorage.getItem('FAVORITE_KEYWORDS')),
-    favoriteKeywords1: JSON.parse(localStorage.getItem('FAVORITE_KEYWORDS')), // currentKeywords,
+    favoriteKeywords1: JSON.parse(localStorage.getItem('FAVORITE_KEYWORDS')),
   });
   const { nickname1, password1, regionName1, favoriteKeywords1 } = userValue;
   console.log(nickname1, password1, regionName1, favoriteKeywords1);
@@ -390,9 +401,9 @@ const ChangeInfo = () => {
     );
 
     if (res.status === 200) {
-      alert('회원정보가 변경되었습니다.');
+      alert('회원정보가 변경되었습니다. 다시 로그인하세요');
       onLogout();
-      // navigate('/login');
+      navigate('/login');
     }
   };
 
@@ -483,12 +494,13 @@ const ChangeInfo = () => {
   return (
     <>
       {isCheckPw ? (
-        <>
-          <div>내정보 변경</div>
-          {/*<div className={content}></div>*/}
+        <Container className={styles.changeInfoContainer}>
+          <Typography variant='h5' gutterBottom>
+            내정보 변경
+          </Typography>
           <Grid item xs={12}>
             <div
-              className='thumbnail-box'
+              className={styles.thumbnailBox}
               onClick={() => {
                 $fileTag.current.click(); // 이 영역을 클릭하면 인풋창이 열린다.
               }}
@@ -504,7 +516,7 @@ const ChangeInfo = () => {
 
               {/* require 앞에 imgFile 변수 넣어야 함 */}
             </div>
-            <label className='signup-img-label' htmlFor='profile-img'>
+            <label className={styles.signupImgLabel} htmlFor='profile-img'>
               프로필 이미지 추가
             </label>
             <input
@@ -613,7 +625,9 @@ const ChangeInfo = () => {
               </Button>
             </Grid>
             <Grid item xs={12}>
-              <h6>issue-trend가 맞춤형 뉴스를 제공합니다.</h6>
+              <Typography variant='body2' align='center'>
+                issue-trend가 맞춤형 뉴스를 제공합니다.
+              </Typography>
             </Grid>
             <TextField
               type='text'
@@ -626,7 +640,7 @@ const ChangeInfo = () => {
               }}
             />
             <Grid item xs={12}>
-              <ul style={{ display: 'flex' }}>
+              <ul className={styles.keywordList} style={{ display: 'flex' }}>
                 {currentKeywords.map((keyword) => {
                   return (
                     <li
@@ -652,7 +666,7 @@ const ChangeInfo = () => {
               </Button>
             </Grid>
           </Grid>
-        </>
+        </Container>
       ) : (
         <>
           <div
@@ -683,7 +697,8 @@ const ChangeInfo = () => {
               type='password'
               fullWidth
               required
-              onBlur={currentPasswordHandler}
+              onChange={(e) => debounceCurrentPasswordHandler(e.target.value)}
+              onKeyDown={currentPasswordOnKeyDownHandler}
               InputProps={{
                 style: {
                   backgroundColor: '#faeed7',

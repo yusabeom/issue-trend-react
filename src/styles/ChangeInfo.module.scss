@@ -1,22 +1,130 @@
-.title {
-  font-size: 23px;
-  margin: 20px 45px 20px;
-}
+$backgroundColor: #faeed7; // 밝은 배경색
+$lightBackgroundColor: #ffffff; // 섹션 배경색
+$textColor: #1b1511; // 텍스트 색상
+$primaryColor: #ffa927; // 포인트 색상
+$inputBackgroundColor: #ffffff;
+$buttonColor: #38d9a9;
+$buttonHoverColor: darken($buttonColor, 10%);
+$keywordBackgroundColor: $lightBackgroundColor;
+$keywordHoverColor: lighten($primaryColor, 10%);
+$keywordBorderColor: $textColor;
 
-// .content {
-//     display: flex;;
+.changeInfoContainer {
+  background-color: $backgroundColor;
+  color: $textColor;
+  border-radius: 10px;
+  padding: 30px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 0 auto;
 
-// }
+  .thumbnail-box {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
 
-.inputField {
-  width: 300px;
-  height: 20px;
-  margin: 30px 0 30px;
-}
+    img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid $primaryColor;
+      transition: transform 0.3s;
 
-.btn {
-  width: 300px;
-  margin: 40px 0 30px;
-  background-color: #bcbcbc;
-  color: #f3f3f3;
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+  }
+
+  .signup-img-label {
+    display: block;
+    text-align: center;
+    margin-bottom: 20px;
+    color: $primaryColor;
+    cursor: pointer;
+  }
+
+  .MuiTextField-root {
+    margin-bottom: 20px;
+    background-color: $inputBackgroundColor;
+
+    .MuiInputBase-input {
+      color: $textColor;
+    }
+
+    .MuiInputLabel-root {
+      color: $textColor;
+    }
+
+    .MuiOutlinedInput-root {
+      fieldset {
+        border-color: $textColor;
+      }
+
+      &:hover fieldset {
+        border-color: $primaryColor;
+      }
+
+      &.Mui-focused fieldset {
+        border-color: $primaryColor;
+      }
+    }
+  }
+
+  .MuiButton-root {
+    background-color: $buttonColor;
+    color: $lightBackgroundColor;
+    padding: 10px 20px;
+    border-radius: 5px;
+
+    &:hover {
+      background-color: $buttonHoverColor;
+    }
+  }
+
+  h5 {
+    color: $textColor;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  h6 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: $primaryColor;
+  }
+
+  .keyword-list {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      border: 1px solid $keywordBorderColor;
+      padding: 10px 15px;
+      border-radius: 20px;
+      margin-right: 10px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      background-color: $keywordBackgroundColor;
+      color: $textColor;
+      transition:
+        background-color 0.3s,
+        color 0.3s,
+        box-shadow 0.3s,
+        transform 0.3s;
+
+      &:hover {
+        background-color: $keywordHoverColor;
+        color: $lightBackgroundColor;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transform: translateY(-3px);
+      }
+    }
+  }
 }

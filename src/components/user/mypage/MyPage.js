@@ -8,6 +8,7 @@ import axiosInstance from '../../../config/axios-config';
 import { API_BASE_URL, USER } from '../../../config/host-config';
 import AuthContext from '../../store/auth-context';
 import { Navigate, useNavigate } from 'react-router-dom';
+import MyPageContext from '../../../utils/MyPageContext';
 
 const {
   mypageContainer,
@@ -30,6 +31,7 @@ const MyPage = () => {
   const { profileImage, onLogout, onLogin } = useContext(AuthContext);
 
   const [formattedPost, setFormattedPost] = useState([]);
+  const { recentInquiry } = useContext(MyPageContext);
 
   useEffect(() => {
     fetchMyPosts();
@@ -61,7 +63,7 @@ const MyPage = () => {
 
   console.log(`profileImage: `, profileImage); // "null"
 
-  const [activeComponent, setActiveComponent] = useState('');
+  const [activeComponent, setActiveComponent] = useState('write');
 
   const handleComponentChange = (componentName) => {
     setActiveComponent(componentName);
@@ -91,16 +93,16 @@ const MyPage = () => {
           <h1 className={title}>마이페이지</h1>
           <ul className={titleContent}>
             <li
-              className={activeComponent === 'recent' && styles.activeStyle}
-              onClick={() => handleComponentChange('recent')}
-            >
-              최근의 본 글
-            </li>
-            <li
               className={activeComponent === 'write' && styles.activeStyle}
               onClick={() => handleComponentChange('write')}
             >
               작성글
+            </li>
+            <li
+              className={activeComponent === 'recent' && styles.activeStyle}
+              onClick={() => handleComponentChange('recent')}
+            >
+              최근의 본 글
             </li>
             <li
               className={activeComponent === 'scrap' && styles.activeStyle}
@@ -137,15 +139,18 @@ const MyPage = () => {
             </div>
             <div className={headContent}>
               <ul className={first}>
-                <li onClick={() => handleComponentChange('recent')}>20</li>
                 <li onClick={() => handleComponentChange('write')}>
                   {formattedPost.length}
                 </li>
+                <li onClick={() => handleComponentChange('recent')}>
+                  {recentInquiry.length}
+                </li>
+
                 <li onClick={() => handleComponentChange('scrap')}>10</li>
               </ul>
               <ul className={second}>
-                <li>최근본 글</li>
                 <li>작성글</li>
+                <li>최근본 글</li>
                 <li>스크랩</li>
               </ul>
             </div>
