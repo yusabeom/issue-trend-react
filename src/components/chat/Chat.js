@@ -180,12 +180,12 @@ const Chat = ({ onUsers, onEnter, OnExit }) => {
   });
 
   useEffect(() => {
-    if (OnExit) {
+    if (OnExit === 2) {
       console.log('채팅방 나가기!!');
       // 채팅방 나가기
       roomSocket.disconnect();
     }
-  }, [OnExit]);
+  }, []);
 
   /* ================ 2. Handler : 이벤트가 발생할 때 서버로 전송 ================ */
 
@@ -193,6 +193,7 @@ const Chat = ({ onUsers, onEnter, OnExit }) => {
   const onSubmitHandler = (e) => {
     e.preventDefault();
     onEnter(true);
+    console.log('채팅방 입장');
 
     const region = localStorage.getItem('REGION_NAME');
     const nickname = localStorage.getItem('NICK_NAME');
@@ -231,7 +232,7 @@ const Chat = ({ onUsers, onEnter, OnExit }) => {
     const sendData = {
       data: filteredMsg,
       id: userId,
-      target: privateTarget, // 1:1 채팅 상대방 이메일도 같이 전송
+      target: privateTarget, // 귓속말 상대방 이메일도 같이 전송
     };
     roomSocket.emit('message', sendData); // 서버에 메세지(아이디, 메세지) 전송
 

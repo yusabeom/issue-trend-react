@@ -100,11 +100,11 @@ const UserInfo = ({ userName, openAnimate }) => {
       <p className={styles.email}> {thisUser.email}</p>
       <p>{thisUser.regionName}</p>
 
-      <ul className='userModeration'>
+      {/* <ul className='userModeration'>
         <li className='reporting'>신고하기</li>
         <li className='DM'>1:1채팅</li>
         <li className='blocking'>차단하기</li>
-      </ul>
+      </ul> */}
     </div>
   );
 };

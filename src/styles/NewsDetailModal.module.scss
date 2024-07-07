@@ -1,14 +1,24 @@
 $buttonPupple: #807aa0;
+$headerColor: #1b1511;
+$fontColor: #ffa927;
+$secondColor: wheat;
+
 .chatWrapper {
   width: 700px;
   overflow: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
   .headerStyle {
-    background: $buttonPupple;
-    color: #fff;
+    background: $headerColor;
+    color: $fontColor;
     padding: 0.8rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: sticky; // 헤더를 고정
+    top: 0; // 상단에 고정
     .icon {
       cursor: pointer;
       float: right;
@@ -53,7 +63,7 @@ $buttonPupple: #807aa0;
 
     a.articleLink {
       &:hover {
-        color: #807aa0;
+        color: $headerColor;
       }
     }
   }
