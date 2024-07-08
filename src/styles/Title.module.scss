@@ -17,14 +17,14 @@ $font : #fdbf61;
 
 .container {
     padding-bottom: 50px;
-    background: linear-gradient(-45deg, #1B1511, #241913, #1B1511,#3d3834, );
+    background: linear-gradient(-45deg, #1B1511, #2c211a, #1B1511,#3d3834, );
     background-size: 400% 400%;
     animation: gradient 15s ease infinite;
 
     .head {
         margin-top: 13vh;
-        height: 270px;
-        background-image: url('../assets/img/newspaper2.jpg');
+        height: 290px;
+        background-image: url('../assets/img/mainImg.jpg');
         background-repeat: no-repeat;
         background-size: cover;
         background-position: center;
