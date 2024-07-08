@@ -13,28 +13,52 @@
   overflow: auto;
 
   .side {
-    // background-color: orange;
-    border-right: 1px solid black;
+    border-right: 1px solid #dcdcdc;
     width: 200px;
     padding-left: 20px;
+    color: #ffa927;
+    transition:
+      background-color 0.3s,
+      color 0.3s;
 
     .title {
       font-size: 26px;
       margin-bottom: 30px;
+      color: #ffa927;
+      font-weight: bold;
     }
 
     .titleContent {
-      margin-top: 70px;
+      margin-top: 20px;
+      list-style-type: none;
+      padding: 0;
+
       li {
-        height: fit-content;
-        margin-bottom: 60px;
+        height: max-content;
+        margin-bottom: 20px;
+        padding: 10px 0;
         cursor: pointer;
+        transition:
+          color 0.3s,
+          background-color 0.3s,
+          transform 0.3s;
+        border-radius: 5px;
+        font-size: 18px;
 
         &:hover {
-          color: #e6e6e6;
+          color: #1b1511;
+          background-color: #ffa927;
         }
       }
     }
+  }
+
+  .activeStyle {
+    font-weight: 700;
+    color: #1b1511;
+    background-color: #ffa927;
+    border-left: 4px solid #ffa927;
+    padding-left: 16px;
   }
 
   .mainContainer {

@@ -565,6 +565,15 @@ const Join = () => {
                         Tip! <br></br>
                         관심키워드를 입력하시면 뉴스레터를 받아보실 수 있습니다.
                       </Typography>
+                      <span
+                        style={{
+                          display: 'block',
+                          color: '#1B1511',
+                          margin: '10px 0',
+                        }}
+                      >
+                        추가된 키워드를 클릭하면 삭제됩니다.
+                      </span>
                     </Grid>
                     <Grid item xs={12}>
                       <TextField

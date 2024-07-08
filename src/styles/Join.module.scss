@@ -1,9 +1,21 @@
+$backgroundColor: #faeed7; // 밝은 배경색
+$lightBackgroundColor: #ffffff; // 섹션 배경색
+$textColor: #1b1511; // 텍스트 색상
+$primaryColor: #ffa927; // 포인트 색상
+$inputBackgroundColor: #ffffff;
+$buttonColor: #38d9a9;
+$buttonHoverColor: darken($buttonColor, 10%);
+$keywordBackgroundColor: $lightBackgroundColor;
+$keywordHoverColor: lighten($primaryColor, 10%);
+$keywordBorderColor: $textColor;
+$gradientStartColor: #ff7e5f;
+$gradientEndColor: #feb47b;
+
 .container {
   height: 90vh;
   background-color: #faeed7;
   margin-top: 13vh;
   padding: 100px 0;
-
 
   .main {
     width: 50%;
@@ -18,33 +30,22 @@
     .contentContainer {
       display: flex;
 
-
-
-
       .region {
         display: flex;
-
       }
-     .regionCorrect {
-      margin-left: 20px;
-     }
-    
+      .regionCorrect {
+        margin-left: 20px;
+      }
 
       .keyword {
-        
         .keywordTitle {
           background-color: #ffdaa3;
           padding: 10px;
-          color: #1B1511;
+          color: #1b1511;
           border-radius: 10px;
           margin-bottom: 8px;
-          
-         
         }
       }
-
-
-
 
       .thumbnailBox {
         width: 300px;
@@ -54,20 +55,18 @@
         align-items: start;
         justify-content: center;
         margin-top: 90px;
-        
+
         cursor: pointer;
-        
+
         img {
           width: 100%;
           height: 100%;
           border-radius: 50%;
-
         }
-        
       }
       .imgLabel {
         font-size: 14px;
-        color: #1B1511;
+        color: #1b1511;
         cursor: pointer;
         display: block;
         text-align: start;
@@ -75,6 +74,35 @@
         padding-left: 90px;
       }
 
+      ul > li {
+        padding: 10px 15px;
+        border-radius: 20px;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        background: linear-gradient(
+          135deg,
+          $gradientStartColor 0%,
+          $gradientEndColor 100%
+        );
+        color: $lightBackgroundColor;
+        transition:
+          background 0.3s,
+          color 0.3s,
+          box-shadow 0.3s,
+          transform 0.3s;
+
+        &:hover {
+          background: linear-gradient(
+            135deg,
+            lighten($gradientStartColor, 10%) 0%,
+            lighten($gradientEndColor, 10%) 100%
+          );
+          color: $textColor;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+          transform: translateY(-3px);
+        }
+      }
 
       .login {
         display: flex;
@@ -83,7 +111,4 @@
       }
     }
   }
-
-
- 
 }

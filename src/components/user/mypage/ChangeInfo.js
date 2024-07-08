@@ -8,6 +8,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import AuthContext from '../../store/auth-context';
 import { debounce } from 'lodash';
+import { borderBottom } from '@mui/system';
 
 const { kakao } = window;
 const ChangeInfo = () => {
@@ -614,25 +615,52 @@ const ChangeInfo = () => {
             <Grid item xs={3}>
               <Button
                 type='button'
-                sx={{ height: '95%' }}
+                sx={{ height: '95%', width: '100%' }}
                 style={{ background: '#38d9a9' }}
                 fullWidth
                 variant='contained'
                 onClick={addressClickHandler}
                 startIcon={<PinDropIcon />}
               >
-                내 동네 설정
+                지역 설정
               </Button>
             </Grid>
             <Grid item xs={12}>
-              <Typography variant='body2' align='center'>
-                issue-trend가 맞춤형 뉴스를 제공합니다.
+              <Typography
+                variant='body2'
+                style={{
+                  fontSize: '20px',
+                }}
+              >
+                issue-trend는 맞춤형 뉴스를 제공합니다.
               </Typography>
+              <span
+                style={{
+                  color: '#1B1511',
+                  margin: '10px 0',
+                }}
+              >
+                맞춤형 뉴스를 제공받고 싶다면 관련 키워드를 추가해주세요.
+              </span>
+              <span
+                style={{
+                  display: 'block',
+                  color: '#1B1511',
+                  margin: '10px 0',
+                }}
+              >
+                추가된 키워드를 클릭하면 삭제됩니다.
+              </span>
             </Grid>
             <TextField
+              sx={{
+                mt: 2,
+                ml: 2,
+              }}
               type='text'
               placeholder='관심 키워드를 입력하고 엔터를 누르세요'
               id='keyword'
+              fullWidth
               onKeyUp={(e) => {
                 if (e.key === 'Enter') {
                   handleKeyDown(e.target.value);
@@ -654,13 +682,16 @@ const ChangeInfo = () => {
                 })}
               </ul>
             </Grid>
-            <Grid>
+            <Grid item xs={12}>
               <Button
                 type='button'
-                fullWidth
                 variant='contained'
-                style={{ background: '#38d9a9', padding: '1.5%' }}
+                style={{ background: '#38d9a9' }}
                 onClick={updateMyInfoHandler}
+                sx={{
+                  width: '100%',
+                  height: '100%',
+                }}
               >
                 회원정보변경하기
               </Button>

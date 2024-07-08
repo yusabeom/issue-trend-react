@@ -8,6 +8,8 @@ $buttonHoverColor: darken($buttonColor, 10%);
 $keywordBackgroundColor: $lightBackgroundColor;
 $keywordHoverColor: lighten($primaryColor, 10%);
 $keywordBorderColor: $textColor;
+$gradientStartColor: #ff7e5f;
+$gradientEndColor: #feb47b;
 
 .changeInfoContainer {
   background-color: $backgroundColor;
@@ -18,7 +20,7 @@ $keywordBorderColor: $textColor;
   max-width: 600px;
   margin: 0 auto;
 
-  .thumbnail-box {
+  .thumbnailBox {
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -39,7 +41,7 @@ $keywordBorderColor: $textColor;
     }
   }
 
-  .signup-img-label {
+  .signupImgLabel {
     display: block;
     text-align: center;
     margin-bottom: 20px;
@@ -97,7 +99,7 @@ $keywordBorderColor: $textColor;
     color: $primaryColor;
   }
 
-  .keyword-list {
+  .keywordList {
     display: flex;
     flex-wrap: wrap;
     list-style: none;
@@ -105,23 +107,30 @@ $keywordBorderColor: $textColor;
     margin: 0;
 
     li {
-      border: 1px solid $keywordBorderColor;
       padding: 10px 15px;
       border-radius: 20px;
       margin-right: 10px;
       margin-bottom: 10px;
       cursor: pointer;
-      background-color: $keywordBackgroundColor;
-      color: $textColor;
+      background: linear-gradient(
+        135deg,
+        $gradientStartColor 0%,
+        $gradientEndColor 100%
+      );
+      color: $lightBackgroundColor;
       transition:
-        background-color 0.3s,
+        background 0.3s,
         color 0.3s,
         box-shadow 0.3s,
         transform 0.3s;
 
       &:hover {
-        background-color: $keywordHoverColor;
-        color: $lightBackgroundColor;
+        background: linear-gradient(
+          135deg,
+          lighten($gradientStartColor, 10%) 0%,
+          lighten($gradientEndColor, 10%) 100%
+        );
+        color: $textColor;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         transform: translateY(-3px);
       }
