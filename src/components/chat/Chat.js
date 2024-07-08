@@ -57,7 +57,7 @@ const Chat = ({ onUsers, onEnter, OnExit }) => {
     };
   }, []);
 
-  // 1. 로그인을 할 때 아이디를 받기 : sLogin - 아이디
+  // 1. 로그인을 할 때 아이디를 받기 : sLogin - 아이디 (입장메세지)
   useEffect(() => {
     if (!roomSocket) return;
     // 메세지 히스토리가 없고 원래 없는 것이 아니라면(DB에는 존재) 중지
@@ -153,12 +153,39 @@ const Chat = ({ onUsers, onEnter, OnExit }) => {
     }
   };
 
+  // 누군가 채팅방에서 나갈 때 퇴장 메세지
   useEffect(() => {
-    if (OnExit) {
+    if (!roomSocket) return;
+
+    console.log('퇴장 메세지 useEffect!!');
+
+    roomSocket.on('sExit', (userId) => {
+      setMsgList((prev) => [
+        ...prev,
+        {
+          msg: `${userId} 님이 퇴장하셨습니다.`,
+          type: 'welcome',
+          id: '',
+        },
+      ]);
+    });
+
+    return () => {
+      roomSocket.off('sExit');
+    };
+  }, []);
+
+  roomSocket.on('disconnect', () => {
+    console.log('Disconnected from server');
+  });
+
+  useEffect(() => {
+    if (OnExit === 2) {
+      console.log('채팅방 나가기!!');
       // 채팅방 나가기
-      // roomSocket.disconnect();
+      roomSocket.disconnect();
     }
-  }, [OnExit]);
+  }, []);
 
   /* ================ 2. Handler : 이벤트가 발생할 때 서버로 전송 ================ */
 
@@ -166,6 +193,7 @@ const Chat = ({ onUsers, onEnter, OnExit }) => {
   const onSubmitHandler = (e) => {
     e.preventDefault();
     onEnter(true);
+    console.log('채팅방 입장');
 
     const region = localStorage.getItem('REGION_NAME');
     const nickname = localStorage.getItem('NICK_NAME');
@@ -204,7 +232,7 @@ const Chat = ({ onUsers, onEnter, OnExit }) => {
     const sendData = {
       data: filteredMsg,
       id: userId,
-      target: privateTarget, // 1:1 채팅 상대방 이메일도 같이 전송
+      target: privateTarget, // 귓속말 상대방 이메일도 같이 전송
     };
     roomSocket.emit('message', sendData); // 서버에 메세지(아이디, 메세지) 전송
 

@@ -1,4 +1,8 @@
 $buttonPupple: #807aa0;
+$headerColor: #1b1511;
+$fontColor: #ffa927;
+$secondColor: wheat;
+
 .chatWrapper {
   width: 700px;
   overflow: auto;
@@ -52,7 +56,7 @@ $buttonPupple: #807aa0;
           width: 80%;
           margin: 0 auto;
           padding: 0.5rem;
-          background: #807aa0;
+          background: $headerColor;
           color: #fff;
           display: flex;
           justify-content: center;
@@ -80,8 +84,8 @@ $buttonPupple: #807aa0;
             width: 30%;
             margin: 0 auto;
             padding: 0.5rem;
-            background: #807aa0;
-            color: #fff;
+            background: $headerColor;
+            color: $fontColor;
             display: flex;
             justify-content: center;
             align-items: center;

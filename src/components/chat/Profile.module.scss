@@ -1,8 +1,13 @@
 $buttonPupple: rgb(128, 122, 160);
+$buttonPupple: #807aa0;
+$originBack: rgba(128, 122, 160, 0.27);
+$headerColor: #1b1511;
+$fontColor: #ffa927;
+$secondColor: wheat;
 
 .profile {
   width: 40%;
-  background-color: rgba(128, 122, 160, 0.27);
+  background-color: wheat;
 
   li {
     // border: 1px skyblue solid;

@@ -67,7 +67,7 @@ const ScrapPost = () => {
   };
 
   return (
-    <>
+    <div className={styles.ScrapContent}>
       <header className={styles.header}>
         스크랩 기사 {scrapList.length} 건
       </header>
@@ -128,7 +128,7 @@ const ScrapPost = () => {
           정상적으로 삭제되었습니다!
         </Alert>
       </Snackbar>
-    </>
+    </div>
   );
 };
 

@@ -107,11 +107,21 @@ const NewsList = ({ newsList, page, size, count }) => {
       <div className={styles.loadBtn}>
         {state.hasMore &&
           (state.loading ? (
-            <LoadingButton loading variant='outlined' size='large'>
+            <LoadingButton
+              loading
+              variant='outlined'
+              size='large'
+              className={styles.commonBtns}
+            >
               기사 더보기
             </LoadingButton>
           ) : (
-            <Button variant='outlined' size='large' onClick={loadMoreOnClick}>
+            <Button
+              variant='outlined'
+              size='large'
+              onClick={loadMoreOnClick}
+              className={`${styles.Btns} ${styles.commonBtns}`}
+            >
               기사 더보기
             </Button>
           ))}

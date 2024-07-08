@@ -1,98 +1,102 @@
-header.header {
-  font-size: 23px;
-  margin: 20px 45px 20px;
-}
+.ScrapContent {
+  margin: 1vh 45px 5vh;
+  header.header {
+    font-size: 23px;
+    margin: 1vh 45px 5vh;
+  }
 
-ul.scrapList {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
+  ul.scrapList {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    margin: 3rem auto;
 
-  // 하나의 기사 영역
-  li.post {
-    width: 45%;
-    max-height: 200px;
-    margin-top: 50px;
-    padding-left: 20px;
-    // background-color: red;
-    cursor: pointer;
+    // 하나의 기사 영역
+    li.post {
+      width: 45%;
+      max-height: 200px;
+      margin-top: 50px;
+      padding-left: 20px;
+      // background-color: red;
+      cursor: pointer;
 
-    .imgContainer {
-      overflow: hidden;
-      position: relative;
-      background: #000;
-
-      position: relative;
-
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center;
-        transition:
-          opacity 0.3s ease,
-          transform 0.3s ease;
-      }
-
-      .articleImg {
-        background: #000;
-      }
-
-      .basicImg {
-        background: #fff;
-      }
-
-      button.closeBtn {
-        position: absolute;
-        top: 10%;
-        right: -5%;
-        transform: translate(-50%, -50%);
-        background-color: red;
-        color: white;
-        border: none;
-        border-radius: 50%;
-        width: 30px;
-        height: 30px;
-        cursor: pointer;
-        font-size: 16px;
-
-        display: none;
-
-        &:hover {
-          background-color: rgb(102, 0, 0);
-        }
-      }
-
-      .title {
-        margin-top: 0.8rem;
-        width: 45%;
-        position: absolute;
-        bottom: 0.8rem;
-        left: 0.8rem;
-        color: #fff;
-        background-color: rgba(
-          0,
-          0,
-          0,
-          0.6
-        ); /* Optional: semi-transparent background */
-        padding: 0.5rem;
-        width: calc(100% - 1.6rem);
-      }
-    }
-
-    &:hover {
       .imgContainer {
+        overflow: hidden;
+        position: relative;
+        background: #000;
+
+        position: relative;
+
         img {
-          opacity: 0.6;
-          transform: scale(1.2);
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center;
+          transition:
+            opacity 0.3s ease,
+            transform 0.3s ease;
+        }
+
+        .articleImg {
+          background: #000;
+        }
+
+        .basicImg {
+          background: #fff;
         }
 
         button.closeBtn {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          z-index: 100000;
+          position: absolute;
+          top: 10%;
+          right: -5%;
+          transform: translate(-50%, -50%);
+          background-color: red;
+          color: white;
+          border: none;
+          border-radius: 50%;
+          width: 30px;
+          height: 30px;
+          cursor: pointer;
+          font-size: 16px;
+
+          display: none;
+
+          &:hover {
+            background-color: rgb(102, 0, 0);
+          }
+        }
+
+        .title {
+          margin-top: 0.8rem;
+          width: 45%;
+          position: absolute;
+          bottom: 0.8rem;
+          left: 0.8rem;
+          color: #fff;
+          background-color: rgba(
+            0,
+            0,
+            0,
+            0.6
+          ); /* Optional: semi-transparent background */
+          padding: 0.5rem;
+          width: calc(100% - 1.6rem);
+        }
+      }
+
+      &:hover {
+        .imgContainer {
+          img {
+            opacity: 0.6;
+            transform: scale(1.2);
+          }
+
+          button.closeBtn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100000;
+          }
         }
       }
     }

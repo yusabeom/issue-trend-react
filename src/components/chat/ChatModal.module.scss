@@ -1,9 +1,13 @@
 $buttonPupple: #807aa0;
+$headerColor: #1b1511;
+$fontColor: #ffa927;
+$secondColor: wheat;
+
 .chatWrapper {
   width: 700px;
   .headerStyle {
-    background: $buttonPupple;
-    color: #fff;
+    background: $headerColor;
+    color: #ffa927;
     padding: 0.8rem;
     display: flex;
     justify-content: space-between;
