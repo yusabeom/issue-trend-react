@@ -1,29 +1,127 @@
-$pageColor: #1b1511;
-$fontColor: #ffa927;
+$pageColor: #ffffff;
+$fontColor: #333333;
+$primaryColor: #1b1511;
+$secondaryColor: #f4f4f4;
+$hoverBackground: #ffe8cc;
+
+.title {
+  text-align: left;
+  color: $fontColor;
+  padding: 10px 0;
+  margin-bottom: 20px;
+
+  h2 {
+    margin: 0;
+    font-size: 1.8em;
+    font-weight: bold;
+  }
+}
+
+.tableContainer {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
 
 .tableStyle {
   width: 100%;
-  margin-top: 20px;
-}
-
-.tableStyle table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.tableStyle th,
-.tableStyle td {
-  padding: 12px;
-  text-align: left;
-}
-
-.tableStyle th {
+  overflow-x: auto;
   background-color: $pageColor;
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th,
+    td {
+      padding: 15px;
+      text-align: left;
+      border-bottom: 1px solid $secondaryColor;
+    }
+
+    th {
+      background-color: $primaryColor;
+      color: $pageColor;
+      font-weight: bold;
+    }
+
+    tbody tr {
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: $hoverBackground;
+        cursor: pointer;
+      }
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+  }
+}
+
+.emptyMessage {
+  text-align: center;
+  padding: 20px;
+  border: 1px solid $primaryColor;
+  border-radius: 10px;
+  background-color: $secondaryColor;
   color: $fontColor;
   font-weight: bold;
 }
 
-.tableStyle tbody tr:hover {
-  background-color: #f5f5f5;
-  cursor: pointer;
+.paginationContainer {
+  text-align: center;
+  margin-top: 40px; // 테이블과 충분한 여백
+  margin-bottom: 20px;
+
+  .pagination {
+    display: inline-block;
+    padding-left: 0;
+    list-style: none;
+    padding: 0;
+
+    li {
+      display: inline-block;
+      margin: 0 5px;
+
+      &.active a {
+        background-color: $primaryColor;
+        color: $pageColor;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        line-height: 40px; // 텍스트를 가운데로 정렬
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+    a {
+      color: $fontColor;
+      background-color: $secondaryColor;
+      padding: 0; // 패딩을 제거하고 고정된 너비와 높이를 사용
+      width: 40px; // 원 형태를 유지하기 위해 너비와 높이를 동일하게 설정
+      height: 40px;
+      line-height: 40px; // 텍스트를 가운데로 정렬
+      text-decoration: none;
+      margin: 0 5px;
+      border-radius: 50%; // 각 페이지네이션 버튼에 완전히 둥근 테두리 추가
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition:
+        background-color 0.3s,
+        color 0.3s,
+        box-shadow 0.3s;
+
+      &:hover {
+        background-color: darken($primaryColor, 10%);
+        color: $pageColor;
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+      }
+    }
+  }
 }

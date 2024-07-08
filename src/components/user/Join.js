@@ -273,8 +273,9 @@ const Join = () => {
   const [imgFile, setImgFile] = useState(null);
   const showThumbnailHandler = (e) => {
     const file = $fileTag.current.files[0];
-
     console.log(`file: ${file}`);
+    if (!file) return;
+
     const fileExt = file.name.slice(file.name.indexOf('.') + 1).toLowerCase();
 
     if (
