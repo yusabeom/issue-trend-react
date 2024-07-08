@@ -37,6 +37,27 @@
         font-size: 20px;
         margin-top: 70px;
         
+
+        @-webkit-keyframes flip-horizontal-bottom {
+            0% {
+              -webkit-transform: rotateX(0);
+                      transform: rotateX(0);
+            }
+            100% {
+              -webkit-transform: rotateX(-360deg);
+                      transform: rotateX(-360deg);
+            }
+          }
+          @keyframes flip-horizontal-bottom {
+            0% {
+              -webkit-transform: rotateX(0);
+                      transform: rotateX(0);
+            }
+            100% {
+              -webkit-transform: rotateX(-360deg);
+                      transform: rotateX(-360deg);
+            }
+          }
         
         li {
             // background-color: red;
@@ -49,6 +70,8 @@
             color: #1B1511;
             border-radius: 10px;
             font-weight: 600;
+            -webkit-animation: flip-horizontal-bottom 0.4s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;
+	        animation: flip-horizontal-bottom 0.4s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;
             
             p {
                 width: 40px;
@@ -68,6 +91,8 @@
                 padding: 10px;
                 
             }
+
+            
             
         }
         
