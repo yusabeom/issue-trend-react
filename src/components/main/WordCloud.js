@@ -33,7 +33,7 @@ const WordCloud = () => {
             throw new Error('Network response was not ok');
           }
           const data = await response.json();
-          const selectWordData = data.slice(0, 100);
+          const selectWordData = data.slice(0, 120);
           setLoading(false);
           const transformedData = selectWordData.map((element) => [
             element.keyword,
