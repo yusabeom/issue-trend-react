@@ -3,12 +3,13 @@ import axiosInstance from '../../../config/axios-config';
 import { API_BASE_URL, USER } from '../../../config/host-config';
 import styles from '../../../styles/user/WritePost.module.scss';
 import { useNavigate } from 'react-router-dom';
+import {
+  FaAngleDoubleLeft,
+  FaAngleDoubleRight,
+  FaChevronLeft,
+  FaChevronRight,
+} from 'react-icons/fa';
 import Pagination from 'react-js-pagination';
-import pageStyle from '../../../styles/user/Pagination.module.scss';
-
-const { title } = styles;
-const { paginationContainer } = pageStyle;
-const { tableStyle } = styles;
 
 const WritePost = () => {
   const navigate = useNavigate();
@@ -59,47 +60,53 @@ const WritePost = () => {
 
   return (
     <>
-      <div className={title}>
+      <div className={styles.title}>
         <h2>내가 작성한 글</h2>
-        {formattedPost.length === 0 ? (
-          <div>작성한 글이 없습니다.</div>
-        ) : (
-          <div className={tableStyle}>
+      </div>
+      {formattedPost.length === 0 ? (
+        <div className={styles.emptyMessage}>작성한 글이 없습니다.</div>
+      ) : (
+        <div className={styles.tableContainer}>
+          <div className={styles.tableStyle}>
             <table>
               <thead>
                 <tr>
                   <th className={styles.postNo}>포스트 번호</th>
-                  <th className={styles.title}>제목</th>
-                  <th className={styles.content}>내용</th>
-                  <th className={styles.writeDate}>작성일</th>
+                  <th>제목</th>
+                  <th>내용</th>
+                  <th>작성일</th>
                 </tr>
               </thead>
               <tbody>
                 {currentPosts.map((post, index) => (
                   <tr key={index} onClick={() => clickPost(post.postNo)}>
                     <td className={styles.postNo}>{post.postNo}</td>
-                    <td className={styles.title}>{post.title}</td>
-                    <td className={styles.content}>{post.text}</td>
-                    <td className={styles.writeDate}>{post.formatDate}</td>
+                    <td>{post.title}</td>
+                    <td>{post.text}</td>
+                    <td>{post.formatDate}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-        )}
-      </div>
+        </div>
+      )}
       {formattedPost.length > 0 && (
-        <div className={paginationContainer}>
+        <div className={styles.paginationContainer}>
           <Pagination
             activePage={activePage}
             itemsCountPerPage={postsPerPage}
             totalItemsCount={formattedPost.length}
             pageRangeDisplayed={5}
             onChange={handlePageChange}
-            itemClass={pageStyle.pageItem}
-            linkClass={pageStyle.pageLink}
-            innerClass={pageStyle.pagination}
-            activeClass={pageStyle.active}
+            itemClass={styles.pageItem}
+            linkClass={styles.pageLink}
+            innerClass={styles.pagination}
+            activeClass={styles.active}
+            prevPageText={<FaChevronLeft />}
+            nextPageText={<FaChevronRight />}
+            firstPageText={<FaAngleDoubleLeft />}
+            lastPageText={<FaAngleDoubleRight />}
           />
         </div>
       )}
