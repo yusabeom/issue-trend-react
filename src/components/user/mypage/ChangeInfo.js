@@ -481,7 +481,7 @@ const ChangeInfo = () => {
 
       if (!Object.keys(userValue).length && !isImageChanged) {
         alert('변경한 정보가 없습니다. 홈으로 이동합니다.');
-        // navigate('/home');
+        navigate('/home');
         return;
       }
 
