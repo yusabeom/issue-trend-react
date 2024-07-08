@@ -9,7 +9,7 @@ import ChatLobby from './ChatLobby';
 import { regionCode } from './regionCode';
 
 // const webSocket = io('http://localhost:5000');
-const roomSocket = io('http://192.168.0.27:5000');
+const roomSocket = io('http://192.168.0.33:5000');
 
 // 화면에는 유저 이름(userName)을 보여주고, 서버에서는 socket.id로 식별한다.
 const Chat = ({ onUsers, onEnter, OnExit }) => {
@@ -180,11 +180,11 @@ const Chat = ({ onUsers, onEnter, OnExit }) => {
   });
 
   useEffect(() => {
-    if (OnExit === 2) {
-      console.log('채팅방 나가기!!');
-      // 채팅방 나가기
-      roomSocket.disconnect();
-    }
+    // if (OnExit === 2) {
+    //   console.log('채팅방 나가기!!');
+    //   // 채팅방 나가기
+    //   roomSocket.disconnect();
+    // }
   }, []);
 
   /* ================ 2. Handler : 이벤트가 발생할 때 서버로 전송 ================ */
@@ -213,7 +213,7 @@ const Chat = ({ onUsers, onEnter, OnExit }) => {
   // };
 
   // 필터링 할 단어 목록
-  const dirtyWord = ['거지', '새끼', '멍청이', '똥개', '바보'];
+  const dirtyWord = ['똥개', '바보', '해삼'];
 
   // 채팅 전송 이벤트 핸들러 (form)
   const onSendSubmitHandler = (e) => {
