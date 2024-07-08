@@ -12,6 +12,8 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import 'swiper/css/scrollbar';
+import { API_BASE_URL, USER } from '../../config/host-config';
+const API_BASE_URL2 = API_BASE_URL + USER + '/todayArticles';
 
 const Title = () => {
   const { container, head, background, title } = styles;
@@ -19,13 +21,11 @@ const Title = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const API_BASE_URL = 'http://localhost:8181/issue-trend/todayArticles';
-
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await axiosInstance.get(API_BASE_URL);
+        const response = await axiosInstance.get(API_BASE_URL2);
         const originalData = response.data;
         const filteredData = originalData.filter(
           (article) => article.img !== '이미지를 찾을 수 없습니다',

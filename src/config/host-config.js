@@ -3,9 +3,9 @@ const clientHostName = window.location.hostname;
 let backEndHostName;
 
 if (clientHostName === 'localhost') {
-  backEndHostName = 'http://localhost:8181';
+  backEndHostName = 'http://3.38.47.22';
 } else if (clientHostName === 'issuetrend.site') {
-  backEndHostName = 'https://3.38.47.22';
+  backEndHostName = 'http://3.38.47.22';
 }
 
 export const API_BASE_URL = backEndHostName;

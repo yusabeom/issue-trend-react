@@ -6,8 +6,6 @@ import axios from 'axios';
 import defaultImg from '../../assets/img/anonymous.jpg';
 import axiosInstance from '../../config/axios-config';
 
-const roomSocket = io('http://192.168.0.27:5000');
-
 const USER_URI = API_BASE_URL + USER; // /issue-trend
 
 // users: 서버로부터 받은 채팅방 유저 목록 (닉네임)
