@@ -9,6 +9,7 @@ import { API_BASE_URL, USER } from '../../../config/host-config';
 import AuthContext from '../../store/auth-context';
 import { Navigate, useNavigate } from 'react-router-dom';
 import MyPageContext from '../../../utils/MyPageContext';
+import KakaoChangeInfo from './KakaoChangeInfo';
 
 const {
   mypageContainer,
@@ -32,6 +33,7 @@ const MyPage = () => {
 
   const [formattedPost, setFormattedPost] = useState([]);
   const { recentInquiry } = useContext(MyPageContext);
+  const LOGIN_PATH = localStorage.getItem('LOGIN_PATH');
 
   useEffect(() => {
     fetchMyPosts();
@@ -157,7 +159,8 @@ const MyPage = () => {
           </div>
 
           <div className={content}>
-            {activeComponent === 'change' && <ChangeInfo />}
+            {activeComponent === 'change' &&
+              (LOGIN_PATH === 'KAKAO' ? <KakaoChangeInfo /> : <ChangeInfo />)}
             {activeComponent === 'recent' && <RecentPost />}
             {activeComponent === 'scrap' && <ScrapPost />}
             {activeComponent === 'write' && <WritePost />}
