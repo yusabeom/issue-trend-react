@@ -3,6 +3,12 @@ $bg-point: red;
 $pageColor: #1b1511;
 $fontColor: #ffa927;
 
+.header {
+  margin-bottom: 2vh;
+  font-size: 1.8em;
+    font-weight: bold;
+}
+
 table {
   padding: 1.4rem;
   tr.oneArticle {

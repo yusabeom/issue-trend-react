@@ -47,6 +47,7 @@ const RecentPost = () => {
 
   return (
     <>
+      <header className={styles.header}>최근에 본글</header>
       <table>
         <tbody>
           {recentArticle.map((article) => (
