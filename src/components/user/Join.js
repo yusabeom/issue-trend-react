@@ -306,11 +306,7 @@ const Join = () => {
   // 키워드 등록하기
   // 입력한 키워드를 저장하는 배열
   const [keywords, setKeywords] = useState([]);
-  console.log(typeof keywords);
-
   const handleKeyDown = (value) => {
-    console.log(value);
-
     for (const keyword of keywords) {
       if (keyword.value === value) {
         alert('이미 존재하는 키워드입니다.');
