@@ -104,7 +104,6 @@ const MyPage = () => {
     }
   };
 
-  //
   return (
     <div className={styles.backScreen}>
       <div className={mypageContainer}>
@@ -138,6 +137,7 @@ const MyPage = () => {
             <li onClick={handleDeleteUser}>회원탈퇴</li>
           </ul>
         </div>
+
         <div className={mainContainer}>
           {activeComponent === 'change' ? (
             ''
@@ -169,17 +169,19 @@ const MyPage = () => {
                       {recentInquiry.length}
                     </li>
 
-                <li onClick={() => handleComponentChange('scrap')}>
-                  {scrapList.length}
-                </li>
-              </ul>
-              <ul className={second}>
-                <li>작성글</li>
-                <li>최근본 글</li>
-                <li>스크랩</li>
-              </ul>
-            </div>
-          </div>
+                    <li onClick={() => handleComponentChange('scrap')}>
+                      {scrapList.length}
+                    </li>
+                  </ul>
+                  <ul className={second}>
+                    <li>작성글</li>
+                    <li>최근본 글</li>
+                    <li>스크랩</li>
+                  </ul>
+                </div>
+              </div>
+            </>
+          )}
 
           <div className={content}>
             {activeComponent === 'change' &&
