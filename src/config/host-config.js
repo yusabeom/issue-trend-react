@@ -3,7 +3,7 @@ const clientHostName = window.location.hostname;
 let backEndHostName;
 
 if (clientHostName === 'localhost') {
-  backEndHostName = 'http://3.38.47.22';
+  backEndHostName = 'http://localhost:8181';
 } else if (clientHostName === 'issuetrend.site') {
   backEndHostName = 'http://3.38.47.22';
 }
