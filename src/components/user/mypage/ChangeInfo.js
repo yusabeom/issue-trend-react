@@ -8,7 +8,6 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import AuthContext from '../../store/auth-context';
 import { debounce } from 'lodash';
-import { borderBottom } from '@mui/system';
 
 const { kakao } = window;
 const ChangeInfo = () => {
@@ -55,21 +54,17 @@ const ChangeInfo = () => {
           password: passwordCheck.password,
         },
       );
-
       const status = res.status;
       const data = res.data;
-      console.log('res :', res);
-      console.log('비밀번호 틀렸을 때, data: ', data);
+      console.log('status: ', status);
+      console.log('data: ', data);
 
       if (status === 200) {
         setIsCheckPw(true);
-      } else {
-        console.log(data);
-        alert(data);
       }
-    } catch (error) {
-      console.error('Error checking password:', error);
-      alert('비밀번호를 다시 확인해주세요');
+    } catch (err) {
+      console.log('err: ', err);
+      alert(err.response.data);
     }
   };
 
@@ -107,7 +102,7 @@ const ChangeInfo = () => {
     debounce((nick) => {
       console.log('debounce called! nick: ', nick);
       nickChangeHandler(nick);
-    }, 500),
+    }, 100),
     [],
   ); // 의존성 배열을 비워놓으면, 첫 렌더링 때 함수가 선언되고 다시는 재선언되지 않습니다.
 
