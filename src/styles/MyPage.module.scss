@@ -1,20 +1,21 @@
 .backScreen {
   background-color: #faeed7;
+  padding: 100px;
 }
 
 .mypageContainer {
-  margin: 12vh auto 0;
+  margin: 12vh auto 12vh;
   color: black;
   background-color: #faeed7;
   display: flex;
-  height: 80vh;
+  height: 100vh;
   width: 60%;
-  padding: 4vh 0;
-  overflow: auto;
+  
 
   .side {
-    border-right: 1px solid #dcdcdc;
+    
     width: 200px;
+    height: 100vh;
     padding-left: 20px;
     color: #ffa927;
     transition:
@@ -44,6 +45,7 @@
           transform 0.3s;
         border-radius: 5px;
         font-size: 18px;
+        color: #1b1511;
 
         &:hover {
           color: #1b1511;
@@ -63,12 +65,17 @@
 
   .mainContainer {
     // background-color: greenyellow;
+    border-left: 1px solid #5047425e;
     width: 800px;
+    height: 120vh;
     padding-left: 80px;
+    padding-bottom: 80px;
+    overflow: auto;
 
     .head {
       display: flex;
-      border: 1px solid black;
+      border: 1px solid #383838;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       border-radius: 20px;
       height: 150px;
       align-items: center;
@@ -92,7 +99,8 @@
           li {
             width: 75px;
             height: 75px;
-            border: 1px solid black;
+            border: 1px solid #383838;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             border-radius: 50%;
             align-content: center;
           }

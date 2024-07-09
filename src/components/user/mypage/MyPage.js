@@ -104,59 +104,65 @@ const MyPage = () => {
               className={activeComponent === 'recent' && styles.activeStyle}
               onClick={() => handleComponentChange('recent')}
             >
-              최근의 본 글
+              최근에 본 글
             </li>
             <li
               className={activeComponent === 'scrap' && styles.activeStyle}
               onClick={() => handleComponentChange('scrap')}
             >
-              스크랩
+              스크랩 기사
             </li>
             <li
               className={activeComponent === 'change' && styles.activeStyle}
               onClick={() => handleComponentChange('change')}
             >
-              내정보변경
+              내정보 변경
             </li>
             <li onClick={handleDeleteUser}>회원탈퇴</li>
           </ul>
         </div>
         <div className={mainContainer}>
-          <div className={head}>
-            <div className={headTitle}>
-              <img
-                src={
-                  profileImage === 'null'
-                    ? require('../../../assets/img/anonymous.jpg')
-                    : profileImage
-                }
-                alt='프로필 사진'
-                style={{
-                  width: 75,
-                  borderRadius: '50%',
-                  height: 75,
-                }}
-              />
-              <h2>{localStorage.getItem('NICK_NAME')}</h2>
-            </div>
-            <div className={headContent}>
-              <ul className={first}>
-                <li onClick={() => handleComponentChange('write')}>
-                  {formattedPost.length}
-                </li>
-                <li onClick={() => handleComponentChange('recent')}>
-                  {recentInquiry.length}
-                </li>
+          {activeComponent === 'change' ? (
+            ''
+          ) : (
+            <>
+              <div className={head}>
+                <div className={headTitle}>
+                  <img
+                    src={
+                      profileImage === 'null'
+                        ? require('../../../assets/img/anonymous.jpg')
+                        : profileImage
+                    }
+                    alt='프로필 사진'
+                    style={{
+                      width: 75,
+                      borderRadius: '50%',
+                      height: 75,
+                    }}
+                  />
+                  <h2>{localStorage.getItem('NICK_NAME')}</h2>
+                </div>
+                <div className={headContent}>
+                  <ul className={first}>
+                    <li onClick={() => handleComponentChange('write')}>
+                      {formattedPost.length}
+                    </li>
+                    <li onClick={() => handleComponentChange('recent')}>
+                      {recentInquiry.length}
+                    </li>
 
-                <li onClick={() => handleComponentChange('scrap')}>10</li>
-              </ul>
-              <ul className={second}>
-                <li>작성글</li>
-                <li>최근본 글</li>
-                <li>스크랩</li>
-              </ul>
-            </div>
-          </div>
+                    <li onClick={() => handleComponentChange('scrap')}>10</li>
+                  </ul>
+                  <ul className={second}>
+                    <li>작성글</li>
+                    <li>최근본 글</li>
+                    <li>스크랩</li>
+                  </ul>
+                </div>
+              </div>
+            </>
+          )}
 
           <div className={content}>
             {activeComponent === 'change' &&
