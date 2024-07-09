@@ -11,6 +11,7 @@ import Login from './components/user/Login';
 import NewsDetailModal from './components/board/NewsDetailModal';
 import AuthContext, {
   AuthContextProvider,
+  isAuthenticated,
 } from './components/store/auth-context';
 import { useContext, useEffect, useState } from 'react';
 import MyPage from './components/user/mypage/MyPage';
@@ -20,7 +21,7 @@ import RegionScreen from './components/regionInfo/RegionScreen';
 import PayTest from './payTest';
 import NaverMapApi from './components/regionInfo/NaverMapApi';
 import Subscribe from './components/subscribe/Subscribe';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 function App() {
   return (
@@ -31,8 +32,19 @@ function App() {
           <Route path='/home' element={<Home />} />
           <Route path='/news' element={<NewsTemplate />} />
           <Route path='/news/:id' element={<NewsTemplate />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/join' element={<Join />} />
+          <Route
+            path='/login'
+            element={
+              isAuthenticated() ? <Navigate to='/home' replace /> : <Login />
+            }
+          />
+          <Route
+            path='/join'
+            element={
+              isAuthenticated() ? <Navigate to='/home' replace /> : <Join />
+            }
+          />
+
           <Route path='/oauth/kakao' element={<KakaoLoginHandler />} />
           <Route path='/board' element={<ReportTemplate />} />
           <Route path='/board/:id' element={<ReportTemplate />} />
