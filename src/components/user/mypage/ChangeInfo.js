@@ -599,7 +599,7 @@ const ChangeInfo = () => {
               <Button
                 type='button'
                 sx={{ height: '95%', width: '100%' }}
-                style={{ background: '#38d9a9' }}
+                style={{ background: '#1b1511' }}
                 fullWidth
                 variant='contained'
                 onClick={addressClickHandler}
@@ -669,7 +669,7 @@ const ChangeInfo = () => {
               <Button
                 type='button'
                 variant='contained'
-                style={{ background: '#38d9a9' }}
+                style={{ background: '#1b1511' }}
                 onClick={updateMyInfoHandler}
                 sx={{
                   width: '100%',
