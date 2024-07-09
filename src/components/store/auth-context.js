@@ -11,6 +11,11 @@ const AuthContext = React.createContext({
   onLogin: () => {},
 });
 
+const isAuthenticated = () => {
+  const atn = localStorage.getItem('ACCESS_TOKEN');
+  return !!atn; // 토큰이 있으면 true, 없으면 false
+};
+
 export const AuthContextProvider = (props) => {
   console.log('App 컴포넌트 실행!');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -88,3 +93,4 @@ export const AuthContextProvider = (props) => {
 };
 
 export default AuthContext;
+export { isAuthenticated };
