@@ -13,7 +13,8 @@
     // transform: translate(-50%, -50%);
 
     tr.boardHead {
-      //   border: 1px green solid;
+      border-top: 2px #1B1511 solid;
+      background-color: #fce2b4;
       padding: 1rem 2.5rem;
       display: flex;
       justify-content: space-evenly;
@@ -35,7 +36,9 @@
         &.boardDate {
           width: 20%;
         }
+        
       }
+
       border-bottom: 1px #000 solid;
     }
   }
