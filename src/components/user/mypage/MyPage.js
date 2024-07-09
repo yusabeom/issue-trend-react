@@ -35,8 +35,26 @@ const MyPage = () => {
   const { recentInquiry } = useContext(MyPageContext);
   const LOGIN_PATH = localStorage.getItem('LOGIN_PATH');
 
+  const SCRAP = API_BASE_URL + USER + '/scrap';
+  const [scrapList, setScrapList] = useState([]);
+
+  const fetchScrap = async () => {
+    try {
+      console.log('GET url: ', SCRAP + '/user');
+      const res = await axiosInstance.get(SCRAP + '/user');
+      const getScrapList = res.data;
+      setScrapList(getScrapList);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     fetchMyPosts();
+  }, []);
+
+  useEffect(() => {
+    fetchScrap();
   }, []);
 
   const fetchMyPosts = async () => {
@@ -73,7 +91,6 @@ const MyPage = () => {
 
   const handleDeleteUser = async () => {
     try {
-      console.log(localStorage.getItem('ACCESS_TOKEN'));
       if (confirm('정말 탈퇴하시겠어요?')) {
         const res = await axiosInstance.delete(`${API_BASE_URL}${USER}/delete`);
         if (res.status === 200) {
@@ -152,17 +169,17 @@ const MyPage = () => {
                       {recentInquiry.length}
                     </li>
 
-                    <li onClick={() => handleComponentChange('scrap')}>10</li>
-                  </ul>
-                  <ul className={second}>
-                    <li>작성글</li>
-                    <li>최근본 글</li>
-                    <li>스크랩</li>
-                  </ul>
-                </div>
-              </div>
-            </>
-          )}
+                <li onClick={() => handleComponentChange('scrap')}>
+                  {scrapList.length}
+                </li>
+              </ul>
+              <ul className={second}>
+                <li>작성글</li>
+                <li>최근본 글</li>
+                <li>스크랩</li>
+              </ul>
+            </div>
+          </div>
 
           <div className={content}>
             {activeComponent === 'change' &&

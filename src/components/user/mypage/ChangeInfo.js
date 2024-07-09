@@ -137,7 +137,7 @@ const ChangeInfo = () => {
     let flag = false;
 
     if (!inputValue) {
-      msg = '닉네임을 공백으로 두면 기존 비밀번호로 유지됩니다.';
+      msg = '공백으로 두면 기존 닉네임으로 유지됩니다.';
     } else if (!nickRegex.test(inputValue)) {
       msg = '2자 이상 16자 이하, 영어 또는 숫자 또는 한글로 조합해주세요';
     } else {
@@ -320,12 +320,10 @@ const ChangeInfo = () => {
   };
 
   // 프로필 이미지 등록하기
-  const $fileTag = useRef(); // 인풋 요소를 참조하는데, 변경이 발생하면 showThumbnailHandler가 작동한다.
+  const $fileTag = useRef();
 
-  const [imgFile, setImgFile] = useState(localStorage.getItem('PROFILE_IMAGE')); // 로그인하고, 로컬스토리지에서 얻어온 프로파일 이미지를 상태변수로 관리
-
+  const [imgFile, setImgFile] = useState(localStorage.getItem('PROFILE_IMAGE'));
   const showThumbnailHandler = (e) => {
-    // console.log($fileTag);
     const file = $fileTag.current.files[0];
     console.log(`file: ${file}`);
     if (!file) return;
@@ -339,7 +337,6 @@ const ChangeInfo = () => {
       fileExt !== 'gif'
     ) {
       alert('이미지 파일(jpg, png, jpeg, gif)만 등록이 가능합니다.');
-      // console.log('$file.current.value: ', $fileTag.current.value);
       $fileTag.current.value = '';
       return;
     }
@@ -353,14 +350,6 @@ const ChangeInfo = () => {
   };
 
   const isValid = () => {
-    // console.log(
-    //  '회원 정보 변경 버튼 클릭시 호출되는 정규식 표현 검사 통과했니 함수 correct:',
-    //  correct,
-    // );
-
-    console.log(message.nickname1.indexOf('기존') !== -1);
-
-    // 문제점1: 닉네임을 작성했다 지웠는데도 닉네임 정규표현식 위반이라고 뜬다.
     if (
       message.nickname1.indexOf('기존') === -1 &&
       message.nickname1 !== '' &&
@@ -434,11 +423,6 @@ const ChangeInfo = () => {
 
   const updateMyInfoHandler = (e) => {
     e.preventDefault();
-    console.log('userValue[nickname1]: ', userValue.nickname1); // 입력한 닉네임
-    console.log('userValue.password1:', userValue.password1);
-    console.log('userValue.password1:', userValue.passwordCheck1);
-    console.log('userValue:', userValue);
-
     if (isValid()) {
       for (let key in userValue) {
         // 필터로 간소화
@@ -463,7 +447,6 @@ const ChangeInfo = () => {
               console.log('userValue[key] fk', userValue[key]);
               delete userValue[key];
             } else {
-              // 단어만 전송
               userValue[key] = currentKeywords.map((fk) => fk.favoriteKeyword);
             }
             break;
