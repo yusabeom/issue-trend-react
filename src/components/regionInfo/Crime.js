@@ -1,6 +1,8 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Bar, Pie } from 'react-chartjs-2';
+import { API_BASE_URL, USER } from '../../config/host-config';
+const API_BASE_URL2 = API_BASE_URL + USER;
 
 const Crime = () => {
   const [chartData, setChartData] = useState(null);
@@ -12,7 +14,7 @@ const Crime = () => {
       console.log('지역 : ', regionName);
 
       axios
-        .get(`http://localhost:8181/issue-trend/api/crime`, {
+        .get(API_BASE_URL2 + '/api/crime', {
           params: { region: regionName },
         })
         .then((response) => {
