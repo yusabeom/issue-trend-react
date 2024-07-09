@@ -274,7 +274,7 @@ const ReportDetail = () => {
               </div>
             </header>
 
-            <hr />
+            <hr className={styles.hr} />
 
             <main className='contentRegion'>
               {imgUrl && (
@@ -290,10 +290,10 @@ const ReportDetail = () => {
             </div> */}
             </main>
 
-            <hr />
+            <hr className={styles.hr} />
 
-            <footer className='replyRegion'>
-              <Button onClick={handleClickReply}>
+            <footer className={styles.replyRegion}>
+              <Button onClick={handleClickReply} className={styles.btn}>
                 댓글 &nbsp;
                 {openReply ? (
                   <FontAwesomeIcon icon={faCaretUp} size='1x' />
@@ -304,10 +304,18 @@ const ReportDetail = () => {
               </Button>
               {+localStorage.getItem('USER_NO') === +boardDetail.userNo && (
                 <div className={styles.crud}>
-                  <Button variant='outlined' onClick={openModifyModal}>
+                  <Button
+                    variant='outlined'
+                    onClick={openModifyModal}
+                    className={styles.btn}
+                  >
                     수정
                   </Button>
-                  <Button variant='outlined' onClick={deleteRequest}>
+                  <Button
+                    variant='outlined'
+                    onClick={deleteRequest}
+                    className={styles.btn}
+                  >
                     삭제
                   </Button>
                 </div>
@@ -318,6 +326,7 @@ const ReportDetail = () => {
                   navigate('/board');
                 }}
                 style={{ float: 'right' }}
+                className={styles.btn}
               >
                 목록
               </Button>

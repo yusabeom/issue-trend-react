@@ -44,12 +44,7 @@ const Paging = ({ size, count, curPage, type }) => {
   };
 
   return (
-    <Pagination
-      count={count}
-      page={+curPage}
-      onChange={handlePageChange}
-      color='secondary'
-    />
+    <Pagination count={count} page={+curPage} onChange={handlePageChange} />
     // <TablePagination
     //   component='div'
     //   count={count}

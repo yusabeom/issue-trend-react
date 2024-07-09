@@ -4,10 +4,18 @@ tr.oneItem {
   display: flex;
   justify-content: space-evenly;
 
+  &:hover {
+    background-color: #fff0d2;
+  }
+
+
   td {
     cursor: pointer;
 
+    
+    
     &.boardNo {
+      text-align: center;
       width: 7%;
     }
 
@@ -17,11 +25,15 @@ tr.oneItem {
 
     &.boardWriter {
       width: 20%;
+      text-align: center;
     }
 
     &.boardDate {
       width: 20%;
+      text-align: center;
     }
+
+    
   }
 
   border-bottom: 1px #000 solid;
