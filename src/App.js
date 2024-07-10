@@ -23,6 +23,12 @@ import NaverMapApi from './components/regionInfo/NaverMapApi';
 import Subscribe from './components/subscribe/Subscribe';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
+const script = document.createElement('script');
+script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAP_API_KEY}&libraries=places`;
+script.async = true;
+script.defer = true;
+document.head.appendChild(script);
+
 function App() {
   return (
     <AuthContextProvider>
