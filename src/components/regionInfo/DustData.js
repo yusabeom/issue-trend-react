@@ -9,11 +9,12 @@ import normalImg from '../../assets/img/character_04.png';
 import badImg from '../../assets/img/character_02.png';
 import veryBadImg from '../../assets/img/character_03.png';
 import classNames from 'classnames';
+import { API_BASE_URL, USER } from '../../config/host-config';
 
 const { icon, grade, average, good, normal, bad, veryBad, load } = styles;
 
 const DustData = ({ inputRegion }) => {
-  const API_URL = `http://localhost:8181/dustInfo/dustApi/${inputRegion}`;
+  const API_URL = API_BASE_URL + `/dustInfo/dustApi/${inputRegion}`;
 
   const [dustData, setDustData] = useState([]);
 

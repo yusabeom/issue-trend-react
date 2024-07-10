@@ -5,11 +5,11 @@ import { useNavigate } from 'react-router-dom';
 import { set } from 'lodash';
 import TypeNewsModal from './TypeNewsModal';
 import { Modal, Typography, Box } from '@mui/material';
+import { API_BASE_URL, USER } from '../../config/host-config';
+const API_BASE_URL2 = API_BASE_URL + USER + '/todayArticles';
 
 const ByTypeNews = () => {
   const { itemContainer, hoverText, hoverContainer } = styles;
-
-  const API_BASE_URL = 'http://localhost:8181/issue-trend/todayArticles';
 
   const [region, setRegion] = useState('서울');
   const [articles, setArticles] = useState([]);
@@ -19,7 +19,7 @@ const ByTypeNews = () => {
 
   const fetchArticles = useCallback(async (region) => {
     try {
-      const response = await fetch(API_BASE_URL, {
+      const response = await fetch(API_BASE_URL2, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

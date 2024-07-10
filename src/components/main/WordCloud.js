@@ -3,6 +3,8 @@ import styles from '../../styles/WordCloud.module.scss';
 import Words from './Words';
 import { useNavigate } from 'react-router-dom';
 import { DotLoader } from 'react-spinners';
+import { API_BASE_URL, USER } from '../../config/host-config';
+const API_BASE_URL2 = API_BASE_URL + USER + '/todayKeywordsFrequency';
 
 const WordCloud = () => {
   const redirection = useNavigate();
@@ -18,9 +20,6 @@ const WordCloud = () => {
     loadContent,
   } = styles;
 
-  const API_BASE_URL =
-    'http://localhost:8181/issue-trend/todayKeywordsFrequency';
-
   const [words, setWords] = useState([]);
 
   const [loading, setLoading] = useState(true);
@@ -29,7 +28,7 @@ const WordCloud = () => {
     const fetchWords = async () => {
       try {
         setTimeout(async () => {
-          const response = await fetch(API_BASE_URL);
+          const response = await fetch(API_BASE_URL2);
           if (!response.ok) {
             throw new Error('Network response was not ok');
           }

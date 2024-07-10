@@ -7,9 +7,10 @@ import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import AuthContext from '../../components/store/auth-context';
 import ChatLobby from './ChatLobby';
 import { regionCode } from './regionCode';
+import { API_BASE_URL, USER } from '../../config/host-config';
+const CHATSERVER = API_BASE_URL + ':5000'; // http://15.165.89.176:5000
 
-// const webSocket = io('http://localhost:5000');
-const roomSocket = io('http://192.168.0.33:5000');
+const roomSocket = io(CHATSERVER);
 
 // 화면에는 유저 이름(userName)을 보여주고, 서버에서는 socket.id로 식별한다.
 const Chat = ({ onUsers, onEnter, OnExit }) => {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styles from '../../styles/Search.module.scss';
-import { API_BASE_URL, USER } from '../../config/host-config';
+import { API_BASE_URL, USER, ONLY_IP } from '../../config/host-config';
 
 const Search = () => {
   const { searchContainer, title, content, contentDetail, number, date, fade } =
@@ -10,8 +10,7 @@ const Search = () => {
   const [lastUpdated, setLastUpdated] = useState(null);
 
   useEffect(() => {
-    const socket = new WebSocket('ws://192.168.0.40:4000'); // WebSocket 서버 주소
-
+    const socket = new WebSocket(`ws://${ONLY_IP}:3000`); // WebSocket 서버 주소
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
       setSearch(data);

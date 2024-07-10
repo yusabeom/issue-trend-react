@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import WeatherSelect from './WeatherSlect';
 import WeatherData from './WeatherData'; // 추가된 컴포넌트 import
+import { API_BASE_URL, USER } from '../../config/host-config';
 
 const Weather = () => {
   const [inputRegion, setInputRegion] = useState({
@@ -19,7 +20,9 @@ const Weather = () => {
   useEffect(() => {
     // API 요청 함수 정의
     const fetchWeatherData = async () => {
-      const url = `http://localhost:8181/issue-trend/weather?nx=${inputRegion.nx}&ny=${inputRegion.ny}`;
+      const url =
+        API_BASE_URL +
+        `/issue-trend/weather?nx=${inputRegion.nx}&ny=${inputRegion.ny}`;
       console.log('Fetching data from:', url); // 요청 URL 로깅
       try {
         const response = await fetch(url);

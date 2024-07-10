@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import styles from '../../styles/Graph.module.scss';
 import GraphDetail from './GraphDetail';
+import { API_BASE_URL, USER } from '../../config/host-config';
+const API_BASE_URL2 = API_BASE_URL + USER + '/todayKeywordsFrequency';
 
 const Graph = () => {
   const { graphContainer, title, graph } = styles;
-
-  const API_BASE_URL =
-    'http://localhost:8181/issue-trend/todayKeywordsFrequency';
 
   const [words, setWords] = useState([]);
 
   useEffect(() => {
     const fetchWords = async () => {
       try {
-        const response = await fetch(API_BASE_URL);
+        const response = await fetch(API_BASE_URL2);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
