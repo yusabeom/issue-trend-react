@@ -5,7 +5,7 @@ let backEndHostName;
 if (clientHostName === 'localhost') {
   backEndHostName = 'http://localhost:8181';
 } else if (clientHostName === 'issuetrend.site') {
-  backEndHostName = 'http://15.165.89.176';
+  backEndHostName = 'issuetrend.online';
 }
 
 export const API_BASE_URL = backEndHostName;
